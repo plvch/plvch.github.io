@@ -1,0 +1,261 @@
+/* ============================================================
+   plvch — site (hub) styles
+   Built on plvch-tokens.css. Same light/dark system + design
+   language as the essays (Open Indexing, ETF Fee Paradox, …),
+   so theme + look carry across the whole domain.
+   ============================================================ */
+
+/* ---- Theme surfaces (shared with the essays) ---- */
+:root[data-theme="light"] {
+  --oi-page-bg:      var(--plvch-paper);
+  --oi-surface:      var(--plvch-paper);
+  --oi-surface-2:    var(--plvch-bone);
+  --oi-surface-sunk: var(--plvch-paper-2);
+  --oi-ink-1:        var(--plvch-ink-900);
+  --oi-ink-2:        var(--plvch-ink-700);
+  --oi-ink-3:        var(--plvch-ink-500);
+  --oi-ink-4:        var(--plvch-ink-300);
+  --oi-rule:         #d8d3c4;
+  --oi-rule-strong:  var(--plvch-ink-900);
+  --oi-brand:        var(--plvch-navy-800);
+  --oi-brand-2:      var(--plvch-forest-800);
+  --oi-accent:       var(--plvch-ochre);
+  --oi-highlight:    #f1e6c4;
+  --oi-chip-bg:      var(--plvch-paper-2);
+  --oi-shadow-card:  0 1px 2px rgba(6,26,53,0.05), 0 10px 30px -16px rgba(6,26,53,0.10);
+}
+:root[data-theme="dark"] {
+  --oi-page-bg:      #08172e;
+  --oi-surface:      #08172e;
+  --oi-surface-2:    #0e2243;
+  --oi-surface-sunk: #0b1d39;
+  --oi-ink-1:        #f1ede2;
+  --oi-ink-2:        #c6ccd6;
+  --oi-ink-3:        #8993a3;
+  --oi-ink-4:        #5a6678;
+  --oi-rule:         #1a3056;
+  --oi-rule-strong:  #f1ede2;
+  --oi-brand:        #d9e0ec;
+  --oi-brand-2:      #6ea88a;
+  --oi-accent:       #d4a857;
+  --oi-highlight:    #2a2a14;
+  --oi-chip-bg:      #0e2243;
+  --oi-shadow-card:  0 0 0 1px var(--oi-rule), 0 18px 40px -20px rgba(0,0,0,0.6);
+}
+
+* { box-sizing: border-box; }
+
+html[data-theme="light"], html[data-theme="light"] body { background: var(--plvch-paper); }
+html[data-theme="dark"],  html[data-theme="dark"]  body { background: #08172e; }
+
+body {
+  margin: 0;
+  color: var(--oi-ink-1);
+  background: var(--oi-page-bg);
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+}
+
+a { color: var(--oi-brand); text-decoration-color: var(--oi-rule); }
+a:hover { color: var(--oi-brand-2); text-decoration-color: currentColor; }
+
+.wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+.col  { max-width: 760px; }
+
+/* ---------------- Masthead ---------------- */
+.masthead {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--oi-page-bg) 86%, transparent);
+  border-bottom: 1px solid var(--oi-rule);
+  backdrop-filter: blur(8px);
+}
+.masthead-inner {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  max-width: 1120px; margin: 0 auto; padding: 13px 32px;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 500; letter-spacing: -0.04em;
+  color: var(--oi-brand); text-decoration: none; white-space: nowrap;
+}
+.mh-right { display: flex; align-items: center; }
+/* Separate the three header groups (nav | locales | theme) with hairline dividers */
+.mh-right > * + * { margin-left: 18px; padding-left: 18px; border-left: 1px solid var(--oi-rule); }
+.mh-nav { display: flex; align-items: center; gap: 20px; }
+.mh-nav a {
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--oi-ink-3); text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.mh-nav a:hover { color: var(--oi-ink-1); }
+.mh-nav a[aria-current="page"] { color: var(--oi-ink-1); }
+
+/* Language switcher */
+.lang {
+  display: inline-flex; gap: 2px; align-items: center;
+  font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+}
+.lang a {
+  color: var(--oi-ink-3); text-decoration: none; padding: 2px 5px; border-radius: var(--radius-2);
+}
+.lang a:hover { color: var(--oi-ink-1); }
+.lang a[aria-current="true"] { color: var(--oi-page-bg); background: var(--oi-rule-strong); }
+
+/* Theme toggle (segmented) — same as the essays */
+.theme-toggle { display: inline-flex; border: 1px solid var(--oi-rule); border-radius: 999px; padding: 2px; background: var(--oi-surface); }
+.theme-toggle button {
+  background: transparent; border: 0; cursor: pointer;
+  font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--oi-ink-3); padding: 6px 11px; border-radius: 999px;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.theme-toggle button.active { background: var(--oi-rule-strong); color: var(--oi-page-bg); }
+.theme-toggle button:hover:not(.active) { color: var(--oi-ink-1); }
+
+/* ---------------- Eyebrow ---------------- */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--oi-ink-3);
+}
+
+/* ---------------- Hero ---------------- */
+.hero { padding: 64px 0 44px; border-bottom: 1px solid var(--oi-rule); }
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5vw, 46px); line-height: 1.06; letter-spacing: -0.03em; font-weight: 600;
+  color: var(--oi-ink-1); margin: 12px 0 0;
+}
+.hero .lede { font-size: clamp(16px, 2vw, 19px); line-height: 1.55; color: var(--oi-ink-2); margin: 16px 0 0; max-width: 46ch; }
+
+/* Home: single column — title, bio, what-I-do, writing all share one width */
+.home-col { max-width: 750px; }
+
+.whatido { margin-top: 30px; }
+.do-head {
+  font-family: var(--font-display); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--oi-ink-3); margin: 0 0 4px;
+}
+.do-list { list-style: none; margin: 0; padding: 0; }
+.do-item {
+  display: grid; grid-template-columns: 240px 1fr; gap: 4px 28px; align-items: baseline;
+  padding: 12px 0; border-top: 1px solid var(--oi-rule);
+}
+.do-item:last-child { border-bottom: 1px solid var(--oi-rule); }
+.do-term {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  letter-spacing: -0.005em; color: var(--oi-ink-1); text-decoration: none;
+}
+a.do-term:hover { color: var(--oi-brand-2); }
+.do-term .ext { color: var(--oi-ink-3); font-weight: 400; }
+.do-note { font-size: 13.5px; line-height: 1.45; color: var(--oi-ink-3); }
+.wip {
+  display: inline-block; margin-left: 7px; vertical-align: middle;
+  font-family: var(--font-display); font-size: 9.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--oi-accent);
+  border: 1px solid currentColor; border-radius: 999px; padding: 1px 6px;
+}
+
+/* ---------------- Section ---------------- */
+section.block { padding: 56px 0; border-bottom: 1px solid var(--oi-rule); }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.section-head h2 { font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--oi-ink-3); margin: 0; }
+
+/* ---------------- Essay cards ---------------- */
+.posts { display: grid; gap: 0; }
+.post-card {
+  display: grid; grid-template-columns: 120px 1fr; gap: 28px;
+  padding: 28px 0; border-top: 1px solid var(--oi-rule); text-decoration: none;
+}
+.post-card:last-child { border-bottom: 1px solid var(--oi-rule); }
+.post-card:hover .post-title { color: var(--oi-brand-2); }
+.post-vol { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--oi-ink-3); padding-top: 4px; }
+.post-title { font-family: var(--font-display); font-size: clamp(22px, 3vw, 28px); line-height: 1.15; letter-spacing: -0.01em; font-weight: 600; color: var(--oi-ink-1); margin: 0; transition: color var(--dur-fast) var(--ease-out); }
+.post-dek { color: var(--oi-ink-2); margin: 10px 0 0; max-width: 60ch; }
+.post-meta { margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12.5px; color: var(--oi-ink-3); font-family: var(--font-display); letter-spacing: 0.02em; }
+.post-meta .tag { color: var(--oi-ink-3); }
+.lang-note { display: inline-block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--oi-ink-4); border: 1px solid var(--oi-rule); border-radius: 999px; padding: 1px 8px; }
+
+/* Compact "index" variant used on the home page */
+.posts.index .post-card { grid-template-columns: 76px 1fr; gap: 22px; padding: 18px 0; }
+.posts.index .post-title { font-size: clamp(18px, 2.2vw, 21px); }
+.posts.index .post-dek { font-size: 14px; margin-top: 5px; max-width: 68ch; }
+.posts.index .post-meta { margin-top: 9px; }
+
+/* ---------------- Teasers (About / Practice) ---------------- */
+.teasers { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.teaser {
+  display: block; text-decoration: none; padding: 26px; border: 1px solid var(--oi-rule); border-radius: var(--radius-3);
+  background: var(--oi-surface-2); box-shadow: var(--oi-shadow-card);
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.teaser:hover { transform: translateY(-2px); border-color: var(--oi-ink-4); }
+.teaser h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--oi-ink-1); margin: 8px 0 0; }
+.teaser p { color: var(--oi-ink-2); margin: 10px 0 0; }
+.teaser .more { display: inline-block; margin-top: 16px; font-family: var(--font-display); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--oi-brand); }
+
+/* ---------------- Prose (About / Practice / Legal) ---------------- */
+.doc { padding: 64px 0 24px; }
+.doc h1 { font-family: var(--font-display); font-size: clamp(32px, 6vw, 48px); line-height: 1.08; letter-spacing: -0.02em; font-weight: 600; margin: 14px 0 0; color: var(--oi-ink-1); }
+.prose { max-width: 720px; }
+.prose h2 { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin: 40px 0 0; color: var(--oi-ink-1); }
+.prose h3 { font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 26px 0 0; color: var(--oi-ink-1); }
+.prose p, .prose li { color: var(--oi-ink-2); font-size: 16.5px; line-height: 1.6; }
+.prose p { margin: 18px 0 0; }
+.prose ul { margin: 14px 0 0; padding-left: 20px; }
+.prose li { margin: 6px 0 0; }
+.prose a { color: var(--oi-brand); }
+.prose strong { color: var(--oi-ink-1); }  /* tokens' base strong uses a non-flipping --fg-1; force theme-aware */
+.prose .muted { color: var(--oi-ink-3); }
+
+/* CTA button */
+.btn {
+  display: inline-block; margin-top: 22px; text-decoration: none;
+  font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--oi-page-bg); background: var(--oi-rule-strong);
+  padding: 11px 20px; border-radius: var(--radius-2);
+}
+.btn:hover { background: var(--oi-brand); }
+.prose .notice + .btn { margin-top: 18px; }
+/* Keep button text readable inside .prose, which styles bare a{} (higher specificity) */
+.prose a.btn, .prose a.btn:hover { color: var(--oi-page-bg); }
+
+/* Draft / placeholder notice */
+.notice {
+  margin: 24px 0 0; padding: 14px 16px; border-left: 3px solid var(--oi-accent);
+  background: var(--oi-surface-sunk); border-radius: var(--radius-2);
+  font-size: 14px; color: var(--oi-ink-2);
+}
+.notice strong { color: var(--oi-ink-1); }
+
+/* ---------------- Footer ---------------- */
+footer.site {
+  padding: 48px 0; color: var(--oi-ink-3);
+}
+.foot-grid { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 24px 64px; }
+.foot-grid .col-foot h4 { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3); margin: 0 0 10px; }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; }
+.foot-grid li { margin: 4px 0; }
+.foot-grid a { color: var(--oi-ink-2); text-decoration: none; }
+.foot-grid a:hover { color: var(--oi-ink-1); }
+.foot-bottom { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 6px 20px; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--oi-rule); font-size: 12.5px; }
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 560px) {
+  .do-item { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+  .masthead-inner { padding: 11px 20px; }
+  .mh-nav { display: none; }
+  .post-card { grid-template-columns: 1fr; gap: 6px; }
+  .posts.index .post-card { grid-template-columns: 1fr; gap: 6px; }
+  .post-vol { padding-top: 0; }
+  .teasers { grid-template-columns: 1fr; }
+}
+@media print { .masthead, .theme-toggle, .lang, footer.site { display: none; } }
