@@ -505,7 +505,7 @@ def whatido_item(item, lang):
 
 def build_home(lang):
     s = STR[lang]
-    cards = "\n".join(post_card(p, lang) for p in POSTS)
+    cards = "\n".join(post_card(p, lang) for p in reversed(POSTS))
     do_items = "\n".join(whatido_item(it, lang) for it in WHATIDO)
     body = """<section class="hero"><div class="wrap"><div class="home-col">
   <h1>{hero_title}</h1>
