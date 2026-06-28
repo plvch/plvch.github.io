@@ -94,7 +94,7 @@ POSTS = [
         },
     },
     {
-        "slug": "indexes_cost",
+        "slug": "indexes-cost",
         "vol":  {"en": "Vol. 02", "ru": "Vol. 02", "de": "Vol. 02"},
         "title": "The ETF Fee Paradox",
         "date": {"en": "June 2026", "ru": "Июнь 2026", "de": "Juni 2026"},
