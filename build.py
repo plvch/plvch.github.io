@@ -127,6 +127,23 @@ POSTS = [
             "de": ["Deutschland", "Politik", "Daten"],
         },
     },
+    {
+        "slug": "turnover-vs-gdp",
+        "vol":  {"en": "Vol. 04", "ru": "Vol. 04", "de": "Vol. 04"},
+        "title": "The curious structure of German exports",
+        "date": {"en": "June 2026", "ru": "Июнь 2026", "de": "Juni 2026"},
+        "read": {"en": "6 min",   "ru": "6 мин",     "de": "6 Min"},
+        "dek": {
+            "en": "German firms turn over about €9tn at home, roughly twice GDP. But the export figure everyone watches misses an entire economy they run abroad: €3.4tn, invisible to GDP.",
+            "ru": "Немецкие компании дают внутри страны оборот около €9 трлн, примерно вдвое больше ВВП. Но привычная цифра экспорта не замечает целую экономику за рубежом: €3,4 трлн, которых нет в ВВП.",
+            "de": "Deutsche Unternehmen setzen im Inland rund 9 Bio. € um, etwa doppelt so viel wie das BIP. Doch die vielzitierte Exportzahl übersieht eine ganze Wirtschaft im Ausland: 3,4 Bio. €, die im BIP nicht auftauchen.",
+        },
+        "tags": {
+            "en": ["Germany", "Trade", "Data"],
+            "ru": ["Германия", "Торговля", "Данные"],
+            "de": ["Deutschland", "Handel", "Daten"],
+        },
+    },
 ]
 
 
