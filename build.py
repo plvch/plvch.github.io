@@ -37,9 +37,9 @@ LANGS        = ["en", "ru", "de"]
 LANG_LABEL   = {"en": "EN", "ru": "RU", "de": "DE"}
 HTML_LANG    = {"en": "en", "ru": "ru", "de": "de"}
 
-PAGES = ["home", "practice", "legal"]
-SEG   = {"home": "", "practice": "practice", "legal": "legal"}
-ACTIVE_NAV = {"home": "writing", "practice": "practice", "legal": None}
+PAGES = ["home", "practice", "course", "legal"]
+SEG   = {"home": "", "practice": "practice", "course": "course", "legal": "legal"}
+ACTIVE_NAV = {"home": "writing", "practice": "practice", "course": "course", "legal": None}
 
 
 def url_for(page, lang):
@@ -212,6 +212,9 @@ STR = {
         "writing_head": "Writing",
         "practice_eyebrow": "Practice", "practice_h1": "Financial planning",
         "practice_desc": "Individual financial planning in Berlin. Planning and analysis, not product sales or investment advice. In preparation; reach out to talk through your situation.",
+        "nav_course": "Course",
+        "course_eyebrow": "Course", "course_h1": "Your Money Operating System",
+        "course_desc": "A live group course on personal finance in Germany for immigrants: 5 modules, mental models instead of product tips. First cohort in preparation.",
         "legal_eyebrow": "Legal", "legal_h1": "Legal",
         "legal_desc": "Impressum and privacy notice for plvch.",
         "legal_intro": "The notices below are provided in German, the legally binding language.",
@@ -232,6 +235,9 @@ STR = {
         "writing_head": "Тексты",
         "practice_eyebrow": "Практика", "practice_h1": "Финансовое планирование",
         "practice_desc": "Индивидуальное финансовое планирование в Берлине. Планирование и анализ, не продажа продуктов и не инвестиционная консультация. В подготовке; напишите, чтобы разобрать вашу ситуацию.",
+        "nav_course": "Курс",
+        "course_eyebrow": "Курс", "course_h1": "Your Money Operating System",
+        "course_desc": "Живой групповой курс о личных финансах в Германии для иммигрантов: 5 модулей, мыслительные модели вместо советов о продуктах. Первый поток готовится.",
         "legal_eyebrow": "Правовое", "legal_h1": "Правовая информация",
         "legal_desc": "Импрессум и политика конфиденциальности plvch.",
         "legal_intro": "Тексты ниже приведены на немецком языке, который является юридически обязательным.",
@@ -252,6 +258,9 @@ STR = {
         "writing_head": "Texte",
         "practice_eyebrow": "Praxis", "practice_h1": "Finanzplanung",
         "practice_desc": "Individuelle Finanzplanung in Berlin. Planung und Analyse, kein Produktverkauf und keine Anlageberatung. In Vorbereitung; melden Sie sich, um Ihre Situation zu besprechen.",
+        "nav_course": "Kurs",
+        "course_eyebrow": "Kurs", "course_h1": "Your Money Operating System",
+        "course_desc": "Ein Live-Gruppenkurs zu persönlichen Finanzen in Deutschland für Zugewanderte: 5 Module, Denkmodelle statt Produkttipps. Erste Kohorte in Vorbereitung.",
         "legal_eyebrow": "Rechtliches", "legal_h1": "Rechtliches",
         "legal_desc": "Impressum und Datenschutzerklärung für plvch.",
         "legal_intro": "Die folgenden Angaben sind auf Deutsch als rechtlich verbindlicher Sprachfassung bereitgestellt.",
@@ -284,6 +293,51 @@ PRACTICE_BODY = {
 <p><strong>Noch nicht geöffnet.</strong> Die Praxis ist in Vorbereitung und nimmt noch keine Aufträge an.<br>Ich mache gerade Fallrecherche: Wenn Sie Ihre Situation besprechen möchten, melden Sie sich.</p>
 <div class="notice"><strong>Rahmen.</strong> Nur Information und Planungsunterstützung. Kein Produktverkauf, keine Beratung zu konkreten Finanzinstrumenten, Steuern oder Rechtsfragen.<br>Jede Entscheidung bleibt bei Ihnen. Siehe <a href="/de/legal/#impressum">Impressum</a> und <a href="/de/legal/#datenschutz">Datenschutzerklärung</a>.</div>
 <a class="btn" href="mailto:{email}">Kontakt aufnehmen</a>
+""",
+}
+
+COURSE_BODY = {
+    "en": """
+<p>Most working people already own an asset worth hundreds of thousands of euros — their future earnings. <strong>"Your Money Operating System"</strong> is a live group course on personal finance in Germany, built for immigrants, that teaches how to see that asset, protect it, and convert it into financial capital. It teaches <em>how to think</em> about money; the reference numbers and mechanics live in the free wiki, <a href="https://geldchen.com">geldchen.com</a>.</p>
+<p>Five modules of two hours each, and every module ends with a personal number you compute yourself on a one-page worksheet:</p>
+<ul>
+<li><strong>You are an asset</strong> — human capital, present value, gross vs. net, inflation</li>
+<li><strong>Floor, ceiling, and the gap</strong> — spending as structure, not willpower; the savings rate as the one lever you own</li>
+<li><strong>Big decisions</strong> — the true full cost of housing, cars, and paid education, before signing</li>
+<li><strong>The conversion ladder</strong> — five rungs in strict order, from emergency fund to automated diversified investing</li>
+<li><strong>The dark side</strong> — insurance through one filter, the pension system as an asset you already own, and a catalog of red flags</li>
+</ul>
+<p>Format: small group, live — online or in person in Berlin, in Russian/English with German terms taught as vocabulary. <strong>The first cohort is in preparation.</strong> If it sounds relevant, write me which format and language would fit you — you'll get the dates and conditions as they firm up.</p>
+<div class="notice"><strong>Scope.</strong> The course is financial education, run under the <a href="https://geldchen.com">geldchen</a> brand. No product recommendations, no advice on specific instruments, insurance, taxes, or legal questions — where personal advice is needed, the course names the licensed profession to go to. It is separate from the <a href="/practice/">plvch planning practice</a>.</div>
+<a class="btn" href="mailto:{email}">Ask about the course</a>
+""",
+    "ru": """
+<p>У большинства работающих людей уже есть актив стоимостью в сотни тысяч евро — их будущие доходы. <strong>«Your Money Operating System»</strong> — живой групповой курс о личных финансах в Германии для иммигрантов: как увидеть этот актив, защитить его и конвертировать в финансовый капитал. Курс учит <em>как думать</em> о деньгах; справочные цифры и механика — в бесплатной вики <a href="https://geldchen.com">geldchen.com</a>.</p>
+<p>Пять модулей по два часа, и каждый модуль заканчивается личным числом, которое вы считаете сами на одностраничном рабочем листе:</p>
+<ul>
+<li><strong>Вы — актив</strong> — человеческий капитал, приведённая стоимость, brutto/netto, инфляция</li>
+<li><strong>Пол, потолок и разрыв</strong> — расходы как структура, а не сила воли; норма сбережений как единственный рычаг, который принадлежит вам</li>
+<li><strong>Большие решения</strong> — настоящая полная стоимость жилья, машины и платного образования, до подписи</li>
+<li><strong>Лестница конверсии</strong> — пять ступеней в строгом порядке: от подушки безопасности до автоматизированных диверсифицированных инвестиций</li>
+<li><strong>Тёмная сторона</strong> — страховки через один фильтр, пенсионная система как актив, который у вас уже есть, и каталог красных флагов</li>
+</ul>
+<p>Формат: малая группа, вживую — онлайн или очно в Берлине, на русском/английском с разбором немецких терминов. <strong>Первый поток готовится.</strong> Если курс кажется вам полезным, напишите, какой формат и язык вам подходят, — вы получите даты и условия, как только они определятся.</p>
+<div class="notice"><strong>Рамки.</strong> Курс — это финансовое образование, проект бренда <a href="https://geldchen.com">geldchen</a>. Без рекомендаций продуктов, без советов по конкретным инструментам, страховкам, налогам и юридическим вопросам — там, где нужен персональный совет, курс называет лицензированную профессию, к которой с этим идут. Курс отделён от <a href="/ru/practice/">практики планирования plvch</a>.</div>
+<a class="btn" href="mailto:{email}">Спросить о курсе</a>
+""",
+    "de": """
+<p>Die meisten Berufstätigen besitzen bereits ein Vermögen von mehreren Hunderttausend Euro — ihre künftigen Einkommen. <strong>„Your Money Operating System"</strong> ist ein Live-Gruppenkurs zu persönlichen Finanzen in Deutschland, gebaut für Zugewanderte: diesen Vermögenswert sehen, schützen und in Finanzkapital umwandeln. Der Kurs lehrt, <em>wie man über Geld denkt</em>; Referenzzahlen und Mechanik stehen im kostenlosen Wiki <a href="https://geldchen.com">geldchen.com</a>.</p>
+<p>Fünf Module à zwei Stunden — und jedes Modul endet mit einer persönlichen Zahl, die Sie selbst auf einem einseitigen Arbeitsblatt berechnen:</p>
+<ul>
+<li><strong>Sie sind ein Vermögenswert</strong> — Humankapital, Barwert, brutto vs. netto, Inflation</li>
+<li><strong>Boden, Decke und die Lücke</strong> — Ausgaben als Struktur statt Willenskraft; die Sparquote als der eine Hebel, der Ihnen gehört</li>
+<li><strong>Große Entscheidungen</strong> — die wahren Gesamtkosten von Wohnen, Auto und bezahlter Bildung, vor der Unterschrift</li>
+<li><strong>Die Umwandlungsleiter</strong> — fünf Sprossen in strikter Reihenfolge, vom Notgroschen bis zum automatisierten, diversifizierten Anlegen</li>
+<li><strong>Die dunkle Seite</strong> — Versicherungen durch einen Filter, das Rentensystem als Vermögenswert, den Sie schon besitzen, und ein Katalog roter Flaggen</li>
+</ul>
+<p>Format: kleine Gruppe, live — online oder vor Ort in Berlin, auf Russisch/Englisch mit deutschen Fachbegriffen als Vokabular. <strong>Die erste Kohorte ist in Vorbereitung.</strong> Wenn das relevant klingt, schreiben Sie mir, welches Format und welche Sprache passen würden — Termine und Konditionen folgen, sobald sie feststehen.</p>
+<div class="notice"><strong>Rahmen.</strong> Der Kurs ist Finanzbildung und läuft unter der Marke <a href="https://geldchen.com">geldchen</a>. Keine Produktempfehlungen, keine Beratung zu konkreten Instrumenten, Versicherungen, Steuern oder Rechtsfragen — wo persönliche Beratung nötig ist, benennt der Kurs den lizenzierten Beruf dafür. Er ist getrennt von der <a href="/de/practice/">plvch-Planungspraxis</a>.</div>
+<a class="btn" href="mailto:{email}">Zum Kurs anfragen</a>
 """,
 }
 
@@ -331,6 +385,7 @@ def masthead(lang, active):
     nav_items = [
         ("writing", STR[lang]["nav_writing"], url_for("home", lang)),
         ("practice", STR[lang]["nav_practice"], url_for("practice", lang)),
+        ("course", STR[lang]["nav_course"], url_for("course", lang)),
     ]
     nav = "\n".join(
         '      <a href="{href}"{cur}>{label}</a>'.format(
@@ -386,6 +441,7 @@ def footer(lang):
       <ul>
         <li><a href="{writing}">{nav_writing}</a></li>
         <li><a href="{practice}">{nav_practice}</a></li>
+        <li><a href="{course}">{nav_course}</a></li>
       </ul>
     </div>
     <div class="col-foot">
@@ -410,8 +466,10 @@ def footer(lang):
 </div></footer>""".format(
         foot_nav=e(s["foot_nav"]), foot_legal=e(s["foot_legal"]), foot_contact=e(s["foot_contact"]),
         writing=url_for("home", lang), practice=url_for("practice", lang),
+        course=url_for("course", lang),
         legal=url_for("legal", lang),
         nav_writing=e(s["nav_writing"]), nav_practice=e(s["nav_practice"]),
+        nav_course=e(s["nav_course"]),
         impressum=e(s["impressum"]), privacy=e(s["privacy"]),
         email=EMAIL, berlin=e(s["berlin"]), rights=e(s["rights"]),
     )
@@ -550,6 +608,10 @@ def build_practice(lang):
     return build_doc(lang, "practice", PRACTICE_BODY[lang].format(email=EMAIL))
 
 
+def build_course(lang):
+    return build_doc(lang, "course", COURSE_BODY[lang].format(email=EMAIL))
+
+
 def build_legal(lang):
     intro = '<p class="muted">{}</p>'.format(e(STR[lang]["legal_intro"]))
     return build_doc(lang, "legal", intro + LEGAL_BODY_DE.format(email=EMAIL))
@@ -566,7 +628,7 @@ def write(path, html):
 
 def main():
     global _CURRENT_PAGE
-    builders = {"home": build_home, "practice": build_practice, "legal": build_legal}
+    builders = {"home": build_home, "practice": build_practice, "course": build_course, "legal": build_legal}
     count = 0
     for page in PAGES:
         _CURRENT_PAGE = page
