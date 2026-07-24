@@ -213,7 +213,7 @@ STR = {
         "practice_eyebrow": "Practice", "practice_h1": "Financial planning",
         "practice_desc": "Individual financial planning in Berlin. Planning and analysis, not product sales or investment advice. In preparation; reach out to talk through your situation.",
         "nav_course": "Course",
-        "course_eyebrow": "Course", "course_h1": "Your Money Operating System",
+        "course_eyebrow": "Course", "course_h1": "Personal Finance Foundations",
         "course_desc": "A live group course on personal finance in Germany for immigrants: 5 modules, mental models instead of product tips. First cohort in preparation.",
         "legal_eyebrow": "Legal", "legal_h1": "Legal",
         "legal_desc": "Impressum and privacy notice for plvch.",
@@ -236,8 +236,8 @@ STR = {
         "practice_eyebrow": "Практика", "practice_h1": "Финансовое планирование",
         "practice_desc": "Индивидуальное финансовое планирование в Берлине. Планирование и анализ, не продажа продуктов и не инвестиционная консультация. В подготовке; напишите, чтобы разобрать вашу ситуацию.",
         "nav_course": "Курс",
-        "course_eyebrow": "Курс", "course_h1": "Your Money Operating System",
-        "course_desc": "Живой групповой курс о личных финансах в Германии для иммигрантов: 5 модулей, мыслительные модели вместо советов о продуктах. Первый поток готовится.",
+        "course_eyebrow": "Курс", "course_h1": "Основы личных финансов в Германии",
+        "course_desc": "Живой групповой курс о личных финансах в Германии для иммигрантов: 5 модулей, ментальные модели вместо советов о продуктах. Первый поток готовится.",
         "legal_eyebrow": "Правовое", "legal_h1": "Правовая информация",
         "legal_desc": "Импрессум и политика конфиденциальности plvch.",
         "legal_intro": "Тексты ниже приведены на немецком языке, который является юридически обязательным.",
@@ -259,7 +259,7 @@ STR = {
         "practice_eyebrow": "Praxis", "practice_h1": "Finanzplanung",
         "practice_desc": "Individuelle Finanzplanung in Berlin. Planung und Analyse, kein Produktverkauf und keine Anlageberatung. In Vorbereitung; melden Sie sich, um Ihre Situation zu besprechen.",
         "nav_course": "Kurs",
-        "course_eyebrow": "Kurs", "course_h1": "Your Money Operating System",
+        "course_eyebrow": "Kurs", "course_h1": "Grundlagen persönlicher Finanzen in Deutschland",
         "course_desc": "Ein Live-Gruppenkurs zu persönlichen Finanzen in Deutschland für Zugewanderte: 5 Module, Denkmodelle statt Produkttipps. Erste Kohorte in Vorbereitung.",
         "legal_eyebrow": "Rechtliches", "legal_h1": "Rechtliches",
         "legal_desc": "Impressum und Datenschutzerklärung für plvch.",
@@ -298,7 +298,7 @@ PRACTICE_BODY = {
 
 COURSE_BODY = {
     "en": """
-<p>Most working people already own an asset worth hundreds of thousands of euros — their future earnings. <strong>"Your Money Operating System"</strong> is a live group course on personal finance in Germany, built for immigrants, that teaches how to see that asset, protect it, and convert it into financial capital. It teaches <em>how to think</em> about money; the reference numbers and mechanics live in the free wiki, <a href="https://geldchen.com">geldchen.com</a>.</p>
+<p>Most working people already own an asset worth hundreds of thousands of euros — their future earnings. <strong>"Personal Finance Foundations"</strong> is a live group course on personal finance in Germany, built for immigrants, that teaches how to see that asset, protect it, and convert it into financial capital. It teaches <em>how to think</em> about money; the reference numbers and mechanics live in the free wiki, <a href="https://geldchen.com">geldchen.com</a>.</p>
 <p>Five modules of two hours each, and every module ends with a personal number you compute yourself on a one-page worksheet:</p>
 <ul>
 <li><strong>You are an asset</strong> — human capital, present value, gross vs. net, inflation</li>
@@ -312,7 +312,7 @@ COURSE_BODY = {
 <a class="btn" href="mailto:{email}">Ask about the course</a>
 """,
     "ru": """
-<p>У большинства работающих людей уже есть актив стоимостью в сотни тысяч евро — их будущие доходы. <strong>«Your Money Operating System»</strong> — живой групповой курс о личных финансах в Германии для иммигрантов: как увидеть этот актив, защитить его и конвертировать в финансовый капитал. Курс учит <em>как думать</em> о деньгах; справочные цифры и механика — в бесплатной вики <a href="https://geldchen.com">geldchen.com</a>.</p>
+<p>У большинства работающих людей уже есть актив стоимостью в сотни тысяч евро — их будущие доходы. <strong>«Основы личных финансов в Германии»</strong> — живой групповой курс для иммигрантов: как увидеть этот актив, защитить его и конвертировать в финансовый капитал. Курс учит <em>как думать</em> о деньгах; справочные цифры и механика — в бесплатной вики <a href="https://geldchen.com">geldchen.com</a>.</p>
 <p>Пять модулей по два часа, и каждый модуль заканчивается личным числом, которое вы считаете сами на одностраничном рабочем листе:</p>
 <ul>
 <li><strong>Вы — актив</strong> — человеческий капитал, приведённая стоимость, brutto/netto, инфляция</li>
@@ -326,7 +326,7 @@ COURSE_BODY = {
 <a class="btn" href="mailto:{email}">Спросить о курсе</a>
 """,
     "de": """
-<p>Die meisten Berufstätigen besitzen bereits ein Vermögen von mehreren Hunderttausend Euro — ihre künftigen Einkommen. <strong>„Your Money Operating System"</strong> ist ein Live-Gruppenkurs zu persönlichen Finanzen in Deutschland, gebaut für Zugewanderte: diesen Vermögenswert sehen, schützen und in Finanzkapital umwandeln. Der Kurs lehrt, <em>wie man über Geld denkt</em>; Referenzzahlen und Mechanik stehen im kostenlosen Wiki <a href="https://geldchen.com">geldchen.com</a>.</p>
+<p>Die meisten Berufstätigen besitzen bereits ein Vermögen von mehreren Hunderttausend Euro — ihre künftigen Einkommen. <strong>„Grundlagen persönlicher Finanzen in Deutschland"</strong> ist ein Live-Gruppenkurs, gebaut für Zugewanderte: diesen Vermögenswert sehen, schützen und in Finanzkapital umwandeln. Der Kurs lehrt, <em>wie man über Geld denkt</em>; Referenzzahlen und Mechanik stehen im kostenlosen Wiki <a href="https://geldchen.com">geldchen.com</a>.</p>
 <p>Fünf Module à zwei Stunden — und jedes Modul endet mit einer persönlichen Zahl, die Sie selbst auf einem einseitigen Arbeitsblatt berechnen:</p>
 <ul>
 <li><strong>Sie sind ein Vermögenswert</strong> — Humankapital, Barwert, brutto vs. netto, Inflation</li>
