@@ -213,6 +213,32 @@ section.block { padding: 56px 0; border-bottom: 1px solid var(--oi-rule); }
 .prose strong { color: var(--oi-ink-1); }  /* tokens' base strong uses a non-flipping --fg-1; force theme-aware */
 .prose .muted { color: var(--oi-ink-3); }
 
+/* Short, English-only personal notes hosted directly on the hub. */
+.article-head { padding-bottom: 20px; }
+.article-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 18px;
+  margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--oi-rule);
+  color: var(--oi-ink-3); font-family: var(--font-display); font-size: 12.5px;
+}
+.article-body { padding: 0 0 72px; }
+.article-prose { font-size: 17px; }
+.article-prose blockquote {
+  margin: 30px 0; padding: 20px 24px; border-left: 3px solid var(--oi-accent);
+  background: var(--oi-surface-sunk);
+}
+.article-prose blockquote p {
+  margin: 0; color: var(--oi-ink-1); font-family: var(--font-display);
+  font-size: 19px; line-height: 1.5;
+}
+.article-prose blockquote cite {
+  display: block; margin-top: 12px; color: var(--oi-ink-3);
+  font-family: var(--font-display); font-size: 12px; font-style: normal;
+}
+.article-prose .author-note {
+  margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--oi-rule);
+  color: var(--oi-ink-3); font-size: 13.5px;
+}
+
 /* CTA button */
 .btn {
   display: inline-block; margin-top: 22px; text-decoration: none;
