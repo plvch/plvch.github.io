@@ -144,7 +144,52 @@ POSTS = [
             "de": ["Deutschland", "Handel", "Daten"],
         },
     },
+    {
+        "slug": "updating-my-thoughts-on-writing",
+        "vol":  {"en": "Vol. 05", "ru": "Vol. 05", "de": "Vol. 05"},
+        "title": "Updating my thoughts on writing",
+        "date": {"en": "August 2026", "ru": "Август 2026", "de": "August 2026"},
+        "read": {"en": "2 min", "ru": "2 мин", "de": "2 Min"},
+        "dek": {
+            "en": "AI made my posts clearer, better sourced, and more substantive. It also made them less distinctive. A short note on bringing my own writing back.",
+            "ru": "ИИ сделал мои тексты яснее, лучше подкреплёнными источниками и содержательнее — но также менее узнаваемыми. Короткая заметка о возвращении к собственному письму.",
+            "de": "KI machte meine Texte klarer, besser belegt und gehaltvoller – aber auch weniger unverwechselbar. Eine kurze Notiz über die Rückkehr zum eigenen Schreiben.",
+        },
+        "tags": {
+            "en": ["Writing", "AI"],
+            "ru": ["Тексты", "ИИ"],
+            "de": ["Schreiben", "KI"],
+        },
+    },
 ]
+
+
+# English-only personal note. The wording remains the author's; AI editing was
+# limited to spelling, punctuation, light grammar, and the small page wrapper.
+WRITING_THOUGHTS_BODY = """
+<p>One of the least controversial opinions one may hold is that putting thoughts into writing requires discipline and a certain level of clarity. At least, that was the case pre-AI, when creating a paragraph of written language required significant effort.</p>
+
+<p>In the last couple of years, that proof-of-work mechanism has arguably given way to a tsunami of generated work of variable quality. Depending on the platform and the medium, you may notice more or less of it.</p>
+
+<p>During a July discussion around AI in the literary market, I liked a note from Byrne Hobart in <a href="https://www.thediff.co/archive/longreads-open-thread-194/?ref=the-diff-newsletter">The Diff</a> most. It referred back to <a href="https://www.nytimes.com/2026/03/19/books/ai-fiction-shy-girl.html">Hachette's decision to cancel publication of <em>Shy Girl</em></a> over evidence of AI use:</p>
+
+<blockquote>
+  <p>“It only gets easier to detect LLM use over time, so we'll all be judged based on the norms and evidence-gathering techniques of the future.”</p>
+  <cite>Byrne Hobart, The Diff</cite>
+</blockquote>
+
+<p>That sounds very rational and true to me, at least for past and current generations of models.</p>
+
+<p>Looking back at my own posting experience over the last few years, the usefulness of every new model release for a non-native speaker was also clear: first punctuation and structure improved, then clarity and sourcing, and later the analysis itself for essay-style pieces. In sync with the capabilities—writing, coding, and the rest—the posts became more substantive.</p>
+
+<p>But they also became, if not voiceless, certainly less distinctive. At some point, the authorship provenance became clearer, especially with the Claude/Codex family of models.</p>
+
+<p>My takeaway is that it can still be useful to look at less-discussed topics, underexplored data, or similar things, and employ the latest battery of tools to work through them. But the touch of humanness is still a kind of agency that agents will miss, as well as the curiosity, care, and randomness that each of us develops over a lifetime.</p>
+
+<p>And to keep that randomness in place, I want future posts here to contain my writing, and not my models' writing.</p>
+
+<p class="author-note">This note was written by me and lightly edited with AI for spelling, punctuation, and grammar.</p>
+"""
 
 
 # ====================================================================
@@ -417,14 +462,18 @@ def footer(lang):
     )
 
 
-def shell(lang, page, title, desc, body):
+def shell(lang, page, title, desc, body, canonical_path=None, localized=True, og_type="website"):
     active = ACTIVE_NAV[page]
-    alts = "\n".join(
-        '  <link rel="alternate" hreflang="{l}" href="{u}">'.format(l=HTML_LANG[l2], u=BASE_URL + url_for(page, l2))
-        for l2 in LANGS
-    )
-    alts += '\n  <link rel="alternate" hreflang="x-default" href="{u}">'.format(u=BASE_URL + url_for(page, DEFAULT_LANG))
-    canonical = BASE_URL + url_for(page, lang)
+    if localized:
+        alts = "\n".join(
+            '  <link rel="alternate" hreflang="{l}" href="{u}">'.format(l=HTML_LANG[l2], u=BASE_URL + url_for(page, l2))
+            for l2 in LANGS
+        )
+        alts += '\n  <link rel="alternate" hreflang="x-default" href="{u}">'.format(u=BASE_URL + url_for(page, DEFAULT_LANG))
+    else:
+        article_url = BASE_URL + canonical_path
+        alts = '  <link rel="alternate" hreflang="en" href="{u}">\n  <link rel="alternate" hreflang="x-default" href="{u}">'.format(u=article_url)
+    canonical = BASE_URL + canonical_path if canonical_path else BASE_URL + url_for(page, lang)
     return """<!DOCTYPE html>
 <html lang="{htmllang}" data-theme="light">
 <head>
@@ -434,7 +483,7 @@ def shell(lang, page, title, desc, body):
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
 {alts}
-<meta property="og:type" content="website">
+<meta property="og:type" content="{og_type}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
@@ -453,7 +502,7 @@ def shell(lang, page, title, desc, body):
 </body>
 </html>
 """.format(
-        htmllang=HTML_LANG[lang], title=e(title), desc=e(desc),
+        htmllang=HTML_LANG[lang], title=e(title), desc=e(desc), og_type=e(og_type),
         canonical=canonical, alts=alts,
         tokens_css=asset_url("assets/plvch-tokens.css"),
         site_css=asset_url("assets/site.css"),
@@ -555,6 +604,25 @@ def build_legal(lang):
     return build_doc(lang, "legal", intro + LEGAL_BODY_DE.format(email=EMAIL))
 
 
+def build_writing_thoughts():
+    title = "Updating my thoughts on writing"
+    desc = "AI made my posts clearer and more substantive, but also less distinctive. A short note on bringing my own writing back."
+    body = """<article>
+<header class="doc article-head"><div class="wrap col">
+  <div class="eyebrow">Personal note · Vol. 05</div>
+  <h1>{title}</h1>
+  <div class="article-meta"><time datetime="2026-08-09">9 August 2026</time><span>2 min read</span><span>Writing · AI</span></div>
+</div></header>
+<section class="article-body"><div class="wrap col"><div class="prose article-prose">
+{prose}
+</div></div></section>
+</article>""".format(title=e(title), prose=WRITING_THOUGHTS_BODY)
+    return shell(
+        "en", "home", title + " · plvch", desc, body,
+        canonical_path="/updating-my-thoughts-on-writing/", localized=False, og_type="article",
+    )
+
+
 # ====================================================================
 # RENDER
 # ====================================================================
@@ -573,6 +641,10 @@ def main():
         for lang in LANGS:
             write(out_path(page, lang), builders[page](lang))
             count += 1
+
+    _CURRENT_PAGE = "home"
+    write(os.path.join(HERE, "updating-my-thoughts-on-writing", "index.html"), build_writing_thoughts())
+    count += 1
 
     # CNAME — only emit when a custom domain is configured.
     cname = os.path.join(HERE, "CNAME")
