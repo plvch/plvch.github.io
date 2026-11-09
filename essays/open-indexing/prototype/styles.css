@@ -1,0 +1,187 @@
+/* Basket Broker prototype — global styles
+   Dark + light themes with full token sets.
+   Visual language: TR-inspired neobroker — pure surfaces, white/black primary,
+   triangles for deltas, big de-DE numbers, flat cards.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+
+/* ── Dark theme (default) ─────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  /* Surfaces — graduated from sunken to lifted */
+  --bg:        #000000;
+  --surface-0: #0E0E12;   /* sunken / nested */
+  --surface-1: #131316;   /* card */
+  --surface-2: #1B1B1F;   /* elevated / segmented */
+  --surface-3: #26262C;   /* hover / segmented active */
+  --line:      #1F1F23;
+  --line-soft: #161619;
+  --bar-bg:    #1A1A1E;   /* allocation / progress track */
+  --scrim:     rgba(0,0,0,0.6);
+
+  /* Foreground */
+  --fg:        #FFFFFF;
+  --fg-mid:    #9A9AA3;
+  --fg-dim:    #5E5E68;
+  --fg-faint:  #3E3E46;
+
+  /* Primary action — pure white in dark mode */
+  --accent:        #FFFFFF;
+  --accent-soft:   rgba(255,255,255,0.08);
+  --accent-fg:     #000000;
+
+  /* ETF tile (asset glyph for ETF-type instruments) */
+  --etf-bg:    #1F1F23;
+  --etf-fg:    #E5E5EA;
+
+  /* Brand mark (the "b" logo) — inverse of accent */
+  --brand-mark-bg: #FFFFFF;
+  --brand-mark-fg: #000000;
+
+  /* Semantic deltas */
+  --pos: #4ADE80;
+  --pos-soft: rgba(74,222,128,0.12);
+  --neg: #F87171;
+  --neg-soft: rgba(248,113,113,0.12);
+  --warn: #FACC15;
+  --warn-soft: rgba(250,204,21,0.08);
+
+  /* Ghost sweep highlight */
+  --ghost-sheen: rgba(255,255,255,0.025);
+  --ghost-stripe: rgba(255,255,255,0.06);
+  --ghost-border: #1F1F23;
+  --ghost-border-strong: #2A2A2F;
+}
+
+/* ── Light theme ─────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:        #FFFFFF;
+  --surface-0: #F4F4F5;
+  --surface-1: #F7F7F8;
+  --surface-2: #ECECEF;
+  --surface-3: #DEDEE2;
+  --line:      #E4E4E7;
+  --line-soft: #EFEFF1;
+  --bar-bg:    #EAEAEC;
+  --scrim:     rgba(0,0,0,0.3);
+
+  --fg:        #0A0A0B;
+  --fg-mid:    #52525B;
+  --fg-dim:    #71717A;
+  --fg-faint:  #A1A1AA;
+
+  /* Primary action — pure black in light mode */
+  --accent:        #0A0A0B;
+  --accent-soft:   rgba(10,10,11,0.06);
+  --accent-fg:     #FFFFFF;
+
+  --etf-bg:    #E4E4E7;
+  --etf-fg:    #0A0A0B;
+
+  --brand-mark-bg: #0A0A0B;
+  --brand-mark-fg: #FFFFFF;
+
+  /* Deltas — darker for legibility on light bg */
+  --pos: #15803D;
+  --pos-soft: rgba(21,128,61,0.12);
+  --neg: #B91C1C;
+  --neg-soft: rgba(185,28,28,0.10);
+  --warn: #B45309;
+  --warn-soft: rgba(180,83,9,0.10);
+
+  --ghost-sheen: rgba(10,10,11,0.025);
+  --ghost-stripe: rgba(10,10,11,0.06);
+  --ghost-border: #E4E4E7;
+  --ghost-border-strong: #CFCFD4;
+}
+
+/* ── Font tokens ─────────────────────────────────────────────── */
+:root {
+  --font-sans: 'Geist', -apple-system, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  font-family: var(--font-sans);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11", "tnum";
+}
+
+/* The themed root sets bg/fg + a soft swap. Don't blanket-transition every
+   descendant — too heavy, breaks some compositing. Specific elements that
+   benefit are below. */
+html[data-theme],
+[data-theme] {
+  background: var(--bg);
+  color: var(--fg);
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+/* When embedded in an iframe (parent page handles the surface), drop the
+   body background so the phone frame contrasts against the host's surface
+   instead of disappearing into its own. The pre-paint script in the host
+   HTML adds the .embedded class on <html>. */
+html.embedded,
+html.embedded body,
+html.embedded[data-theme],
+html.embedded [data-theme] {
+  background: transparent;
+}
+
+.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+
+/* Minimal scrollbar inside phone */
+.bb-screen::-webkit-scrollbar,
+.kb-screen::-webkit-scrollbar { width: 0; }
+.bb-screen, .kb-screen { scrollbar-width: none; }
+
+/* Press feedback */
+.bb-tap, .kb-tap { transition: background-color 120ms ease, transform 80ms ease, opacity 120ms ease; -webkit-tap-highlight-color: transparent; }
+.bb-tap:active, .kb-tap:active { transform: scale(0.985); }
+
+/* Skeleton sweep — used on ghost cards */
+@keyframes ghost-sweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.ghost-sweep {
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    var(--ghost-sheen) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: ghost-sweep 4.2s ease-in-out infinite;
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes fade-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes page-in {
+  from { transform: translateX(8%); opacity: 0; }
+  to   { transform: translateX(0);  opacity: 1; }
+}
+.page { animation: page-in 220ms ease both; height: 100%; }
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+.live-dot { animation: live-pulse 2.4s ease-in-out infinite; }

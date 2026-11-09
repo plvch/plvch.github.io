@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Open Indexing — a better business model for passive investing</title>
+<link rel="stylesheet" href="assets/plvch-tokens.css" />
+<style>
+  /* =========================================================
+     Open Indexing — long-form essay
+     Built on plvch tokens. Light/dark themes via [data-theme].
+     ========================================================= */
+
+  :root[data-theme="light"] {
+    --oi-page-bg:        var(--plvch-paper);
+    --oi-surface:        var(--plvch-paper);
+    --oi-surface-2:      var(--plvch-bone);
+    --oi-surface-sunk:   var(--plvch-paper-2);
+    --oi-ink-1:          var(--plvch-ink-900);
+    --oi-ink-2:          var(--plvch-ink-700);
+    --oi-ink-3:          var(--plvch-ink-500);
+    --oi-ink-4:          var(--plvch-ink-300);
+    --oi-rule:           #d8d3c4;
+    --oi-rule-strong:    var(--plvch-ink-900);
+    --oi-brand:          var(--plvch-navy-800);
+    --oi-brand-2:        var(--plvch-forest-800);
+    --oi-accent:         var(--plvch-ochre);
+    --oi-highlight:      #f1e6c4;        /* ochre wash */
+    --oi-chip-bg:        var(--plvch-paper-2);
+    --oi-gap-fill:       #f5e8c1;        /* the empty-quadrant wash */
+    --oi-gap-ink:        #6b5400;
+    --oi-shadow-card:    0 1px 0 var(--oi-rule);
+    --oi-shadow-figure:  0 1px 2px rgba(6,26,53,0.05), 0 10px 30px -16px rgba(6,26,53,0.10);
+  }
+
+  :root[data-theme="dark"] {
+    --oi-page-bg:        #08172e;        /* deeper than navy-900 for inky paper */
+    --oi-surface:        #08172e;
+    --oi-surface-2:      #0e2243;
+    --oi-surface-sunk:   #0b1d39;
+    --oi-ink-1:          #f1ede2;        /* warm paper */
+    --oi-ink-2:          #c6ccd6;
+    --oi-ink-3:          #8993a3;
+    --oi-ink-4:          #5a6678;
+    --oi-rule:           #1a3056;
+    --oi-rule-strong:    #f1ede2;
+    --oi-brand:          #d9e0ec;        /* navy inverts to paper on dark */
+    --oi-brand-2:        #6ea88a;        /* forest brightened for dark */
+    --oi-accent:         #d4a857;        /* ochre brightened */
+    --oi-highlight:      #2a2a14;
+    --oi-chip-bg:        #0e2243;
+    --oi-gap-fill:       #2a2410;
+    --oi-gap-ink:        #e6c977;
+    --oi-shadow-card:    0 0 0 1px var(--oi-rule);
+    --oi-shadow-figure:  0 0 0 1px var(--oi-rule), 0 18px 40px -20px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  html[data-theme="light"],
+  html[data-theme="light"] body {
+    background: var(--plvch-paper) !important;
+  }
+  html[data-theme="dark"],
+  html[data-theme="dark"] body {
+    background: #08172e !important;
+  }
+  body {
+    color: var(--oi-ink-1);
+    transition: background var(--dur-base) var(--ease-out),
+                color var(--dur-base) var(--ease-out);
+    margin: 0;
+    font-family: var(--font-text);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* ---------------- Layout grid ----------------
+     The essay sits in a single reading column, with figures
+     allowed to break out one step wider. */
+  .wrap {
+    --col:    720px;
+    --col-w: 940px;
+    --col-bleed: 1120px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 32px;
+    max-width: var(--col-bleed);
+  }
+  .col          { max-width: var(--col); margin-inline: auto; }
+  .col-wide     { max-width: var(--col-w); margin-inline: auto; }
+  .col-bleed    { max-width: var(--col-bleed); margin-inline: auto; }
+
+  /* ---------------- Masthead ---------------- */
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--oi-page-bg);
+    border-bottom: 1px solid var(--oi-rule);
+    backdrop-filter: blur(8px);
+  }
+  .masthead-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 32px;
+    max-width: var(--col-bleed);
+    margin: 0 auto;
+    gap: 24px;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    color: var(--oi-brand);
+    text-decoration: none;
+  }
+  .mh-meta {
+    display: flex; gap: 32px; align-items: center;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .mh-meta .dot {
+    display: inline-block;
+    width: 4px; height: 4px;
+    background: var(--oi-ink-4);
+    border-radius: 50%;
+    margin: 0 12px;
+    vertical-align: middle;
+  }
+  @media (max-width: 720px) {
+    .mh-meta .hide-sm { display: none; }
+  }
+
+  /* Theme toggle (segmented) */
+  .theme-toggle {
+    display: inline-flex;
+    border: 1px solid var(--oi-rule);
+    border-radius: 999px;
+    padding: 2px;
+    background: var(--oi-surface);
+  }
+  .theme-toggle button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: color var(--dur-fast) var(--ease-out),
+                background var(--dur-fast) var(--ease-out);
+  }
+  .theme-toggle button.active {
+    background: var(--oi-rule-strong);
+    color: var(--oi-page-bg);
+  }
+  .theme-toggle button:hover:not(.active) {
+    color: var(--oi-ink-1);
+  }
+
+  /* ---------------- Cover ---------------- */
+  .cover {
+    padding: 80px 0 48px;
+  }
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px; height: 1px; background: var(--oi-rule-strong);
+    display: inline-block;
+  }
+  .eyebrow.brand { color: var(--oi-brand-2); }
+  .eyebrow.brand::before { background: var(--oi-brand-2); }
+
+  .cover h1 {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 4.8vw, 48px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    margin: 14px 0 0;
+    color: var(--oi-ink-1);
+    text-wrap: balance;
+  }
+  .cover .standfirst {
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.45;
+    font-weight: 400;
+    color: var(--oi-ink-2);
+    letter-spacing: -0.005em;
+    margin: 20px 0 0;
+    max-width: 640px;
+    text-wrap: balance;
+  }
+  .cover .byline {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 24px;
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--oi-rule);
+    font-family: var(--font-display);
+  }
+  .cover .byline .k {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .cover .byline .v {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--oi-ink-1);
+    font-feature-settings: "tnum";
+  }
+
+  @media (max-width: 720px) {
+    .cover .byline { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+  }
+
+  /* ---------------- Section anatomy ---------------- */
+  section.essay { padding: 32px 0; }
+  section.essay + section.essay { padding-top: 0; }
+
+  .section-rule {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: baseline;
+    gap: 24px;
+    padding: 16px 0;
+    border-top: 1px solid var(--oi-rule-strong);
+    margin: 64px 0 32px;
+  }
+  .section-rule .n {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--oi-ink-3);
+    letter-spacing: 0;
+  }
+  .section-rule .t {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+    text-align: right;
+  }
+
+  h2.section-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    font-weight: 500;
+    margin: 0 0 24px;
+    color: var(--oi-ink-1);
+    text-wrap: balance;
+  }
+  h3.sub-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    font-weight: 600;
+    margin: 36px 0 14px;
+    color: var(--oi-ink-1);
+  }
+
+  /* ---------------- Prose ---------------- */
+  .prose p {
+    margin: 0 0 18px;
+    color: var(--oi-ink-2);
+    text-wrap: pretty;
+  }
+  .prose p strong { color: var(--oi-ink-1); font-weight: 600; }
+  .prose p em     { font-style: italic; }
+  .prose a {
+    color: var(--oi-ink-1);
+    text-decoration: underline;
+    text-decoration-color: var(--oi-rule);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .prose a:hover { text-decoration-color: currentColor; color: var(--oi-brand-2); }
+
+  /* Drop cap on the very first paragraph */
+  .prose.lead p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-weight: 500;
+    float: left;
+    font-size: 3em;
+    line-height: 0.95;
+    margin: 0.06em 0.1em 0 -0.02em;
+    color: var(--oi-ink-1);
+    letter-spacing: -0.02em;
+  }
+
+  /* Inline tabular numbers wherever a financial figure shows up */
+  .num, .stat, .table-num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* ---------------- Figure (charts) ---------------- */
+  figure.fig {
+    margin: 40px auto;
+    max-width: var(--col-w);
+  }
+  figure.fig .fig-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--oi-rule);
+    margin-bottom: 0;
+  }
+  figure.fig .fig-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--oi-ink-3);
+  }
+  figure.fig .fig-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+  }
+  figure.fig .fig-source {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  figure.fig .fig-body {
+    background: var(--oi-surface);
+    border: 1px solid var(--oi-rule);
+    border-top: 0;
+    padding: 24px;
+    box-shadow: var(--oi-shadow-figure);
+  }
+  figure.fig .fig-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  html[data-theme="dark"] figure.fig .fig-body img {
+    filter: invert(0.92) hue-rotate(180deg) saturate(0.85);
+  }
+  figure.fig figcaption {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--oi-ink-3);
+    line-height: 1.5;
+    max-width: 640px;
+  }
+
+  /* ---------------- Big number callouts ---------------- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    grid-template-rows: auto auto 1fr;
+    gap: 0;
+    margin: 40px auto;
+    border-top: 1px solid var(--oi-rule-strong);
+    border-bottom: 1px solid var(--oi-rule);
+  }
+  .stat-row .stat {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    padding: 24px 20px 28px;
+    border-right: 1px solid var(--oi-rule);
+  }
+  .stat-row .stat:last-child { border-right: 0; }
+  .stat .stat-k {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .stat .stat-v {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    margin: 6px 0 6px;
+    color: var(--oi-ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .stat-v.accent { color: var(--oi-brand-2); }
+  .stat .stat-c {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--oi-ink-3);
+  }
+  @media (max-width: 720px) {
+    .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .stat-row .stat:nth-child(2) { border-right: 0; }
+    .stat-row .stat:nth-child(-n+2) { border-bottom: 1px solid var(--oi-rule); }
+  }
+
+  /* ---------------- Two-problem split ----------------
+     Stacked by default for readability at this column width.
+     Side-by-side variant opt-in via [data-problems="split"]. */
+  .problems {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 8px 0 40px;
+  }
+  .problems .col-prob {
+    padding: 28px 0;
+    border-top: 1px solid var(--oi-rule);
+  }
+  .problems .col-prob:first-of-type { padding-top: 8px; border-top: 0; }
+  .problems .col-prob:last-child    { padding-bottom: 8px; }
+  .problems .divider { display: none; }
+  .problems .col-prob .eyebrow {
+    margin-bottom: 14px;
+    font-weight: 700;
+    color: var(--oi-brand-2);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+  }
+  .problems .col-prob .eyebrow::before {
+    background: var(--oi-brand-2);
+    width: 32px;
+    height: 2px;
+  }
+  .problems .col-prob:nth-of-type(3) .eyebrow {
+    color: var(--oi-accent);
+  }
+  .problems .col-prob:nth-of-type(3) .eyebrow::before {
+    background: var(--oi-accent);
+  }
+
+  .problems[data-problems="split"] {
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 32px;
+  }
+  .problems[data-problems="split"] .col-prob {
+    padding: 0;
+    border-top: 0;
+  }
+  .problems[data-problems="split"] .divider {
+    display: block;
+    background: var(--oi-rule);
+  }
+  @media (max-width: 720px) {
+    .problems[data-problems="split"] { grid-template-columns: 1fr !important; gap: 0; }
+    .problems[data-problems="split"] .col-prob { padding: 28px 0; border-top: 1px solid var(--oi-rule); }
+    .problems[data-problems="split"] .col-prob:first-of-type { padding-top: 8px; border-top: 0; }
+    .problems[data-problems="split"] .divider { display: none !important; }
+  }
+  .problems .col-prob h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: var(--oi-ink-1);
+    text-wrap: balance;
+  }
+  .problems .col-prob p {
+    margin: 0;
+    color: var(--oi-ink-2);
+  }
+  @media (max-width: 720px) {
+    .problems { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  /* ---------------- 2×2 Quadrant (inline) ---------------- */
+  .quad {
+    margin: 24px auto;
+    max-width: var(--col-w);
+    border: 1px solid var(--oi-rule);
+    background: var(--oi-surface-2);
+  }
+  .quad-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--oi-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .quad-head h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+    margin: 0;
+  }
+  .quad-head .axes {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .quad-grid {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr;
+    grid-template-rows: 44px 1fr 1fr;
+  }
+  .quad-grid > * {
+    border-right: 1px solid var(--oi-rule);
+    border-bottom: 1px solid var(--oi-rule);
+    padding: 16px 18px;
+  }
+  .quad-grid .corner { background: transparent; border-right: 1px solid var(--oi-rule); }
+  .quad-grid .col-head, .quad-grid .row-head {
+    background: var(--oi-surface-sunk);
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .quad-grid .col-head { padding: 0 18px; }
+  .quad-grid .row-head { writing-mode: horizontal-tb; }
+  .quad-grid .cell {
+    background: var(--oi-surface);
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .quad-grid .cell .lbl {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--oi-ink-1);
+    letter-spacing: -0.005em;
+  }
+  .quad-grid .cell .det {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--oi-ink-3);
+  }
+  .quad-grid .cell.gap {
+    background: var(--oi-gap-fill);
+    position: relative;
+  }
+  .quad-grid .cell.gap .lbl,
+  .quad-grid .cell.gap .det { color: var(--oi-gap-ink); }
+  .quad-grid .cell.gap .tag {
+    align-self: flex-start;
+    background: var(--oi-gap-ink);
+    color: var(--oi-gap-fill);
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
+  .quad-grid > *:nth-child(3n) { border-right: 0; }
+  .quad-grid > *:nth-last-child(-n+3) { border-bottom: 0; }
+
+  @media (max-width: 600px) {
+    .quad-grid { grid-template-columns: 88px 1fr 1fr; }
+    .quad-grid .cell .det { display: none; }
+  }
+
+  /* ---------------- Basket lifecycle (new artefact) ---------------- */
+  .lifecycle {
+    margin: 32px auto;
+    max-width: var(--col-w);
+    border: 1px solid var(--oi-rule);
+    background: var(--oi-surface);
+  }
+  .lifecycle .lc-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--oi-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .lifecycle .lc-head h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+    margin: 0;
+  }
+  .lifecycle .lc-head .sub {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .lc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+  }
+  .lc-grid::before {
+    /* progression rail */
+    content: "";
+    position: absolute;
+    top: 70px;
+    left: 8%; right: 8%;
+    height: 1px;
+    background: var(--oi-rule);
+  }
+  .lc-step {
+    padding: 32px 24px 28px;
+    border-right: 1px solid var(--oi-rule);
+    position: relative;
+  }
+  .lc-step:last-child { border-right: 0; }
+  .lc-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--oi-surface);
+    border: 1.5px dashed var(--oi-ink-4);
+    margin: 0 0 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .lc-step[data-state="ghost"]   .lc-dot { border-style: dashed; border-color: var(--oi-ink-4); background: var(--oi-surface); }
+  .lc-step[data-state="passive"] .lc-dot { border-style: solid;  border-color: var(--oi-ink-3); background: var(--oi-surface); }
+  .lc-step[data-state="weighted"] .lc-dot {
+    border-style: solid;  border-color: var(--oi-brand-2);
+    background: linear-gradient(90deg, var(--oi-brand-2) 60%, transparent 60%);
+  }
+  .lc-step[data-state="active"]  .lc-dot {
+    border-style: solid;  border-color: var(--oi-brand-2);
+    background: var(--oi-brand-2);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--oi-brand-2) 18%, transparent);
+  }
+  .lc-step .lc-name {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    margin-bottom: 4px;
+  }
+  .lc-step[data-state="active"] .lc-name { color: var(--oi-brand-2); }
+  .lc-step .lc-label {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--oi-ink-1);
+    margin-bottom: 12px;
+  }
+  .lc-step .lc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .lc-step .lc-meta span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--oi-ink-3);
+    background: var(--oi-chip-bg);
+    border: 1px solid var(--oi-rule);
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .lc-step .lc-desc {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--oi-ink-2);
+  }
+  @media (max-width: 760px) {
+    .lc-grid { grid-template-columns: 1fr 1fr; }
+    .lc-step:nth-child(2) { border-right: 0; }
+    .lc-step:nth-child(-n+2) { border-bottom: 1px solid var(--oi-rule); }
+    .lc-grid::before { display: none; }
+  }
+
+  /* ---------------- Fills diagram (new artefact) ---------------- */
+  .fills {
+    margin: 32px auto;
+    max-width: var(--col-w);
+    border: 1px solid var(--oi-rule);
+    background: var(--oi-surface);
+  }
+  .fills .f-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--oi-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .fills .f-head h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+    margin: 0;
+  }
+  .fills .f-head .sub {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .fills-grid {
+    display: grid;
+    grid-template-columns: 1fr 40px 1.2fr 40px 1fr;
+    align-items: stretch;
+    min-height: 280px;
+  }
+  .fills-col {
+    padding: 28px 24px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--oi-rule);
+  }
+  .fills-col:last-child { border-right: 0; }
+  .fills-arrow {
+    border-right: 1px solid var(--oi-rule);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--oi-ink-3);
+  }
+  .fills-arrow svg { width: 24px; height: 24px; }
+  .fills-col .step-k {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    margin-bottom: 10px;
+  }
+  .fills-col .step-h {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--oi-ink-1);
+    margin-bottom: 8px;
+  }
+  .fills-col .step-d {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--oi-ink-3);
+  }
+
+  /* the mandate card */
+  .mandate {
+    background: var(--oi-brand);
+    color: var(--oi-page-bg);
+    padding: 14px 16px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  :root[data-theme="dark"] .mandate { background: var(--plvch-paper); color: var(--plvch-navy-900); }
+  .mandate .m-k {
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .mandate .m-v {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* the 5×5 dot grid */
+  .dotgrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+    max-width: 220px;
+  }
+  .dotgrid .d {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--oi-brand-2);
+    opacity: 0.92;
+  }
+  .dotgrid .d:nth-child(3n+1) { opacity: 0.72; }
+  .dotgrid .d:nth-child(5n+2) { opacity: 0.55; }
+  .dotgrid .d:nth-child(7n)   { opacity: 0.85; }
+
+  /* the event card */
+  .event {
+    border: 1px solid var(--oi-rule);
+    background: var(--oi-surface-2);
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    display: flex; gap: 10px; align-items: center;
+  }
+  .event .ev-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--oi-brand-2);
+    flex-shrink: 0;
+  }
+  .event .ev-l {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--oi-ink-1);
+    line-height: 1.2;
+  }
+  .event .ev-l .small {
+    display: block;
+    font-size: 10px;
+    color: var(--oi-ink-3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 760px) {
+    .fills-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, auto);
+    }
+    .fills-col { border-right: 0; border-bottom: 1px solid var(--oi-rule); }
+    .fills-arrow { border-right: 0; border-bottom: 1px solid var(--oi-rule); padding: 12px; }
+    .fills-arrow svg { transform: rotate(90deg); }
+  }
+
+  /* ---------------- Worked example block ---------------- */
+  .worked {
+    margin: 32px auto;
+    max-width: var(--col-w);
+    border: 1px solid var(--oi-rule-strong);
+    background: var(--oi-surface);
+  }
+  .worked-head {
+    background: var(--oi-rule-strong);
+    color: var(--oi-page-bg);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--font-display);
+  }
+  .worked-head .t {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .worked-head .m {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .worked-body {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+  }
+  .worked-prose {
+    padding: 28px 28px;
+    border-right: 1px solid var(--oi-rule);
+  }
+  .worked-prose p {
+    margin: 0 0 12px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--oi-ink-2);
+  }
+  .worked-prose p strong { color: var(--oi-ink-1); }
+  .worked-prose .premise {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--oi-ink-1);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    margin-bottom: 14px;
+  }
+  .worked-table {
+    padding: 12px 0;
+  }
+  .worked-table .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 14px 28px;
+    border-top: 1px solid var(--oi-rule);
+  }
+  .worked-table .row:first-child { border-top: 0; }
+  .worked-table .row .k {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .worked-table .row .v {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--oi-ink-1);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .worked-table .row .v.accent { color: var(--oi-brand-2); }
+  .worked-table .row .sub {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    color: var(--oi-ink-3);
+    margin-top: 2px;
+  }
+  @media (max-width: 760px) {
+    .worked-body { grid-template-columns: 1fr; }
+    .worked-prose { border-right: 0; border-bottom: 1px solid var(--oi-rule); }
+  }
+
+  /* ---------------- Inline keyfact (small stat) ---------------- */
+  .keyfact {
+    margin: 32px auto;
+    max-width: var(--col);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-top: 1px solid var(--oi-rule);
+    border-bottom: 1px solid var(--oi-rule);
+  }
+  .keyfact .v {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--oi-ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .keyfact .v.accent { color: var(--oi-brand-2); }
+  .keyfact .v.brand  { color: var(--oi-accent); }
+  .keyfact .d {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--oi-ink-2);
+  }
+  .keyfact .d strong { color: var(--oi-ink-1); }
+
+  /* ---------------- Country mini chart ---------------- */
+  .countries {
+    margin: 32px auto;
+    max-width: var(--col-w);
+    border: 1px solid var(--oi-rule);
+    background: var(--oi-surface);
+  }
+  .countries .c-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--oi-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .countries .c-head h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+    margin: 0;
+  }
+  .countries .c-head .sub {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+  }
+  .countries .c-body { padding: 24px 28px 28px; }
+  .country-bar {
+    display: grid;
+    grid-template-columns: 130px 1fr 80px;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0;
+  }
+  .country-bar + .country-bar { border-top: 1px solid var(--oi-rule); }
+  .country-bar .name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--oi-ink-1);
+  }
+  .country-bar .name .flag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--oi-ink-3);
+    margin-right: 8px;
+  }
+  .country-bar .bar {
+    height: 14px;
+    background: var(--oi-surface-sunk);
+    position: relative;
+    overflow: hidden;
+  }
+  .country-bar .bar .fill {
+    height: 100%;
+    background: var(--oi-brand);
+  }
+  .country-bar.us .bar .fill { background: var(--oi-brand-2); }
+  .country-bar .pct {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 14px;
+    text-align: right;
+    color: var(--oi-ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------------- Prototype embed (iframe) ---------------- */
+  .proto-embed {
+    margin: 32px auto;
+    max-width: var(--col-w);
+    border: 1px solid var(--oi-rule);
+    background: var(--oi-surface);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--oi-shadow-figure);
+  }
+  .proto-embed .proto-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--oi-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .proto-embed .proto-head h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--oi-ink-1);
+    margin: 0;
+  }
+  .proto-embed .proto-head .proto-open {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    text-decoration: none;
+  }
+  .proto-embed .proto-head .proto-open:hover { color: var(--oi-ink-1); }
+  .proto-embed .proto-body {
+    background: var(--oi-page-bg);
+    padding: 40px 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .proto-embed iframe {
+    width: 100%;
+    max-width: 440px;
+    height: 900px;
+    border: 0;
+    display: block;
+    background: transparent;
+  }
+  @media (max-width: 480px) {
+    .proto-embed .proto-body { padding: 24px 12px; }
+    .proto-embed iframe { height: 820px; }
+  }
+
+  /* ---------------- Footer ---------------- */
+  footer.essay-foot {
+    margin-top: 64px;
+    padding: 32px 0 64px;
+    border-top: 1px solid var(--oi-rule-strong);
+    color: var(--oi-ink-3);
+    font-family: var(--font-display);
+  }
+  footer.essay-foot .foot-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 32px;
+    padding-top: 24px;
+  }
+  footer.essay-foot .foot-grid .blurb {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--oi-ink-2);
+    max-width: 480px;
+  }
+  footer.essay-foot .foot-grid h5 {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    margin: 0 0 10px;
+  }
+  footer.essay-foot .foot-grid ul {
+    margin: 0; padding: 0; list-style: none;
+  }
+  footer.essay-foot .foot-grid li {
+    font-size: 12.5px;
+    color: var(--oi-ink-2);
+    padding: 4px 0;
+    line-height: 1.5;
+  }
+  footer.essay-foot .foot-grid a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--oi-rule);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  footer.essay-foot .foot-bottom {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--oi-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oi-ink-3);
+    gap: 24px;
+  }
+  @media (max-width: 760px) {
+    footer.essay-foot .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ---------------- Tweakable knobs (applied via [data-attr]) ---------------- */
+  html[data-density="compact"]  body { line-height: 1.5; }
+  html[data-density="regular"]  body { line-height: 1.65; }
+  html[data-density="comfy"]    body { line-height: 1.8; }
+
+  html[data-width="narrow"]  .wrap { --col: 620px; --col-w: 820px;  --col-bleed: 980px; }
+  html[data-width="regular"] .wrap { --col: 720px; --col-w: 940px;  --col-bleed: 1120px; }
+  html[data-width="wide"]    .wrap { --col: 820px; --col-w: 1040px; --col-bleed: 1240px; }
+
+  html[data-dropcap="off"] .prose.lead p:first-of-type::first-letter {
+    font-size: 1em;
+    float: none;
+    margin: 0;
+    color: inherit;
+    letter-spacing: 0;
+    font-family: inherit;
+  }
+
+  /* ---------------- FCA native bar chart ---------------- */
+  .fca-chart {
+    padding: 8px 0 4px;
+    font-family: var(--font-display);
+  }
+  .fca-axis {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    padding-bottom: 6px;
+    color: var(--oi-ink-3);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+  .fca-axis::before { content: ""; }
+  .fca-axis > * { display: none; }            /* simpler: ticks rendered as bg lines */
+  .fca-rows {
+    position: relative;
+    padding: 4px 0;
+  }
+  /* vertical gridlines behind the bars */
+  .fca-rows::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 24px 160px;
+    background-image:
+      linear-gradient(to right,
+        var(--oi-rule) 0 1px, transparent 1px calc(25% - 1px),
+        var(--oi-rule) calc(25% - 1px) 25%,  transparent 25% calc(50% - 1px),
+        var(--oi-rule) calc(50% - 1px) 50%,  transparent 50% calc(75% - 1px),
+        var(--oi-rule) calc(75% - 1px) 75%,  transparent 75% calc(100% - 1px),
+        var(--oi-rule) calc(100% - 1px) 100%);
+    pointer-events: none;
+  }
+  .fca-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: center;
+    gap: 0;
+    padding: 7px 0;
+    position: relative;
+  }
+  .fca-cat {
+    font-size: 12px;
+    color: var(--oi-ink-2);
+    font-feature-settings: "tnum";
+    padding-right: 16px;
+    text-align: right;
+  }
+  .fca-track {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+  }
+  .fca-bar {
+    height: 14px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: width var(--dur-base) var(--ease-out);
+  }
+  .fca-bar.a { background: var(--oi-brand); }
+  .fca-bar.b { background: var(--oi-brand-2); }
+  .fca-bar .lbl {
+    position: absolute;
+    left: 100%;
+    margin-left: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--oi-ink-1);
+    font-feature-settings: "tnum";
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .fca-row.dk .fca-bar.b { background: transparent; }
+  .fca-row.dk .fca-cat { color: var(--oi-ink-3); font-style: italic; }
+  .fca-row.dk { opacity: 0.7; border-top: 1px dashed var(--oi-rule); margin-top: 8px; padding-top: 14px; }
+
+  /* x-axis ticks rendered as text under the chart */
+  .fca-rows::after {
+    content: "0%        20%        40%        60%        80%";
+    position: absolute;
+    bottom: -2px;
+    left: 160px;
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    font-size: 10px;
+    color: var(--oi-ink-3);
+    letter-spacing: 0.04em;
+    padding-top: 6px;
+    white-space: pre;
+  }
+  /* override with real spans */
+  .fca-rows::after { content: ""; }
+
+  .fca-rows + .fca-legend {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid var(--oi-rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 11px;
+    color: var(--oi-ink-2);
+    align-items: center;
+  }
+  .fca-legend i.sw {
+    display: inline-block;
+    width: 14px; height: 10px;
+    margin-right: 7px;
+    vertical-align: -1px;
+  }
+  .fca-legend i.sw.a { background: var(--oi-brand); }
+  .fca-legend i.sw.b { background: var(--oi-brand-2); }
+  .fca-note {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--oi-surface-2);
+    border: 1px solid var(--oi-rule);
+    font-size: 12px;
+    color: var(--oi-ink-2);
+    line-height: 1.5;
+  }
+  .fca-note b { color: var(--oi-ink-1); font-weight: 600; }
+  .fca-note span { display: block; margin-top: 4px; color: var(--oi-ink-3); font-size: 11px; }
+
+  /* axis ticks: drop the css trick, use real markup via :after — but actually
+     simpler: render ticks as visible markup using a tiny x-scale strip */
+  .fca-xticks {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    margin-top: 4px;
+  }
+  .fca-xticks .ticks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    font-size: 10px;
+    color: var(--oi-ink-3);
+    letter-spacing: 0.04em;
+  }
+  .fca-xticks .ticks span:first-child { text-align: left; }
+  .fca-xticks .ticks span:last-child  { text-align: right; }
+  .fca-xticks .ticks span             { text-align: center; }
+
+  @media (max-width: 600px) {
+    .fca-axis, .fca-row, .fca-xticks { grid-template-columns: 110px 1fr; }
+    .fca-rows::before { left: 110px; }
+    .fca-cat { font-size: 11px; }
+  }
+
+  /* ---------------- S&P 500 native bar chart ---------------- */
+  .sp-chart {
+    padding: 8px 0 4px;
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+  }
+  .sp-plot {
+    position: relative;
+    height: 320px;
+    padding: 32px 8px 32px 44px;
+  }
+  .sp-grid {
+    position: absolute;
+    inset: 32px 8px 32px 44px;
+    pointer-events: none;
+  }
+  .sp-gline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--oi-rule);
+  }
+  .sp-glabel {
+    position: absolute;
+    left: -44px;
+    transform: translateY(50%);
+    width: 36px;
+    text-align: right;
+    font-size: 10.5px;
+    color: var(--oi-ink-3);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .sp-bars {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 14px;
+    align-items: end;
+  }
+  .sp-bar {
+    position: relative;
+    height: var(--h);
+    background: var(--oi-brand);
+    transition: background var(--dur-base) var(--ease-out);
+  }
+  .sp-bar.shift  { background: color-mix(in oklab, var(--oi-brand) 78%, var(--oi-brand-2) 22%); }
+  .sp-bar.accent { background: var(--oi-brand-2); }
+  .sp-bar .v {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--oi-ink-1);
+    white-space: nowrap;
+    letter-spacing: 0;
+  }
+  .sp-bar.accent .v { color: var(--oi-brand-2); font-weight: 700; }
+  .sp-bar .x {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--oi-ink-3);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  @media (max-width: 600px) {
+    .sp-plot { height: 260px; padding-left: 36px; }
+    .sp-grid { inset-inline-start: 36px; }
+    .sp-glabel { left: -36px; }
+    .sp-bars { gap: 8px; }
+    .sp-bar .v { font-size: 10px; }
+    .sp-bar .x { font-size: 10px; letter-spacing: 0; }
+  }
+
+  /* ---------------- Selection ---------------- */
+  ::selection { background: var(--oi-brand-2); color: var(--oi-page-bg); }
+
+  /* ---------------- Hide-on-print niceties ---------------- */
+  @media print {
+    .masthead, .theme-toggle, footer.essay-foot { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== MASTHEAD ===================== -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="#top">plvch</a>
+    <nav class="mh-meta">
+      <span class="hide-sm">Essay&nbsp;·&nbsp;Vol.&nbsp;01</span>
+      <span class="hide-sm">·</span>
+      <span class="hide-sm">May&nbsp;2026</span>
+      <span class="hide-sm">·</span>
+      <span class="hide-sm">14&nbsp;min&nbsp;read</span>
+      <div class="theme-toggle" role="tablist" aria-label="Theme">
+        <button data-theme-btn="light" class="active" aria-pressed="true">Light</button>
+        <button data-theme-btn="dark"  aria-pressed="false">Dark</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== COVER ===================== -->
+<a id="top"></a>
+<div class="wrap">
+  <section class="cover col">
+    <div class="eyebrow brand">Open Indexing · Essay</div>
+    <h1>Open Indexing.</h1>
+    <p class="standfirst">
+      There is a better business model possible in passive investing — for the saver who has drifted into a concentrated bet they did not consciously choose, and for the broker whose execution margins have gone to zero. Both problems point at the same primitive.
+    </p>
+
+    <div class="byline">
+      <div><div class="k">Published</div><div class="v">27 May 2026</div></div>
+      <div><div class="k">Category</div><div class="v">Retail product · markets structure</div></div>
+      <div><div class="k">Length</div><div class="v">~3,200 words · 14 min</div></div>
+      <div><div class="k">Status</div><div class="v">Open thinking</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== I · TWO PROBLEMS ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 01</div>
+        <div class="t">Two problems, one trend</div>
+      </div>
+
+      <div class="prose lead">
+        <p>Passive investing has been the dominant story in retail for a decade. Volumes have grown, cost compression has gone deep, and Sparplan-style saving is now the default retail mode in continental Europe. Two structural problems have built up alongside the story, one for the saver and one for the broker, and the same trend produces both.</p>
+      </div>
+
+      <div class="problems">
+        <div class="col-prob">
+          <div class="eyebrow brand">The saver's problem</div>
+          <h3>"Passive" no longer means what it did when the category took shape.</h3>
+          <p>MSCI World, marketed and held as the global equity default, is <strong class="num">71.9%</strong> United States. Inside that US slice, the top ten S&amp;P 500 names account for <strong class="num">40.7%</strong> of the index, up from a stable ~19% across 1990–2015. A product the saver bought because it was "passive" and "diversified" is now closer to a single-country, momentum-tilted bet on ten names. The tooling that addresses this directly — direct indexing — exists, and is rationed behind wealth-management minimums.</p>
+        </div>
+        <div class="divider"></div>
+        <div class="col-prob">
+          <div class="eyebrow brand" data-comment-anchor="a9a21f32d6-div">The broker's problem</div>
+          <h3>The same trend took commissions on execution and holding close to zero.</h3>
+          <p>Volumes grew; per-unit margin collapsed. The industry response has mostly been to push back upmarket — PE wrappers, private credit, structured advisory tiers, ETF wrappers around active or thematic strategies priced closer to the mutual funds they replaced than to the broad-market ETFs they sit beside. These products monetise well per customer but fit a narrow customer base. The alternative response sits inside the saving behaviour itself.</p>
+        </div>
+      </div>
+
+      <div class="prose">
+        <p>Both problems point at the same primitive. Call it <strong>Open Indexing</strong>: the retail form factor of direct indexing, savings-native, no advisory wrap. A 25-name weekly basket mandate generates roughly an order of magnitude more fills per user per year than the same money in a single ETF — without changing the customer's decision-making at all.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== II · SAVER'S SIDE ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 02</div>
+        <div class="t">The saver's side</div>
+      </div>
+      <h2 class="section-title">A benchmark that presents as static is, mechanically, a momentum rule.</h2>
+
+      <div class="prose">
+        <p>The standard recommendation for any retail saver — to hold a broad, low-cost equity ETF and leave it alone — is correct on average. It also conceals what the benchmark inside the wrapper has become.</p>
+        <p>Cap-weighting is a rule applied to a benchmark that <em>presents</em> as static. A rule that has performed well over a long up-cycle is not therefore structurally neutral; it is a strategy with a long track record. The benchmark looks like a passive observation of the market. The weights inside it are an active position the saver did not choose.</p>
+      </div>
+    </div>
+
+    <!-- Country composition mini chart -->
+    <div class="countries col-wide">
+      <div class="c-head">
+        <h4>Figure 01 · MSCI World by country</h4>
+        <span class="sub">Source · MSCI factsheet, 30 Apr 2026</span>
+      </div>
+      <div class="c-body">
+        <div class="country-bar us">
+          <div class="name"><span class="flag">US</span>United States</div>
+          <div class="bar"><div class="fill" style="width: 71.9%;"></div></div>
+          <div class="pct">71.9%</div>
+        </div>
+        <div class="country-bar">
+          <div class="name"><span class="flag">JP</span>Japan</div>
+          <div class="bar"><div class="fill" style="width: 5.7%;"></div></div>
+          <div class="pct">5.7%</div>
+        </div>
+        <div class="country-bar">
+          <div class="name"><span class="flag">GB</span>United Kingdom</div>
+          <div class="bar"><div class="fill" style="width: 3.7%;"></div></div>
+          <div class="pct">3.7%</div>
+        </div>
+        <div class="country-bar">
+          <div class="name"><span class="flag">CA</span>Canada</div>
+          <div class="bar"><div class="fill" style="width: 3.5%;"></div></div>
+          <div class="pct">3.5%</div>
+        </div>
+        <div class="country-bar">
+          <div class="name"><span class="flag">FR</span>France</div>
+          <div class="bar"><div class="fill" style="width: 2.5%;"></div></div>
+          <div class="pct">2.5%</div>
+        </div>
+        <div class="country-bar">
+          <div class="name"><span class="flag">··</span>Everywhere else combined</div>
+          <div class="bar"><div class="fill" style="width: 12.8%;"></div></div>
+          <div class="pct">12.8%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="prose">
+        <p>The same mechanism shows up one scale down, inside the US slice itself: S&amp;P 500 top-ten concentration went from a stable ~19% across 1990–2015 to 40.7% by year-end 2025. The chart below — long flat, then doubling in a decade — is the visual signature of cap-weighting compounding winners' weights with their prices.</p>
+      </div>
+    </div>
+
+    <!-- S&P 500 concentration — native chart -->
+    <figure class="fig col-wide">
+      <div class="fig-head">
+        <div class="fig-num">Figure 02</div>
+        <div class="fig-title">S&amp;P 500 — top-10 concentration, 1990–2025</div>
+        <div class="fig-source">Source · RBC Wealth Management / FactSet</div>
+      </div>
+      <div class="fig-body">
+        <div class="sp-chart">
+          <div class="sp-plot">
+            <!-- gridlines + y-axis ticks -->
+            <div class="sp-grid" aria-hidden="true">
+              <div class="sp-glabel" style="bottom: 0%;">0%</div>
+              <div class="sp-gline"  style="bottom: 25%;"></div>
+              <div class="sp-glabel" style="bottom: 25%;">10%</div>
+              <div class="sp-gline"  style="bottom: 50%;"></div>
+              <div class="sp-glabel" style="bottom: 50%;">20%</div>
+              <div class="sp-gline"  style="bottom: 75%;"></div>
+              <div class="sp-glabel" style="bottom: 75%;">30%</div>
+              <div class="sp-gline"  style="bottom: 100%;"></div>
+              <div class="sp-glabel" style="bottom: 100%;">40%</div>
+            </div>
+            <!-- bars -->
+            <div class="sp-bars">
+              <div class="sp-bar" style="--h: 48.5%;"><span class="v">19.4%</span><span class="x">1990</span></div>
+              <div class="sp-bar" style="--h: 44.25%;"><span class="v">17.7%</span><span class="x">1995</span></div>
+              <div class="sp-bar" style="--h: 58%;"><span class="v">23.2%</span><span class="x">2000</span></div>
+              <div class="sp-bar" style="--h: 50.5%;"><span class="v">20.2%</span><span class="x">2005</span></div>
+              <div class="sp-bar" style="--h: 47.5%;"><span class="v">19.0%</span><span class="x">2010</span></div>
+              <div class="sp-bar" style="--h: 47.25%;"><span class="v">18.9%</span><span class="x">2015</span></div>
+              <div class="sp-bar shift" style="--h: 71.5%;"><span class="v">28.6%</span><span class="x">2020</span></div>
+              <div class="sp-bar shift accent" style="--h: 101.75%;"><span class="v">40.7%</span><span class="x">2025</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Cumulative weighting of the 10 largest S&amp;P 500 companies by year. The top-10 share bounced between 17–23% across 1990–2015, then climbed to 40.7% by year-end 2025 as cap-weighting let winners' weights compound with their prices and routed new inflows toward them.</figcaption>
+    </figure>
+
+    <div class="col">
+      <div class="prose">
+        <p>For the broker, this is exposure on the balance sheet of customer relationships rather than the balance sheet itself. Every saver onboarded into "one global ETF, set and forget" will at some point notice what they actually own. The conversation that follows — triggered by a sharp drawdown in one of the top names or a sustained US underperformance run — pulls customer service, churn, complaints volume, and brand sentiment into the same week. The risk sits on the books regardless of how long the up-cycle continues.</p>
+        <p>The tool that addresses this directly is direct indexing: the saver holds the constituents instead of the wrapper, with weights customisable away from cap-weighting. It exists today as a wealth-management product, gated behind high account minimums and an advisory wrap, available to roughly the slice of customers who already qualify for private banking. The reason it has not come downmarket is operational. Running 25, 50, or 100 individual positions through a retail UI designed around single-instrument tickets is unworkable, and the fix for cap-weight concentration is itself rationed by wealth concentration.</p>
+      </div>
+
+      <h3 class="sub-title">The empty quadrant.</h3>
+      <div class="prose">
+        <p>The shape of the retail market makes the gap visible when laid out as a 2×2. Across activity (active vs. passive) and construction (DIY vs. advised), three of the four quadrants are well-served by existing products. The passive + DIY quadrant — where the FIRE, Bogle, and Sparplan saver actually sits — is empty.</p>
+      </div>
+    </div>
+
+    <!-- 2x2 quadrant -->
+    <div class="quad col-wide">
+      <div class="quad-head">
+        <h4>Figure 03 · Retail product coverage</h4>
+        <span class="axes">Activity × Construction</span>
+      </div>
+      <div class="quad-grid">
+        <div class="corner"></div>
+        <div class="col-head">DIY</div>
+        <div class="col-head">Advised</div>
+
+        <div class="row-head">Active</div>
+        <div class="cell">
+          <div class="lbl">Trading apps</div>
+          <div class="det">Robinhood, eToro, IBKR retail. Well-served — arguably over-served.</div>
+        </div>
+        <div class="cell">
+          <div class="lbl">Wealth management · RIA</div>
+          <div class="det">Advisory wraps, separately managed accounts. Gated to HNW.</div>
+        </div>
+
+        <div class="row-head">Passive</div>
+        <div class="cell gap">
+          <span class="tag">The gap</span>
+          <div class="lbl">Open Indexing</div>
+          <div class="det">FIRE, Bogle, Sparplan saver. No retail product covers this today.</div>
+        </div>
+        <div class="cell">
+          <div class="lbl">Robo · target-date · model portfolios</div>
+          <div class="det">Betterment, Wealthfront, target-date funds, bank model portfolios.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="prose">
+        <p>Open Indexing, in that frame, is the name for the product the underlying behaviour already implies; the empty quadrant marks where it would fit.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== III · BROKER'S SIDE ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 03</div>
+        <div class="t">The broker's side</div>
+      </div>
+      <h2 class="section-title">Cheap, broad exposure is good for the saver. The firm distributing it has to find revenue somewhere else.</h2>
+
+      <div class="prose">
+        <p>Why no major retail player has shipped this yet is a question about broker economics, not customer demand. For the firm, passive investing is not the boon it has been for the customer. Volumes have grown over the last decade and margin per unit of volume has compressed close to zero. Execution commissions sit at zero on most retail platforms in Europe. Holding fees, where they exist at all, are in single-digit basis points, with most of that captured by the fund issuer rather than the platform. Payment-for-order-flow was a partial substitute on execution and has now been removed by MiFIR, with German firms operating under a transition through <span class="num">June 2026</span>.</p>
+        <p>The industry response has been mostly upmarket: premium tiers with concierge access, structured advisory products, private equity wrappers, private credit funds, and ETF wrappers around active or thematic strategies. These products earn well per customer, but require sales overhead, regulatory complexity, and a customer base where the product fits at all. That base is narrower than the firm's total user count by an order of magnitude.</p>
+      </div>
+
+      <h3 class="sub-title">Wealth is a power law, and so is revenue.</h3>
+      <div class="prose">
+        <p>The shape of that customer base is what makes the upmarket play awkward. Retail wealth follows a steep power law, and revenue concentration on top of it follows the same shape. UK FCA data from 2020 shows 60% of UK adults under £10,000 of investible assets and only 5% above £250,000. AFM data from the Netherlands puts half the population under €22,400. At a back-of-envelope 0.1%-of-AUM monetisation rate, a £10,000 client generates around £10 a year of gross, which barely funds support, let alone product.</p>
+      </div>
+    </div>
+
+    <!-- FCA UK investible assets — native chart -->
+    <figure class="fig col-wide">
+      <div class="fig-head">
+        <div class="fig-num">Figure 04</div>
+        <div class="fig-title">UK adults by investible-asset tier · 2020</div>
+        <div class="fig-source">Source · FCA Financial Lives Survey 2020</div>
+      </div>
+      <div class="fig-body">
+        <div class="fca-chart">
+          <div class="fca-axis">
+            <span>0%</span><span>20%</span><span>40%</span><span>60%</span><span>80%</span>
+          </div>
+          <div class="fca-rows">
+            <!-- data: tier · all adults % · rebased % -->
+            <div class="fca-row">
+              <div class="fca-cat">&lt; £10k</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(48% / 80% * 100%);"><span class="lbl">48%</span></div>
+                <div class="fca-bar b" style="width: calc(62% / 80% * 100%);"><span class="lbl">62%</span></div>
+              </div>
+            </div>
+            <div class="fca-row">
+              <div class="fca-cat">£10k–£20k</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(7% / 80% * 100%);"><span class="lbl">7%</span></div>
+                <div class="fca-bar b" style="width: calc(9% / 80% * 100%);"><span class="lbl">9%</span></div>
+              </div>
+            </div>
+            <div class="fca-row">
+              <div class="fca-cat">£20k–£50k</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(8% / 80% * 100%);"><span class="lbl">8%</span></div>
+                <div class="fca-bar b" style="width: calc(11% / 80% * 100%);"><span class="lbl">11%</span></div>
+              </div>
+            </div>
+            <div class="fca-row">
+              <div class="fca-cat">£50k–£100k</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(5% / 80% * 100%);"><span class="lbl">5%</span></div>
+                <div class="fca-bar b" style="width: calc(6% / 80% * 100%);"><span class="lbl">6%</span></div>
+              </div>
+            </div>
+            <div class="fca-row">
+              <div class="fca-cat">£100k–£250k</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(5% / 80% * 100%);"><span class="lbl">5%</span></div>
+                <div class="fca-bar b" style="width: calc(7% / 80% * 100%);"><span class="lbl">7%</span></div>
+              </div>
+            </div>
+            <div class="fca-row">
+              <div class="fca-cat">£250k+</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(4% / 80% * 100%);"><span class="lbl">4%</span></div>
+                <div class="fca-bar b" style="width: calc(5% / 80% * 100%);"><span class="lbl">5%</span></div>
+              </div>
+            </div>
+            <div class="fca-row dk">
+              <div class="fca-cat">Don't know / decline</div>
+              <div class="fca-track">
+                <div class="fca-bar a" style="width: calc(22% / 80% * 100%);"><span class="lbl">22%</span></div>
+                <div class="fca-bar b" style="width: 0;"><span class="lbl">—</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="fca-legend">
+            <span><i class="sw a"></i> All UK adults</span>
+            <span><i class="sw b"></i> Rebased — excluding "don't know / decline"</span>
+          </div>
+          <div class="fca-note">
+            <b>More than £10k:</b> 30% of all UK adults · 38% rebased.
+            <span>Base: 16,190 adults (UK); rebased excludes the 22% "don't know / prefer not to say" responses.</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>62% of UK adults sit below £10k of investible assets; only 5% are above £250k. Even rebased to exclude the 22% "don't know" responses, just 30% of UK adults hold more than £10k in investible assets and 12% hold more than £100k.</figcaption>
+    </figure>
+
+    <div class="col">
+      <h3 class="sub-title">The realistic target is the upper-middle.</h3>
+      <div class="prose">
+        <p>The realistic target tier for any new build is the upper-middle: roughly £100,000 to £500,000, sitting below private-banking minimums. On most mass-market apps that is a low-single-digit percent of users by count and a meaningful share of revenue. What this group has been offered over the last few years is status-flavoured perks — a fancier card, a designated phone number, perhaps a small uplift on the cash rate. The product surface itself is the same flat list of positions the trading-first apps shipped a decade ago.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-k">German stock &amp; fund investors</div>
+          <div class="stat-v num">14.1M</div>
+          <div class="stat-c">Up from 12.1M the prior year. A 16% jump in one year.</div>
+        </div>
+        <div class="stat">
+          <div class="stat-k">Of those, ETF-and-fund only</div>
+          <div class="stat-v num">9.2M</div>
+          <div class="stat-c">The core of the savings-native population.</div>
+        </div>
+        <div class="stat">
+          <div class="stat-k">Sparplan users</div>
+          <div class="stat-v num accent">5.3M</div>
+          <div class="stat-c">Up from 3.7M — a 43% jump in one year.</div>
+        </div>
+        <div class="stat">
+          <div class="stat-k">German ETF investors on a Sparplan</div>
+          <div class="stat-v num accent">52%</div>
+          <div class="stat-c">Saving, not trading, is the default mode now.</div>
+        </div>
+      </div>
+
+      <div class="prose">
+        <p>The European picture sits inside the same trend: passive funds' share of global equity-fund AUM climbed from roughly 30% in 2014 to above 70% by mid-2024, with most net new flows going passive and active equity funds bleeding out.</p>
+      </div>
+    </div>
+
+    <!-- ECB chart -->
+    <figure class="fig col-wide">
+      <div class="fig-head">
+        <div class="fig-num">Figure 05</div>
+        <div class="fig-title">Passive ownership in equity markets · 2014–2024</div>
+        <div class="fig-source">Source · ECB Financial Stability Review, Nov 2024</div>
+      </div>
+      <div class="fig-body">
+        <img src="assets/passive-share-ecb.png" alt="Two charts: cumulative flows into global equity funds by management style 2014–2024 (passive rising past USD 4tn, active negative); and share of passive ownership in equity markets by region, climbing from ~3% to ~10% across Euro area, US, and Rest of the world." />
+      </div>
+      <figcaption>(a) Cumulative net flows into global equity funds, by management style — passive crosses USD 4 trillion; active turns net-negative. (b) Share of passive ownership in equity markets, by region — Euro area, US, and Rest of the world all roughly triple between 2014 and 2024.</figcaption>
+    </figure>
+
+    <div class="col">
+      <div class="prose">
+        <p>The alternative monetisation path runs in the opposite direction from the upmarket reflex. It takes the much larger base that already saves passively and builds a more flexible primitive on top of it. The economics work on spread capture across substantially higher fill volume per user — in the range of five to ten times the fills a single-ETF mandate generates, depending on basket size. The volume is generated as a side effect of saving behaviour rather than from an explicit nudge toward more trading.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== IV · OPEN INDEXING, CONCRETELY ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 04</div>
+        <div class="t">Open Indexing, concretely</div>
+      </div>
+      <h2 class="section-title">A basket is a user-defined group of N&nbsp;instruments, with a weighting rule and an optional savings mandate.</h2>
+
+      <div class="prose">
+        <p>The unit of action is the basket, not the instrument. A €100/week mandate against a 25-name equal-weight basket produces 25 fills, one savings event in the activity feed, one performance line in the portfolio view, and one notification per execution cycle. The user does not interact with the 25 underlying orders unless they want to.</p>
+      </div>
+    </div>
+
+    <!-- N orders -> 1 event diagram -->
+    <div class="fills col-wide">
+      <div class="f-head">
+        <h4>Figure 06 · How a basket mandate compresses the surface</h4>
+        <span class="sub">One mandate · twenty-five fills · one event</span>
+      </div>
+      <div class="fills-grid">
+        <div class="fills-col">
+          <div class="step-k">User intent</div>
+          <div class="mandate">
+            <div class="m-k">Mandate</div>
+            <div class="m-v">€100 / week</div>
+          </div>
+          <div class="step-h">One savings instruction</div>
+          <div class="step-d">One recurring buy, set once. The user does not return to it unless they want to.</div>
+        </div>
+        <div class="fills-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </div>
+        <div class="fills-col">
+          <div class="step-k">Execution layer</div>
+          <div class="dotgrid" aria-label="25 fills represented as a 5 by 5 dot grid">
+            <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+            <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+            <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+            <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+            <span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+          </div>
+          <div class="step-h">25 fills · ~€4 each</div>
+          <div class="step-d">~1,300 fills per year per user — order-of-magnitude more spread capture than the same money in a single ETF.</div>
+        </div>
+        <div class="fills-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </div>
+        <div class="fills-col">
+          <div class="step-k">User-facing surface</div>
+          <div class="event">
+            <div class="ev-dot"></div>
+            <div class="ev-l">Saved €100 into "Industrials 25"
+              <span class="small">Activity · Mon 06:30</span>
+            </div>
+          </div>
+          <div class="step-h">One feed event</div>
+          <div class="step-d">One savings event. One performance line. One notification per cycle.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3 class="sub-title">Four states of a basket.</h3>
+      <div class="prose">
+        <p>A basket has four stable states, named for what the user has committed. The lifecycle is a substrate for telemetry and gradual commitment as much as it is a UX flow — most baskets progress in order; some stay as ghosts indefinitely, and that's fine.</p>
+      </div>
+    </div>
+
+    <!-- Basket lifecycle artefact -->
+    <div class="lifecycle col-wide">
+      <div class="lc-head">
+        <h4>Figure 07 · Basket lifecycle</h4>
+        <span class="sub">Ghost → Passive → Weighted → Active</span>
+      </div>
+      <div class="lc-grid">
+        <div class="lc-step" data-state="ghost">
+          <div class="lc-dot"></div>
+          <div class="lc-name">Stage 01 · Ghost</div>
+          <div class="lc-label">A saved thought.</div>
+          <div class="lc-meta">
+            <span>no money</span>
+            <span>no mandate</span>
+          </div>
+          <div class="lc-desc">Named candidate instruments the product can see. Useful telemetry: what is the user even thinking about?</div>
+        </div>
+        <div class="lc-step" data-state="passive">
+          <div class="lc-dot"></div>
+          <div class="lc-name">Stage 02 · Passive</div>
+          <div class="lc-label">Tracked, unfunded.</div>
+          <div class="lc-meta">
+            <span>simulated</span>
+            <span>no mandate</span>
+          </div>
+          <div class="lc-desc">Simulated performance running against the basket. The user is testing the idea before committing capital.</div>
+        </div>
+        <div class="lc-step" data-state="weighted">
+          <div class="lc-dot"></div>
+          <div class="lc-name">Stage 03 · Weighted</div>
+          <div class="lc-label">Structured allocation.</div>
+          <div class="lc-meta">
+            <span>weighted</span>
+            <span>one-off ok</span>
+          </div>
+          <div class="lc-desc">Structured weights, possibly with one-off funding. The threshold where the user is sizing the bet seriously.</div>
+        </div>
+        <div class="lc-step" data-state="active">
+          <div class="lc-dot"></div>
+          <div class="lc-name">Stage 04 · Active</div>
+          <div class="lc-label">Funded mandate.</div>
+          <div class="lc-meta">
+            <span>recurring</span>
+            <span>rebalance</span>
+          </div>
+          <div class="lc-desc">Funded with a recurring savings mandate. The retention asset: a habit has formed inside the product surface.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3 class="sub-title">Unit economics.</h3>
+      <div class="prose">
+        <p>The realistic target tier for the first version is the £100,000–£500,000 AUM band identified earlier. Here is the worked example, in one block:</p>
+      </div>
+    </div>
+
+    <!-- Worked example -->
+    <div class="worked col-wide">
+      <div class="worked-head">
+        <span class="t">Worked example · €100/week, 25-name basket</span>
+        <span class="m">Per-user, per-year</span>
+      </div>
+      <div class="worked-body">
+        <div class="worked-prose">
+          <p class="premise">A user saves €100 per week into an equal-weight basket of 25 names.</p>
+          <p>Per name: about <strong>€4 a week</strong>, indefinitely. The mandate is buy-only with a periodic drift-rebalance threshold — churn is near zero. The 25-fill execution is invisible to the user, who sees one feed event per cycle.</p>
+          <p>Even at zero commission, the per-fill spread captured at the venue is a real business model. The volume is generated as a <strong>side effect of saving behaviour</strong>, not from nudging the customer to trade more.</p>
+          <p>A PE wrapper or a private credit sleeve earns a high per-customer take, but requires sales overhead and a customer base where the product fits at all. Open Indexing earns less per customer; the base it lands on is large and already self-selecting into passive saving — currently paying for products that do not quite fit it.</p>
+        </div>
+        <div class="worked-table">
+          <div class="row">
+            <div class="k">Weekly mandate</div>
+            <div class="v num">€100</div>
+          </div>
+          <div class="row">
+            <div class="k">Basket size</div>
+            <div class="v num">25 names</div>
+          </div>
+          <div class="row">
+            <div class="k">Per-name ticket</div>
+            <div class="v num">€4</div>
+          </div>
+          <div class="row">
+            <div class="k">Fills · per week</div>
+            <div class="v num">25</div>
+          </div>
+          <div class="row">
+            <div class="k">Fills · per year</div>
+            <div class="v num accent">~1,300</div>
+            <div class="sub">vs. roughly 50–150 fills/year for a typical Sparplan user holding 1–3 ETFs.</div>
+          </div>
+          <div class="row">
+            <div class="k">Order-of-magnitude shift</div>
+            <div class="v num accent">10×</div>
+            <div class="sub">No change in customer decision-making — every fill is the same one-line mandate.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3 class="sub-title">Rollout has a natural staging.</h3>
+      <div class="prose">
+        <p>The first move is the upper-middle wedge: ship to existing high-engagement Sparplan users as a power feature, since acquisition cost is near zero and these are customers the firm already has. Validating the primitive against users who already understand what they want is a low-risk first step before broader commitment.</p>
+        <p>When any user then holds five or more instruments, surface the basket primitive as the default way to organise them; this converts flat-list users into basket users with no sales motion. The longer-horizon work is the long tail: custom-indexed sleeves, shared or forkable baskets, AI-imported intent. That is where the category moves from feature to platform — and where the spread-monetisation picture starts to compound.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== V · AI-SHAPED INBOUND ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 05</div>
+        <div class="t">AI-shaped inbound</div>
+      </div>
+      <h2 class="section-title">Users have started consulting AI systems on portfolio construction. What lands with the broker is execution of a plan already made.</h2>
+
+      <div class="prose">
+        <p>The leading edge is visible now: in any high-engagement Sparplan cohort, Bogleheads-adjacent community, or portfolio-builder forum, there are users walking in with structured baskets they have worked through somewhere else. The request that lands with the broker is for execution of a plan the user has already made, rather than for advice.</p>
+        <p>The two cases look very different from the product side. A <strong>structured-intent</strong> request — of the form "equal-weight these 18 European industrials, monthly rebalance, €200 a month" — is implementable in a single mandate if the saving primitive exists. Without it, the same request becomes 18 trade tickets and an unset recurring-orders configuration per ticket, and in practice the user does not complete the flow.</p>
+      </div>
+
+      <div class="keyfact">
+        <div class="v accent num">6–24<span style="font-size:0.45em; letter-spacing:-0.01em;">&nbsp;mo</span></div>
+        <div class="d"><strong>Mainstream behaviour shift sits roughly six to twenty-four months out</strong>, depending on how fast the consumer AI products evolve and how visibly users start expecting the broker to absorb structured plans they have built elsewhere. The window to have the primitive in place is roughly the next twelve months.</div>
+      </div>
+
+      <div class="prose">
+        <p>A basket primitive absorbs the structured-intent flow into existing surfaces. Without it, the same flow stops at the 18-tickets wall. The loss is silent: users who get to that wall typically do not complete the manual configuration, and do not complain about it either.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== VI · CLOSING ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 06</div>
+        <div class="t">What shipping it looks like</div>
+      </div>
+      <h2 class="section-title">The category needs a name and a clean articulation more than it needs an incumbent or a challenger.</h2>
+
+      <div class="prose">
+        <p>Two problems were opened at the top of this piece. The saver's: "passive" has drifted into a concentrated, momentum-tilted product the saver did not consciously choose, while the tooling that addresses this directly stays gated behind wealth-management minimums. The broker's: the same trend that hollowed out execution margins has nudged the industry into expensive complex products that fit only a narrow slice of the customer base, while the much larger base that already saves passively is served the same flat list of positions it got a decade ago. Both problems point at the same primitive.</p>
+        <p>The category already exists in two adjacent forms. Direct indexing is the wealth-management product, available behind high minimums and an advisory wrap. Trading 212 Pies and eToro Smart Portfolios are the thin retail features, available on a handful of non-German players. The German neobrokers — most exposed to the post-PFOF revenue gap and anchored to the largest Sparplan user base in Europe — ship none of it. The same is broadly true of the major UK retail platforms and the US trading apps that sit below the wealth-management threshold.</p>
+        <p>Whoever builds Open Indexing as a first-class product, rather than a hidden power-user feature, takes tooling that today lives in the wealth-management tier and makes it a broader retail default. That direction runs counter to the gravity of product strategy, which has spent the last several years following revenue per customer into the upmarket tail. It is also the move that fits the saving behaviour driving the last decade's volume and protects the franchise from the next cycle's conversations about what the customer actually owns.</p>
+      </div>
+
+      <div class="prose">
+        <p>The name is <strong>Open Indexing</strong>; the articulation is above. Which product team places the call first is the open question.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== VII · PROTOTYPE EMBED ===================== -->
+<div class="wrap">
+  <section class="essay">
+    <div class="col">
+      <div class="section-rule">
+        <div class="n">§ 07</div>
+        <div class="t">Prototype</div>
+      </div>
+      <h2 class="section-title">The basket primitive, in pixels.</h2>
+      <div class="prose">
+        <p>A small interactive prototype of the lifecycle and the savings-as-hero surface described above. Built in the Trade Republic visual language because TR is the largest neobroker that does not ship a basket primitive today, and the visual reference makes the proposed surface easier to read against the existing product than a neutral mockup would be.</p>
+      </div>
+    </div>
+
+    <div class="proto-embed col-wide">
+      <div class="proto-head">
+        <h4>Figure 08 · Basket Broker · interactive prototype</h4>
+        <a class="proto-open" href="prototype/Basket Broker - Buying Baskets.html" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </div>
+      <div class="proto-body">
+        <iframe id="proto-iframe" loading="lazy"
+                title="Basket Broker — Buying Baskets prototype"></iframe>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<div class="wrap">
+  <footer class="essay-foot">
+    <div class="foot-grid">
+      <div>
+        <h5>About this essay</h5>
+        <p class="blurb">Just a blog note. More on <a href="https://plvch.com">plvch.com</a>.</p>
+      </div>
+      <div>
+        <h5>Sources</h5>
+        <ul>
+          <li>MSCI World factsheet · 30 Apr 2026</li>
+          <li>RBC Wealth Management / FactSet · 31 Dec 2025</li>
+          <li>ECB Financial Stability Review · Nov 2024</li>
+          <li>FCA Financial Lives Survey · 2020</li>
+          <li>AFM (Netherlands) · 2024</li>
+          <li>Deutsches Aktieninstitut · 2026</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li>m(at)plvch.com</li>
+          <li>Berlin</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© 2026 plvch · <a href="/legal/#impressum">Impressum</a> · <a href="/legal/#datenschutz">Datenschutz</a></div>
+      <div>Vol.&nbsp;01 · Essay&nbsp;01 · Open Indexing</div>
+      <div>01 / 01</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // ---------- Theme toggle (masthead) + prototype iframe sync ----------
+  (function () {
+    var root = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem('oi-theme'); } catch (e) {}
+    if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+
+    function getTheme() {
+      return root.getAttribute('data-theme') || 'light';
+    }
+    function syncButtons() {
+      var t = getTheme();
+      document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+        var active = b.getAttribute('data-theme-btn') === t;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+
+    // Prototype iframe: bake current theme into src on first paint (so it
+    // loads with no flash), and live-sync data-theme on subsequent toggles.
+    var protoIframe = document.getElementById('proto-iframe');
+    if (protoIframe && !protoIframe.src) {
+      protoIframe.src = 'prototype/Basket Broker - Buying Baskets.html?theme=' + getTheme();
+    }
+    function syncIframe(theme) {
+      if (!protoIframe) return;
+      try {
+        var doc = protoIframe.contentDocument;
+        if (doc) doc.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { /* not loaded yet */ }
+    }
+    // If iframe loads after parent has toggled, re-sync at load time.
+    if (protoIframe) protoIframe.addEventListener('load', function () { syncIframe(getTheme()); });
+
+    syncButtons();
+    window.__oiSyncThemeButtons = syncButtons;
+
+    document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.getAttribute('data-theme-btn');
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem('oi-theme', t); } catch (e) {}
+        syncButtons();
+        syncIframe(t);
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

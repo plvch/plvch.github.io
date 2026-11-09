@@ -1,0 +1,23 @@
+// Cloudflare Worker that serves plvch.com: the hub pages and the essays as static assets.
+// No Worker script: every request is answered from dist/, which is free and unmetered.
+// dist/ is built by build.py; deployed by .github/workflows/site.yml.
+// Headers and redirects live in static/_headers and static/_redirects.
+{
+  "$schema": "https://unpkg.com/wrangler@4.151.3/config-schema.json",
+  "name": "plvch-site",
+  "account_id": "eb0fad984ed028f17b36e2cc6dae2eab",
+  // Can't be newer than the pinned Wrangler release (4.151.3, 2026-10-20) in the workflow.
+  "compatibility_date": "2026-10-20",
+  "assets": {
+    "directory": "./dist",
+    // Pages are folder/index.html and are served at /folder/; /folder redirects to /folder/.
+    "html_handling": "auto-trailing-slash",
+    // Unknown paths get dist/404.html with status 404.
+    "not_found_handling": "404-page"
+  },
+  // The workers.dev URL and per-PR preview URLs are for checking a build before it goes live.
+  // static/_headers marks them noindex.
+  "workers_dev": true,
+  "preview_urls": true
+  // Production (cut-over, not yet): "routes": [{ "pattern": "plvch.com", "custom_domain": true }]
+}

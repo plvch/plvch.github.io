@@ -1,36 +1,31 @@
 #!/usr/bin/env python3
 """
-Build the plvch personal-site / blog hub as static HTML in EN / RU / DE.
+Build plvch.com as static files in dist/: the hub pages in EN / RU / DE, the
+English-only notes, the essays, and the Worker config files.
 
-Output is written next to this file, so this folder *is* the site root and
-maps 1:1 onto the future `plvch.github.io` repository:
+    /                 -> index.html               (EN home / writing index)
+    /ru/  /de/        -> ru|de/index.html
+    /practice/ ...    -> practice/index.html (+ ru|de)
+    /legal/ ...       -> legal/index.html (+ ru|de)
+    /<essay>/         -> essays/<essay>/          (vendored, see scripts/sync_essays.py)
+    /404.html, /sitemap.xml, static/*             (robots.txt, favicon, _headers, _redirects)
 
-    /                -> index.html              (EN home / blog index)
-    /ru/  /de/       -> ru|de/index.html
-    /practice/ ...   -> practice/index.html (+ ru|de)
-    /legal/ ...      -> legal/index.html (+ ru|de)
-
-The three essays live in their own repos and nest under the same domain
-(/open-indexing/, /indexes_cost/, /small-business-concentration/), so the
-links here are root-relative and work on plvch.github.io now and on the
-custom domain later.
+dist/ is what the Cloudflare Worker serves (wrangler.jsonc). It is rebuilt from
+scratch on every run and never committed.
 
     python3 build.py
 """
 
+import hashlib
+import json
 import os
 import shutil
 from html import escape as e
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# ====================================================================
-# CONFIG  —  to move onto the custom domain, change DOMAIN to "plvch.com"
-# (GitHub: Settings -> Pages -> custom domain writes the CNAME for you),
-# then re-run this script. That single line is the whole switch.
-# ====================================================================
-DOMAIN       = "plvch.com"                # <- one-line switch to "plvch.com"
-BASE_URL     = "https://" + DOMAIN
+DIST         = os.path.join(HERE, "dist")
+BASE_URL     = "https://plvch.com"
 EMAIL        = "m@plvch.com"
 DEFAULT_LANG = "en"
 LANGS        = ["en", "ru", "de"]
@@ -52,18 +47,15 @@ def url_for(page, lang):
 
 
 def asset_url(rel):
-    """Root-relative asset URL with an mtime cache-buster (?v=…) so browsers
-    re-fetch whenever the file changes — handy behind a no-cache dev server."""
-    path = os.path.join(HERE, rel.lstrip("/"))
-    try:
-        v = int(os.path.getmtime(path))
-        return "/" + rel.lstrip("/") + "?v=" + str(v)
-    except OSError:
-        return "/" + rel.lstrip("/")
+    """Root-relative asset URL with a content hash (?v=…). The URL changes only
+    when the file does, so _headers can let browsers cache /assets/* for a year."""
+    with open(os.path.join(HERE, rel), "rb") as f:
+        v = hashlib.sha256(f.read()).hexdigest()[:10]
+    return "/" + rel + "?v=" + v
 
 
 def out_path(page, lang):
-    parts = [HERE]
+    parts = [DIST]
     if lang != DEFAULT_LANG:
         parts.append(lang)
     if SEG[page]:
@@ -382,7 +374,8 @@ LEGAL_BODY_DE = """
 # ====================================================================
 # TEMPLATE PARTS
 # ====================================================================
-def masthead(lang, active):
+def masthead(lang, page):
+    active = ACTIVE_NAV[page]
     nav_items = [
         ("writing", STR[lang]["nav_writing"], url_for("home", lang)),
         ("practice", STR[lang]["nav_practice"], url_for("practice", lang)),
@@ -397,7 +390,7 @@ def masthead(lang, active):
     )
     langs = "\n".join(
         '      <a href="{href}"{cur} hreflang="{l}">{lab}</a>'.format(
-            href=url_for(active_page_for(active), lang2),
+            href=url_for(page, lang2),
             cur=' aria-current="true"' if lang2 == lang else "",
             l=HTML_LANG[lang2], lab=LANG_LABEL[lang2],
         )
@@ -424,12 +417,6 @@ def masthead(lang, active):
         lang_aria=e(STR[lang]["lang_aria"]),
         light=e(STR[lang]["theme_light"]), dark=e(STR[lang]["theme_dark"]),
     )
-
-
-# the masthead needs the current *page* to build language links; carry it via a global
-_CURRENT_PAGE = "home"
-def active_page_for(active):
-    return _CURRENT_PAGE
 
 
 def footer(lang):
@@ -472,9 +459,10 @@ def footer(lang):
     )
 
 
-def shell(lang, page, title, desc, body, canonical_path=None, localized=True, og_type="website"):
-    active = ACTIVE_NAV[page]
-    if localized:
+def shell(lang, page, title, desc, body, canonical_path=None, localized=True, og_type="website", indexable=True):
+    if not indexable:
+        alts = '  <meta name="robots" content="noindex">'
+    elif localized:
         alts = "\n".join(
             '  <link rel="alternate" hreflang="{l}" href="{u}">'.format(l=HTML_LANG[l2], u=BASE_URL + url_for(page, l2))
             for l2 in LANGS
@@ -484,6 +472,7 @@ def shell(lang, page, title, desc, body, canonical_path=None, localized=True, og
         article_url = BASE_URL + canonical_path
         alts = '  <link rel="alternate" hreflang="en" href="{u}">\n  <link rel="alternate" hreflang="x-default" href="{u}">'.format(u=article_url)
     canonical = BASE_URL + canonical_path if canonical_path else BASE_URL + url_for(page, lang)
+    canonical_tag = '<link rel="canonical" href="{}">'.format(canonical) if indexable else ""
     return """<!DOCTYPE html>
 <html lang="{htmllang}" data-theme="light">
 <head>
@@ -491,13 +480,15 @@ def shell(lang, page, title, desc, body, canonical_path=None, localized=True, og
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<link rel="canonical" href="{canonical}">
+{canonical_tag}
 {alts}
 <meta property="og:type" content="{og_type}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
 <meta name="theme-color" content="#0b2545">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="stylesheet" href="{tokens_css}">
 <link rel="stylesheet" href="{site_css}">
 <script>try{{var t=localStorage.getItem('oi-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}</script>
@@ -513,11 +504,11 @@ def shell(lang, page, title, desc, body, canonical_path=None, localized=True, og
 </html>
 """.format(
         htmllang=HTML_LANG[lang], title=e(title), desc=e(desc), og_type=e(og_type),
-        canonical=canonical, alts=alts,
+        canonical=canonical, canonical_tag=canonical_tag, alts=alts,
         tokens_css=asset_url("assets/plvch-tokens.css"),
         site_css=asset_url("assets/site.css"),
         site_js=asset_url("assets/site.js"),
-        masthead=masthead(lang, active), body=body, footer=footer(lang),
+        masthead=masthead(lang, page), body=body, footer=footer(lang),
     )
 
 
@@ -633,6 +624,26 @@ def build_writing_thoughts():
     )
 
 
+def build_404():
+    body = """<section class="doc"><div class="wrap col">
+  <div class="eyebrow">404</div>
+  <h1>Page not found</h1>
+</div></section>
+<section style="padding-bottom:64px"><div class="wrap col"><div class="prose">
+<p>This page doesn't exist, or it moved. Start from the <a href="/">writing index</a>
+(<a href="/ru/">RU</a> · <a href="/de/">DE</a>).</p>
+</div></div></section>"""
+    return shell("en", "home", "Page not found · plvch", "Page not found.", body, indexable=False)
+
+
+def build_sitemap():
+    urls = [BASE_URL + url_for(page, lang) for page in PAGES for lang in LANGS]
+    urls += [BASE_URL + "/" + post["slug"] + "/" for post in POSTS]
+    rows = "\n".join("  <url><loc>{}</loc></url>".format(e(u)) for u in urls)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "\n</urlset>\n")
+
+
 # ====================================================================
 # RENDER
 # ====================================================================
@@ -642,28 +653,30 @@ def write(path, html):
         f.write(html)
 
 
+def copy_tree(src, dst):
+    shutil.copytree(os.path.join(HERE, src), dst, dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns(".DS_Store"))
+
+
 def main():
-    global _CURRENT_PAGE
+    shutil.rmtree(DIST, ignore_errors=True)
     builders = {"home": build_home, "practice": build_practice, "legal": build_legal}
-    count = 0
     for page in PAGES:
-        _CURRENT_PAGE = page
         for lang in LANGS:
             write(out_path(page, lang), builders[page](lang))
-            count += 1
+    write(os.path.join(DIST, "updating-my-thoughts-on-writing", "index.html"), build_writing_thoughts())
+    write(os.path.join(DIST, "404.html"), build_404())
+    write(os.path.join(DIST, "sitemap.xml"), build_sitemap())
 
-    _CURRENT_PAGE = "home"
-    write(os.path.join(HERE, "updating-my-thoughts-on-writing", "index.html"), build_writing_thoughts())
-    count += 1
+    copy_tree("assets", os.path.join(DIST, "assets"))
+    copy_tree("static", DIST)
+    with open(os.path.join(HERE, "essays", "manifest.json"), encoding="utf-8") as f:
+        essays = json.load(f)
+    for slug in essays:
+        copy_tree(os.path.join("essays", slug), os.path.join(DIST, slug))
 
-    # CNAME — only emit when a custom domain is configured.
-    cname = os.path.join(HERE, "CNAME")
-    if DOMAIN != "plvch.github.io":
-        write(cname, DOMAIN + "\n")
-    elif os.path.exists(cname):
-        os.remove(cname)
-
-    print("Built {} pages for {} ({} locales) -> {}".format(count, BASE_URL, len(LANGS), HERE))
+    n = sum(len(files) for _, _, files in os.walk(DIST))
+    print("Built {} files ({} essays) for {} -> {}".format(n, len(essays), BASE_URL, DIST))
 
 
 if __name__ == "__main__":

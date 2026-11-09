@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>It's a (sadly) rational policy to ignore small business — plvch</title>
+<meta name="description" content="72% of German firms make 1.2% of the turnover. By the numbers, ignoring small business is rational — the question is what could ever change it."/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="It's a (sadly) rational policy to ignore small business"/>
+<meta property="og:description" content="72% of German firms make 1.2% of the turnover; the top 1% make ~80%. By the numbers, ignoring small business is rational."/>
+<meta property="og:url" content="https://plvch.github.io/small-business-concentration/"/>
+<link rel="stylesheet" href="assets/plvch-tokens.css"/>
+<style>
+  /* =========================================================
+     The ETF Fee Paradox — long-form research note
+     Built on plvch tokens. Light/dark themes via [data-theme].
+     Same design language as Open Indexing (Vol. 01).
+     ========================================================= */
+
+  :root[data-theme="light"] {
+    --oi-page-bg:        var(--plvch-paper);
+    --oi-surface:        var(--plvch-paper);
+    --oi-surface-2:      var(--plvch-bone);
+    --oi-surface-sunk:   var(--plvch-paper-2);
+    --oi-ink-1:          var(--plvch-ink-900);
+    --oi-ink-2:          var(--plvch-ink-700);
+    --oi-ink-3:          var(--plvch-ink-500);
+    --oi-ink-4:          var(--plvch-ink-300);
+    --oi-rule:           #d8d3c4;
+    --oi-rule-strong:    var(--plvch-ink-900);
+    --oi-brand:          var(--plvch-navy-800);
+    --oi-brand-2:        var(--plvch-forest-800);
+    --oi-accent:         var(--plvch-ochre);
+    --oi-highlight:      #f1e6c4;
+    --oi-chip-bg:        var(--plvch-paper-2);
+    --oi-shadow-figure:  0 1px 2px rgba(6,26,53,0.05), 0 10px 30px -16px rgba(6,26,53,0.10);
+  }
+
+  :root[data-theme="dark"] {
+    --oi-page-bg:        #08172e;
+    --oi-surface:        #08172e;
+    --oi-surface-2:      #0e2243;
+    --oi-surface-sunk:   #0b1d39;
+    --oi-ink-1:          #f1ede2;
+    --oi-ink-2:          #c6ccd6;
+    --oi-ink-3:          #8993a3;
+    --oi-ink-4:          #5a6678;
+    --oi-rule:           #1a3056;
+    --oi-rule-strong:    #f1ede2;
+    --oi-brand:          #d9e0ec;
+    --oi-brand-2:        #6ea88a;
+    --oi-accent:         #d4a857;
+    --oi-highlight:      #2a2a14;
+    --oi-chip-bg:        #0e2243;
+    --oi-shadow-figure:  0 0 0 1px var(--oi-rule), 0 18px 40px -20px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  html[data-theme="light"], html[data-theme="light"] body { background: var(--plvch-paper) !important; }
+  html[data-theme="dark"],  html[data-theme="dark"]  body { background: #08172e !important; }
+  body {
+    color: var(--oi-ink-1);
+    transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    margin: 0;
+    font-family: var(--font-text);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .wrap {
+    --col: 720px;
+    --col-w: 940px;
+    --col-bleed: 1120px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 32px;
+    max-width: var(--col-bleed);
+  }
+  .col      { max-width: var(--col); margin-inline: auto; }
+  .col-wide { max-width: var(--col-w); margin-inline: auto; }
+
+  /* ---------------- Masthead ---------------- */
+  .masthead {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--oi-page-bg);
+    border-bottom: 1px solid var(--oi-rule);
+    backdrop-filter: blur(8px);
+  }
+  .masthead-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 32px; max-width: var(--col-bleed); margin: 0 auto; gap: 24px;
+  }
+  .wordmark {
+    font-family: var(--font-display); font-size: 18px; font-weight: 500;
+    letter-spacing: -0.04em; color: var(--oi-brand); text-decoration: none;
+  }
+  .mh-meta {
+    display: flex; gap: 32px; align-items: center;
+    font-family: var(--font-display); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  @media (max-width: 720px) { .mh-meta .hide-sm { display: none; } }
+
+  .theme-toggle {
+    display: inline-flex; border: 1px solid var(--oi-rule);
+    border-radius: 999px; padding: 2px; background: var(--oi-surface);
+  }
+  .theme-toggle button {
+    background: transparent; border: 0; cursor: pointer;
+    font-family: var(--font-display); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+    padding: 6px 12px; border-radius: 999px;
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  }
+  .theme-toggle button.active { background: var(--oi-rule-strong); color: var(--oi-page-bg); }
+  .theme-toggle button:hover:not(.active) { color: var(--oi-ink-1); }
+
+  /* ---------------- Cover ---------------- */
+  .cover { padding: 80px 0 48px; }
+  .eyebrow {
+    font-family: var(--font-display); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .eyebrow::before {
+    content: ""; width: 24px; height: 1px; background: var(--oi-rule-strong); display: inline-block;
+  }
+  .eyebrow.brand { color: var(--oi-brand-2); }
+  .eyebrow.brand::before { background: var(--oi-brand-2); }
+
+  .cover h1 {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 4.8vw, 48px);
+    font-weight: 500; letter-spacing: -0.03em; line-height: 1.02;
+    margin: 14px 0 0; color: var(--oi-ink-1); text-wrap: balance;
+  }
+  .cover .standfirst {
+    font-family: var(--font-display); font-size: 19px; line-height: 1.45;
+    font-weight: 400; color: var(--oi-ink-2); letter-spacing: -0.005em;
+    margin: 20px 0 0; max-width: 660px; text-wrap: balance;
+  }
+  .cover .byline {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 24px;
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--oi-rule);
+    font-family: var(--font-display);
+  }
+  .cover .byline .k {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  .cover .byline .v {
+    margin-top: 6px; font-size: 14px; color: var(--oi-ink-1); font-feature-settings: "tnum";
+  }
+  @media (max-width: 720px) {
+    .cover .byline { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+  }
+
+  /* ---------------- Section anatomy ---------------- */
+  section.essay { padding: 32px 0; }
+  section.essay + section.essay { padding-top: 0; }
+
+  .section-rule {
+    display: grid; grid-template-columns: 1fr 1fr; align-items: baseline; gap: 24px;
+    padding: 16px 0; border-top: 1px solid var(--oi-rule-strong); margin: 64px 0 32px;
+  }
+  .section-rule .n { font-family: var(--font-mono); font-size: 12px; color: var(--oi-ink-3); }
+  .section-rule .t {
+    font-family: var(--font-display); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--oi-ink-1); text-align: right;
+  }
+
+  h2.section-title {
+    font-family: var(--font-display); font-size: 26px; line-height: 1.2;
+    letter-spacing: -0.015em; font-weight: 500; margin: 0 0 24px;
+    color: var(--oi-ink-1); text-wrap: balance;
+  }
+  h3.sub-title {
+    font-family: var(--font-display); font-size: 18px; line-height: 1.35;
+    letter-spacing: -0.005em; font-weight: 600; margin: 36px 0 14px; color: var(--oi-ink-1);
+  }
+
+  /* ---------------- Prose ---------------- */
+  .prose p { margin: 0 0 18px; color: var(--oi-ink-2); text-wrap: pretty; }
+  .prose p strong { color: var(--oi-ink-1); font-weight: 600; }
+  .prose a {
+    color: var(--oi-ink-1); text-decoration: underline;
+    text-decoration-color: var(--oi-rule); text-decoration-thickness: 1px; text-underline-offset: 3px;
+  }
+  .prose a:hover { text-decoration-color: currentColor; color: var(--oi-brand-2); }
+  .prose.lead p:first-of-type::first-letter {
+    font-family: var(--font-display); font-weight: 500; float: left;
+    font-size: 3em; line-height: 0.95; margin: 0.06em 0.1em 0 -0.02em;
+    color: var(--oi-ink-1); letter-spacing: -0.02em;
+  }
+  .num, .stat, .table-num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  /* ---------------- Big number callouts ---------------- */
+  .stat-row {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+    grid-template-rows: auto auto 1fr; gap: 0; margin: 40px auto;
+    border-top: 1px solid var(--oi-rule-strong); border-bottom: 1px solid var(--oi-rule);
+  }
+  .stat-row .stat {
+    display: grid; grid-template-rows: subgrid; grid-row: span 3;
+    padding: 24px 20px 28px; border-right: 1px solid var(--oi-rule);
+  }
+  .stat-row .stat:last-child { border-right: 0; }
+  .stat .stat-k {
+    font-family: var(--font-display); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  .stat .stat-v {
+    font-family: var(--font-display); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.015em; line-height: 1.05; margin: 6px 0 6px;
+    color: var(--oi-ink-1); font-variant-numeric: tabular-nums;
+  }
+  .stat .stat-v.accent { color: var(--oi-brand-2); }
+  .stat .stat-c { font-size: 12px; line-height: 1.45; color: var(--oi-ink-3); }
+  @media (max-width: 720px) {
+    .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .stat-row .stat:nth-child(2) { border-right: 0; }
+    .stat-row .stat:nth-child(-n+2) { border-bottom: 1px solid var(--oi-rule); }
+  }
+
+  /* ---------------- Figure (charts) ---------------- */
+  figure.fig { margin: 40px auto; max-width: var(--col-w); }
+  figure.fig .fig-head {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: baseline;
+    padding: 0 0 12px; border-bottom: 1px solid var(--oi-rule); margin-bottom: 0;
+  }
+  figure.fig .fig-num { font-family: var(--font-mono); font-size: 11px; color: var(--oi-ink-3); }
+  figure.fig .fig-title {
+    font-family: var(--font-display); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--oi-ink-1);
+  }
+  figure.fig .fig-source {
+    font-family: var(--font-display); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  figure.fig .fig-body {
+    background: var(--oi-surface); border: 1px solid var(--oi-rule); border-top: 0;
+    padding: 24px; box-shadow: var(--oi-shadow-figure);
+  }
+  figure.fig figcaption {
+    margin-top: 12px; font-size: 13px; color: var(--oi-ink-3); line-height: 1.5; max-width: 640px;
+  }
+
+  /* Legend chips, shared across figures */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 18px; margin: 0 0 18px;
+    font-family: var(--font-display); font-size: 11.5px; font-weight: 500;
+    letter-spacing: 0.03em; color: var(--oi-ink-3);
+  }
+  .legend .li { display: inline-flex; align-items: center; gap: 7px; }
+  .legend .sw { width: 14px; height: 9px; display: inline-block; }
+  .legend .sw.line { height: 2px; }
+
+  /* ---------------- Fig 01: bucket grouped bars ---------------- */
+  .bk-chart { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+  .bk-plot { position: relative; height: 300px; padding: 26px 8px 40px 44px; }
+  .bk-grid { position: absolute; inset: 26px 8px 40px 44px; pointer-events: none; }
+  .bk-gline { position: absolute; left: 0; right: 0; height: 1px; background: var(--oi-rule); }
+  .bk-glabel {
+    position: absolute; left: -44px; transform: translateY(50%);
+    width: 36px; text-align: right; font-size: 10.5px; color: var(--oi-ink-3); line-height: 1;
+  }
+  .bk-groups {
+    position: relative; height: 100%;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 26px; align-items: end;
+  }
+  .bk-group { position: relative; height: 100%; display: flex; align-items: flex-end; gap: 5px; }
+  .bk-bar { position: relative; flex: 1; height: var(--h); }
+  .bk-bar.count { background: var(--oi-ink-4); }
+  .bk-bar.aum   { background: var(--oi-brand); }
+  .bk-bar.rev   { background: var(--oi-brand-2); }
+  .bk-bar .v {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    margin-bottom: 5px; font-size: 10.5px; font-weight: 600;
+    color: var(--oi-ink-2); white-space: nowrap;
+  }
+  .bk-group .x {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    margin-top: 10px; font-size: 11px; color: var(--oi-ink-3); white-space: nowrap;
+  }
+  @media (max-width: 600px) {
+    .bk-plot { height: 240px; padding-left: 36px; }
+    .bk-grid { inset-inline-start: 36px; }
+    .bk-glabel { left: -36px; }
+    .bk-groups { gap: 10px; }
+    .bk-bar .v { font-size: 8.5px; }
+    .bk-group .x { font-size: 9px; }
+  }
+
+  /* ---------------- SVG line charts (Figs 02, 04) ---------------- */
+  .lc-svg { display: block; width: 100%; height: auto; }
+  .lc-svg .grid   { stroke: var(--oi-rule); stroke-width: 1; }
+  .lc-svg .axis   { fill: var(--oi-ink-3); font-family: var(--font-display); font-size: 11px; }
+  .lc-svg .lbl    { font-family: var(--font-display); font-size: 12px; font-weight: 600; }
+  .lc-svg .lbl-sub { font-family: var(--font-display); font-size: 10.5px; font-weight: 400; }
+  .lc-svg .l-med  { stroke: var(--oi-brand);  fill: none; stroke-width: 2.25; stroke-linejoin: round; }
+  .lc-svg .l-ew   { stroke: var(--oi-brand);  fill: none; stroke-width: 1.25; stroke-dasharray: 3 4; opacity: .55; }
+  .lc-svg .l-aw   { stroke: var(--oi-brand-2); fill: none; stroke-width: 2.25; stroke-linejoin: round; }
+  .lc-svg .l-act  { stroke: var(--oi-accent); fill: none; stroke-width: 1.75; stroke-linejoin: round; }
+  .lc-svg .l-pas  { stroke: var(--oi-brand-2); fill: none; stroke-width: 1.75; stroke-linejoin: round; }
+  .lc-svg .t-med  { fill: var(--oi-brand); }
+  .lc-svg .t-aw   { fill: var(--oi-brand-2); }
+  .lc-svg .t-act  { fill: var(--oi-accent); }
+  .lc-svg .t-pas  { fill: var(--oi-brand-2); }
+  .lc-svg .dot-med { fill: var(--oi-brand); }
+  .lc-svg .dot-aw  { fill: var(--oi-brand-2); }
+  .lc-svg .gap-brace { stroke: var(--oi-ink-3); stroke-width: 1; fill: none; }
+  .lc-svg .gap-note  { fill: var(--oi-ink-3); font-family: var(--font-display); font-size: 11px; }
+
+  /* ---------------- Fig 03: launch stacked bars ---------------- */
+  .lm-chart { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+  .lm-plot { position: relative; height: 300px; padding: 30px 8px 56px 44px; }
+  .lm-grid { position: absolute; inset: 30px 8px 56px 44px; pointer-events: none; }
+  .lm-gline { position: absolute; left: 0; right: 0; height: 1px; background: var(--oi-rule); }
+  .lm-glabel {
+    position: absolute; left: -44px; transform: translateY(50%);
+    width: 36px; text-align: right; font-size: 10.5px; color: var(--oi-ink-3); line-height: 1;
+  }
+  .lm-bars {
+    position: relative; height: 100%;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 22px; align-items: end;
+  }
+  .lm-bar { position: relative; height: var(--h); display: flex; flex-direction: column; }
+  .lm-bar .seg-act { background: var(--oi-accent); height: var(--act); }
+  .lm-bar .seg-pas { background: var(--oi-brand); flex: 1; }
+  .lm-bar .v {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    margin-bottom: 6px; font-size: 11px; font-weight: 600; color: var(--oi-ink-1); white-space: nowrap;
+  }
+  .lm-bar .x {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    margin-top: 8px; font-size: 11px; color: var(--oi-ink-3); line-height: 1.4;
+    text-align: center; white-space: nowrap;
+  }
+  .lm-bar .x .share { display: block; font-weight: 600; color: var(--oi-accent); }
+  @media (max-width: 600px) {
+    .lm-plot { height: 250px; padding-left: 36px; }
+    .lm-grid { inset-inline-start: 36px; }
+    .lm-glabel { left: -36px; }
+    .lm-bars { gap: 8px; }
+    .lm-bar .v { font-size: 9.5px; }
+    .lm-bar .x { font-size: 9px; }
+  }
+
+  /* ---------------- Fig 06: sponsor arrows (book -> launch) ---------------- */
+  .db { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+  .db-row {
+    display: grid; grid-template-columns: 150px 1fr 54px; gap: 18px; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--oi-rule);
+  }
+  .db-name { font-size: 13px; font-weight: 600; color: var(--oi-ink-1); letter-spacing: -0.005em; }
+  .db-name small { display: block; font-size: 10.5px; font-weight: 400; color: var(--oi-ink-3); letter-spacing: 0.02em; }
+  .db-track { position: relative; height: 32px; --dir: var(--oi-brand-2); }
+  .db-track.down { --dir: var(--oi-ink-3); }
+  .db-track::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%;
+    height: 1px; background: var(--oi-rule);
+  }
+  .db-link {
+    position: absolute; top: 50%; height: 2.5px; transform: translateY(-50%);
+    background: var(--dir);
+  }
+  .db-track:not(.down) .db-link { left: var(--a); width: calc(var(--b) - var(--a) - 0.6%); }
+  .db-track.down       .db-link { left: calc(var(--b) + 0.6%); width: calc(var(--a) - var(--b) - 0.6%); }
+  .db-arrow {
+    position: absolute; top: 50%; left: var(--b);
+    width: 0; height: 0; border: 5.5px solid transparent;
+  }
+  .db-track:not(.down) .db-arrow { border-left: 8px solid var(--dir); transform: translate(-2px, -50%); }
+  .db-track.down       .db-arrow { border-right: 8px solid var(--dir); transform: translate(-7px, -50%); }
+  .db-dot {
+    position: absolute; top: 50%; left: var(--a); width: 10px; height: 10px;
+    border-radius: 50%; transform: translate(-50%, -50%); background: var(--oi-brand);
+  }
+  .db-val {
+    position: absolute; top: 50%; transform: translate(-50%, -200%);
+    font-size: 10.5px; font-weight: 600; white-space: nowrap;
+  }
+  .db-val.book   { left: var(--a); color: var(--oi-brand); }
+  .db-val.launch { left: var(--b); color: var(--dir); }
+  .db-val.below  { transform: translate(-50%, 100%); }
+  .db-mult {
+    font-family: var(--font-mono); font-size: 12px; text-align: right;
+    color: var(--oi-brand-2); font-weight: 500;
+  }
+  .db-mult.down { color: var(--oi-ink-3); }
+  .db-row.mkt {
+    border-bottom: 0; border-top: 1px solid var(--oi-rule-strong);
+    background: var(--oi-highlight); margin-top: 6px; padding: 14px 8px;
+  }
+  .db-row.mkt .db-name, .db-row.mkt .db-mult { font-weight: 700; }
+  .db-row.mkt .db-track::before { background: color-mix(in oklab, var(--oi-ink-4) 40%, transparent); }
+  .db-note {
+    position: absolute; top: 50%; transform: translateY(-200%);
+    font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--oi-ink-3); white-space: nowrap;
+  }
+  .db-axis {
+    display: grid; grid-template-columns: 150px 1fr 54px; gap: 18px; margin-top: 8px;
+  }
+  .db-axis .scale {
+    position: relative; height: 16px;
+    font-size: 10px; color: var(--oi-ink-3);
+  }
+  .db-axis .scale span { position: absolute; transform: translateX(-50%); }
+  @media (max-width: 600px) {
+    .db-row, .db-axis { grid-template-columns: 86px 1fr 36px; gap: 10px; }
+    .db-name { font-size: 11px; }
+    .db-name small { display: none; }
+    .db-val { font-size: 9px; }
+    .db-mult { font-size: 10px; }
+    .db-note { display: none; }
+  }
+
+  /* ---------------- Fig 06: sponsor table ---------------- */
+  table.spon {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--font-display); font-size: 13.5px; font-variant-numeric: tabular-nums;
+  }
+  table.spon th {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--oi-ink-3); text-align: right; padding: 0 12px 10px;
+    border-bottom: 1px solid var(--oi-rule-strong); white-space: nowrap;
+  }
+  table.spon th:first-child { text-align: left; padding-left: 0; }
+  table.spon td {
+    padding: 9px 12px; text-align: right; color: var(--oi-ink-2);
+    border-bottom: 1px solid var(--oi-rule); white-space: nowrap;
+  }
+  table.spon td:first-child { text-align: left; padding-left: 0; font-weight: 600; color: var(--oi-ink-1); }
+  table.spon td.hi { color: var(--oi-brand-2); font-weight: 600; }
+  table.spon tr.mkt td {
+    border-top: 1px solid var(--oi-rule-strong); border-bottom: 0;
+    background: var(--oi-highlight); font-weight: 600; color: var(--oi-ink-1);
+  }
+  table.spon tr.mkt td:first-child { padding-left: 8px; }
+  table.spon tr.mkt td:last-child { padding-right: 8px; }
+  .tbl-scroll { overflow-x: auto; }
+  @media (max-width: 600px) {
+    table.spon { font-size: 11.5px; }
+    table.spon td, table.spon th { padding: 7px 8px; }
+  }
+
+  /* ---------------- Takeaways ---------------- */
+  .takeaways { margin: 8px 0 40px; }
+  .takeaways .tk {
+    padding: 24px 0; border-top: 1px solid var(--oi-rule);
+    display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: baseline;
+  }
+  .takeaways .tk:first-of-type { border-top: 0; padding-top: 8px; }
+  .takeaways .tk .n { font-family: var(--font-mono); font-size: 13px; color: var(--oi-brand-2); }
+  .takeaways .tk h3 {
+    font-family: var(--font-display); font-size: 17px; font-weight: 600;
+    letter-spacing: -0.005em; margin: 0 0 8px; color: var(--oi-ink-1);
+  }
+  .takeaways .tk p { margin: 0; font-size: 15.5px; color: var(--oi-ink-2); }
+
+  /* ---------------- Methods ---------------- */
+  .methods {
+    margin: 64px auto 0; padding: 28px 0 8px;
+    border-top: 1px solid var(--oi-rule-strong);
+  }
+  .methods h4 {
+    font-family: var(--font-display); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-1); margin: 0 0 14px;
+  }
+  .methods p, .methods li { font-size: 13px; line-height: 1.6; color: var(--oi-ink-3); }
+  .methods p { margin: 0 0 10px; }
+  .methods ul { margin: 0; padding-left: 18px; }
+  .methods li { margin-bottom: 6px; }
+
+  /* ---------------- About & contact ---------------- */
+  .end-matter {
+    margin-top: 72px; padding: 28px 0 32px;
+    border-top: 1px solid var(--oi-rule-strong);
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 80px;
+  }
+  .end-matter h4 {
+    font-family: var(--font-display); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+    margin: 0 0 12px;
+  }
+  .end-matter p {
+    margin: 0 0 6px; font-size: 13px; line-height: 1.55; color: var(--oi-ink-2);
+  }
+  .end-matter a {
+    color: inherit; text-decoration: underline; text-decoration-color: var(--oi-rule);
+    text-decoration-thickness: 1px; text-underline-offset: 3px;
+  }
+  .end-matter a:hover { text-decoration-color: currentColor; color: var(--oi-brand-2); }
+  @media (max-width: 600px) {
+    .end-matter { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* ---------------- Footer ---------------- */
+  footer.essay-foot {
+    margin-top: 64px; padding: 24px 0 48px;
+    border-top: 1px solid var(--oi-rule);
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    font-family: var(--font-display); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--oi-ink-3);
+  }
+
+  ::selection { background: var(--oi-brand-2); color: var(--oi-page-bg); }
+  @media print { .masthead, .theme-toggle, footer.essay-foot { display: none; } }
+
+/* ---- chart additions ---- */
+
+.lc-svg .axis-line{stroke:var(--oi-rule-strong);stroke-width:1.1}
+.lc-svg .cnum{font-family:var(--font-display);font-weight:600;font-size:23px;fill:var(--oi-ink-1)}
+.lc-svg .clab{font-family:var(--font-display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;fill:var(--oi-ink-3)}
+.lc-svg .lbl{font-weight:600;font-size:13px;font-family:var(--font-display)}
+.lc-svg .t-med{fill:var(--oi-brand)}.lc-svg .t-aw{fill:var(--oi-brand-2)}
+.lc-svg .eqlab{fill:var(--oi-ink-3);font-family:var(--font-display);font-size:11px}
+.fig-legend{display:flex;gap:22px;flex-wrap:wrap;font-size:12px;color:var(--oi-ink-3);margin:0 0 6px}
+.fig-legend span{display:inline-flex;align-items:center;gap:7px}
+.fig-legend i{width:22px;height:3px;border-radius:2px;display:inline-block}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:2px}
+@media(max-width:640px){.duo{grid-template-columns:1fr;gap:30px}}
+.duo h4{font-family:var(--font-display);font-size:15px;margin:0 0 4px;color:var(--oi-ink-1)}
+.duo .ex{font-size:12.5px;color:var(--oi-ink-3);line-height:1.45;margin:0 0 14px;min-height:36px}
+table.mini{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+table.mini th{text-align:right;border-bottom:1.5px solid var(--oi-rule-strong);padding:6px 6px;font-family:var(--font-display);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--oi-ink-3)}
+table.mini th:first-child{text-align:left}
+table.mini td{text-align:right;padding:6px 6px;border-bottom:1px solid var(--oi-rule);color:var(--oi-ink-2)}
+table.mini td:first-child{text-align:left}
+table.mini tr.de td{background:var(--oi-highlight);color:var(--oi-ink-1);font-weight:600}
+.gbar{display:grid;grid-template-columns:92px 1fr 36px;gap:9px;align-items:center;margin:6px 0;font-size:13px}
+.gbar .gl{text-align:right;color:var(--oi-ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gbar .gt{background:var(--oi-surface-sunk);border-radius:2px;height:15px;overflow:hidden}
+.gbar .gf{height:100%;background:var(--oi-brand-2);border-radius:2px}
+.gbar.de .gf{background:var(--oi-accent)}
+.gbar.de .gl{color:var(--oi-ink-1);font-weight:600}.gbar .gv{color:var(--oi-ink-2)}
+.gbar.head{border-bottom:1.5px solid var(--oi-rule-strong);padding-bottom:6px;margin-bottom:6px;font-family:var(--font-display);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--oi-ink-3)}
+/* magazine line-breaking: hyphenate + justify body so rows divide cleanly */
+.prose p, .methods p{text-align:justify;-webkit-hyphens:auto;hyphens:auto;hyphenate-limit-chars:7 4 3}
+figcaption{-webkit-hyphens:auto;hyphens:auto}
+.cover h1{text-wrap:balance}
+</style>
+</head>
+<body>
+<header class="masthead"><div class="masthead-inner">
+  <a class="wordmark" href="https://plvch.com">plvch</a>
+  <div class="mh-meta">
+    <span class="hide-sm">Note · Germany</span><span>2026</span>
+    <span class="theme-toggle">
+      <button data-theme-btn="light" class="active" aria-pressed="true">Light</button>
+      <button data-theme-btn="dark" aria-pressed="false">Dark</button>
+    </span>
+  </div>
+</div></header>
+<main class="wrap">
+<section class="cover col">
+  <div class="eyebrow brand">Note · Small business</div>
+  <h1>It's a (sadly) rational policy to ignore small business</h1>
+  <div class="byline">
+    <div><div class="k">Author</div><div class="v">plvch</div></div>
+    <div><div class="k">Published</div><div class="v">June 2026</div></div>
+    <div><div class="k">Reading</div><div class="v">3 min</div></div>
+    <div><div class="k">Data</div><div class="v">Destatis · Eurostat</div></div>
+  </div>
+</section>
+<section class="essay"><div class="col"><div class="prose">
+  <p>Europe is full of good initiatives right now to make starting a company easier. Good timing, given the viral notes about sitting through (and paying for) a 12-hour notary appointment in Germany to register a GmbH.</p>
+  <p>But I think a lot of the policy-versus-bureaucracy frustration is just a misunderstanding. Fiscally, ignoring small business is reasonable.</p>
+</div></div></section>
+<section class="essay">
+  <div class="col">
+    <div class="section-rule"><div class="n">§ 01</div><div class="t">The concentration</div></div>
+    <h2 class="section-title">Where the turnover actually sits.</h2>
+    <div class="prose"><p>Micro firms aren't rare. Germany has around 7&nbsp;million VAT-registered businesses, and about 5&nbsp;million of them turn over less than €100k a year. Those 5&nbsp;million together make 1.2% of all turnover. The top 1% of firms make roughly 80%. Just 3,190 companies, 0.04% of the total, book more than half. Tax and social revenue track the same curve, by proxy.</p></div>
+  </div>
+  <figure class="fig col-wide">
+    <div class="fig-head"><div><div class="fig-num">Figure 1</div>
+      <div class="fig-title">A few firms hold almost all the turnover</div></div>
+      <div class="fig-source">Germany · 2021</div></div>
+    <div class="fig-body">
+      <div class="fig-legend">
+        <span><i style="background:var(--oi-brand)"></i>corporate turnover</span>
+        <span><i style="background:var(--oi-brand-2)"></i>personal income</span>
+        <span><i style="background:var(--oi-ink-3)"></i>perfect equality</span>
+      </div>
+      <svg class="lc-svg" viewBox="0 0 880 470" role="img" aria-label="Lorenz curves: corporate turnover vs personal income">
+      <line class="grid" x1="161.0" y1="72" x2="161.0" y2="428"/><line class="grid" x1="72" y1="339.0" x2="428.0" y2="339.0"/><line class="grid" x1="250.0" y1="72" x2="250.0" y2="428"/><line class="grid" x1="72" y1="250.0" x2="428.0" y2="250.0"/><line class="grid" x1="339.0" y1="72" x2="339.0" y2="428"/><line class="grid" x1="72" y1="161.0" x2="428.0" y2="161.0"/>
+      <line class="l-ew" x1="72" y1="428" x2="428.0" y2="72.0"/>
+      <polyline class="l-aw" points="72.0,428.0 101.2,427.7 118.8,424.9 171.0,408.4 227.4,379.4 279.3,342.3 318.0,307.1 396.4,197.1 424.0,118.8 426.9,99.0 428.0,72.0"/>
+      <polyline class="l-med" points="72.0,428.0 253.4,427.3 294.3,426.0 328.7,423.9 367.9,418.3 389.9,411.3 405.4,401.6 415.1,389.6 422.1,370.3 424.8,353.5 426.6,329.3 427.3,309.1 427.6,287.0 427.8,255.3 428.0,72.0"/>
+      <line class="axis-line" x1="72" y1="72" x2="72" y2="428"/>
+      <line class="axis-line" x1="72" y1="428" x2="428.0" y2="428"/>
+      <text class="axis" x="250" y="460" text-anchor="middle">share of businesses / people →</text>
+      <text class="axis" x="44" y="250" text-anchor="middle" transform="rotate(-90 44 250)">share of turnover / income →</text>
+      <text class="lbl t-med" x="236" y="357">Corporate turnover · Gini 0.96</text>
+      <text class="lbl t-aw" x="90" y="250">Personal income · Gini 0.49</text>
+      <text class="eqlab" x="350" y="115">equality</text>
+      <text class="clab" x="545" y="132">Bottom 72% of firms (under €100k)</text><text class="cnum" x="545" y="165">1.2% of turnover</text><text class="clab" x="545" y="228">Top 1% of firms</text><text class="cnum" x="545" y="261">≈ 80% of turnover</text><text class="clab" x="545" y="324">Top 3,190 firms — 0.04%</text><text class="cnum" x="545" y="357">51.5% of turnover</text>
+    </svg>
+    </div>
+    <figcaption>VAT-registered businesses sorted smallest to largest. Lorenz curves from Destatis
+    Umsatzsteuerstatistik (73321) and Lohn- u. Einkommensteuerstatistik (73111). The corporate Gini
+    (~0.96) is a grouped estimate; personal income is Gesamtbetrag der Einkünfte, pre-tax — not the
+    household disposable Gini (~0.28).</figcaption>
+  </figure>
+  <div class="col"><div class="prose"><p>Nothing on the personal side comes close. The corporate turnover Gini sits near 0.96; personal income is around 0.5. That's less a verdict on big firms than a map of where the money sits.</p></div></div>
+</section>
+<section class="essay">
+  <div class="col">
+    <div class="section-rule"><div class="n">§ 02</div><div class="t">Germany vs Europe</div></div>
+    <h2 class="section-title">Concentrated even by European standards.</h2>
+  </div>
+  <figure class="fig col-wide">
+    <div class="fig-head"><div><div class="fig-num">Figure 2</div>
+      <div class="fig-title">Concentrated even by European standards</div></div>
+      <div class="fig-source">Germany vs Europe</div></div>
+    <div class="fig-body"><div class="duo">
+      <div>
+        <h4>Market dominance — HHI ×100</h4>
+        <p class="ex">How much a market is run by its biggest players. Higher = more concentrated. Selected of 15 countries.</p>
+        <table class="mini"><tr><th>Country</th><th>HHI ×100</th></tr><tr class=""><td>Slovakia</td><td>2.50</td></tr><tr class=""><td>Switzerland</td><td>1.21</td></tr><tr class=""><td>Czechia</td><td>0.80</td></tr><tr class=""><td>Netherlands</td><td>0.78</td></tr><tr class=""><td>Finland</td><td>0.73</td></tr><tr class="de"><td>Germany</td><td>0.62</td></tr><tr class=""><td>France</td><td>0.20</td></tr><tr class=""><td>Italy</td><td>0.13</td></tr></table>
+      </div>
+      <div>
+        <h4>Turnover spread — Gini</h4>
+        <p class="ex">How unevenly turnover is split across firms, 0 (even) to 1 (all in one). Top 10 of 34.</p>
+        <div class="gbar head"><div class="gl">Country</div><div></div><div class="gv">Gini</div></div><div class="gbar de"><div class="gl">Germany</div><div class="gt"><div class="gf" style="width:100.0%"></div></div><div class="gv">0.87</div></div><div class="gbar "><div class="gl">Luxembourg</div><div class="gt"><div class="gf" style="width:99.5%"></div></div><div class="gv">0.86</div></div><div class="gbar "><div class="gl">Sweden</div><div class="gt"><div class="gf" style="width:99.2%"></div></div><div class="gv">0.86</div></div><div class="gbar "><div class="gl">France</div><div class="gt"><div class="gf" style="width:96.0%"></div></div><div class="gv">0.83</div></div><div class="gbar "><div class="gl">Austria</div><div class="gt"><div class="gf" style="width:95.5%"></div></div><div class="gv">0.83</div></div><div class="gbar "><div class="gl">Denmark</div><div class="gt"><div class="gf" style="width:94.7%"></div></div><div class="gv">0.82</div></div><div class="gbar "><div class="gl">Netherlands</div><div class="gt"><div class="gf" style="width:94.5%"></div></div><div class="gv">0.82</div></div><div class="gbar "><div class="gl">Finland</div><div class="gt"><div class="gf" style="width:93.8%"></div></div><div class="gv">0.81</div></div><div class="gbar "><div class="gl">Czechia</div><div class="gt"><div class="gf" style="width:93.6%"></div></div><div class="gv">0.81</div></div><div class="gbar "><div class="gl">Hungary</div><div class="gt"><div class="gf" style="width:93.4%"></div></div><div class="gv">0.81</div></div>
+      </div>
+    </div></div>
+    <figcaption>Germany is #1 on the turnover Gini but 6th on HHI — different metrics. Its turnover sits
+    in large, efficient firms (low markups), not monopolies. Sources: IWH/CompNet (2021); Eurostat SBS (2023).</figcaption>
+  </figure>
+  <div class="col"><div class="prose"><p>And Germany isn't middling here. On both common measures of corporate concentration it sits at or near the top, above France, Italy and Spain. So the neglect makes sense. If the small end is a rounding error in the base, leaving founders to the notary and the forms is the rational call. The concentration is hard, and it's set at the level of the whole economy.</p></div></div>
+</section>
+<section class="essay"><div class="col">
+  <div class="section-rule"><div class="n">§ 03</div><div class="t">What would change it</div></div>
+  <h2 class="section-title">Tax revenue won't supply the reason.</h2>
+  <div class="prose">
+  <p>This is where I keep coming back to Christensen. The prescription is to back the seemingly irrational low end early. Inside a company that happens because someone at the top believes in it and shields the bet. A state has no one in that chair, and tax revenue won't supply the reason: the payoff, if it lands, is decades out and credited to no one in office.</p>
+  <p>So maybe the move isn't more incentives. It's letting some risk into the system. American VC really took off once pension funds were allowed in, around 1979. Here that capital is still mostly steered away from risk. University spin-outs are the other obvious source, and they need endowments and funding rules that barely exist. None of that needs the state to pick winners or write cheques. Just looser rules on where existing capital can go.</p>
+  <p>Where the risk capital actually comes from, I haven't worked out. Pension reform seems like the obvious first move. I'm less sure what comes after.</p>
+  </div>
+</div></section>
+<section class="essay"><div class="col">
+  <div class="methods">
+    <h4>Method &amp; sources</h4>
+    <p>Everything here is computed from primary public statistics — no commercial databases. Business-turnover concentration: Destatis Umsatzsteuerstatistik (Veranlagungen), table 73321-0004, reporting year 2021 — 7.2&nbsp;million VAT-registered businesses and €8.1tn of taxable turnover. Personal income: Lohn- u. Einkommensteuerstatistik (73111-0005), 2022. Cross-country comparison: Eurostat Structural Business Statistics and the IWH/CompNet firm-concentration study.</p>
+    <ul>
+      <li>The corporate turnover Gini (~0.96) is a grouped estimate from turnover size-class bands; the true value is higher. The cross-country Gini uses five employment-size bands, so it is a lower bound — read the ranking, not the level.</li>
+      <li>HHI and the turnover Gini measure different things. Germany is #1 on the turnover Gini but 6th on HHI: its turnover sits in large, low-markup firms, not monopolised markets.</li>
+      <li>Personal income here is Gesamtbetrag der Einkünfte — pre-tax taxpayer income, Gini ~0.49. The household disposable-income Gini usually quoted for Germany is about 0.28 (Eurostat SILC), a different concept.</li>
+      <li>Turnover is a proxy for the tax and social-contribution base, not tax actually paid; the statistic also largely excludes the smallest Kleinunternehmer (under €22k).</li>
+    </ul>
+    <p>Sources: Destatis GENESIS <span class="mono">73321-0004</span> (Umsatzsteuer), <span class="mono">73111-0005</span> (Lohn-/Einkommensteuer); Eurostat <span class="mono">sbs_sc_ovw</span> (SBS, 2023) and <span class="mono">ilc_di12</span> (SILC disposable-income Gini); Bighelli, Di&nbsp;Mauro, Melitz &amp; Mertens, &ldquo;European Firm Concentration and Aggregate Productivity,&rdquo; IWH-CompNet Discussion Papers 3/2021.</p>
+
+    <h4 style="margin-top:28px">Disclaimer</h4>
+    <p>This is independent research commentary, written for general information. It is not investment, legal, tax or policy advice. All figures are the author's calculations from public statistics, may contain errors, and describe a moment in time. Statistical-office, agency and dataset names are used for identification only and imply no affiliation or endorsement. If you find an error, the underlying tables are public and I'd rather hear about it than not.</p>
+  </div>
+</div></section>
+<aside class="end-matter col-wide" aria-label="About and contact">
+  <div>
+    <h4>About this note</h4>
+    <p>Just a blog note. More on <a href="https://plvch.com">plvch.com</a>.</p>
+  </div>
+  <div>
+    <h4>Contact</h4>
+    <p>m(at)plvch.com</p>
+    <p>Berlin</p>
+  </div>
+</aside>
+<footer class="essay-foot col-wide">
+  <div>© 2026 plvch · <a href="/legal/#impressum">Impressum</a> · <a href="/legal/#datenschutz">Datenschutz</a></div>
+  <div>Research note · It's rational to ignore small business</div>
+  <div>01 / 01</div>
+</footer>
+</main>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem('oi-theme'); } catch (e) {}
+    if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+
+    function syncButtons() {
+      var t = root.getAttribute('data-theme') || 'light';
+      document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+        var active = b.getAttribute('data-theme-btn') === t;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+    syncButtons();
+    document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.getAttribute('data-theme-btn');
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem('oi-theme', t); } catch (e) {}
+        syncButtons();
+      });
+    });
+  })();
+</script>
+</body>
+</html>
