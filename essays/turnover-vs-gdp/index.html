@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The curious structure of German exports — plvch</title>
+<meta name="description" content="German business turns over about EUR 9 trillion a year, roughly twice GDP. But the figure everyone watches, exports, misses an entire economy German firms run abroad: EUR 3.4tn of turnover, invisible to GDP."/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="The curious structure of German exports"/>
+<meta property="og:description" content="German business turns over about EUR 9 trillion a year, roughly twice GDP. But the figure everyone watches, exports, misses an entire economy German firms run abroad: EUR 3.4tn of turnover, invisible to GDP."/>
+<meta property="og:url" content="https://plvch.com/turnover-vs-gdp/"/>
+<meta property="og:image" content="https://plvch.com/turnover-vs-gdp/assets/thumb.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="stylesheet" href="assets/plvch-tokens.css"/>
+<style>
+  /* =========================================================
+     The ETF Fee Paradox — long-form research note
+     Built on plvch tokens. Light/dark themes via [data-theme].
+     Same design language as Open Indexing (Vol. 01).
+     ========================================================= */
+
+  :root[data-theme="light"] {
+    --oi-page-bg:        var(--plvch-paper);
+    --oi-surface:        var(--plvch-paper);
+    --oi-surface-2:      var(--plvch-bone);
+    --oi-surface-sunk:   var(--plvch-paper-2);
+    --oi-ink-1:          var(--plvch-ink-900);
+    --oi-ink-2:          var(--plvch-ink-700);
+    --oi-ink-3:          var(--plvch-ink-500);
+    --oi-ink-4:          var(--plvch-ink-300);
+    --oi-rule:           #d8d3c4;
+    --oi-rule-strong:    var(--plvch-ink-900);
+    --oi-brand:          var(--plvch-navy-800);
+    --oi-brand-2:        var(--plvch-forest-800);
+    --oi-accent:         var(--plvch-ochre);
+    --oi-highlight:      #f1e6c4;
+    --oi-chip-bg:        var(--plvch-paper-2);
+    --oi-shadow-figure:  0 1px 2px rgba(6,26,53,0.05), 0 10px 30px -16px rgba(6,26,53,0.10);
+  }
+
+  :root[data-theme="dark"] {
+    --oi-page-bg:        #08172e;
+    --oi-surface:        #08172e;
+    --oi-surface-2:      #0e2243;
+    --oi-surface-sunk:   #0b1d39;
+    --oi-ink-1:          #f1ede2;
+    --oi-ink-2:          #c6ccd6;
+    --oi-ink-3:          #8993a3;
+    --oi-ink-4:          #5a6678;
+    --oi-rule:           #1a3056;
+    --oi-rule-strong:    #f1ede2;
+    --oi-brand:          #d9e0ec;
+    --oi-brand-2:        #6ea88a;
+    --oi-accent:         #d4a857;
+    --oi-highlight:      #2a2a14;
+    --oi-chip-bg:        #0e2243;
+    --oi-shadow-figure:  0 0 0 1px var(--oi-rule), 0 18px 40px -20px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  html[data-theme="light"], html[data-theme="light"] body { background: var(--plvch-paper) !important; }
+  html[data-theme="dark"],  html[data-theme="dark"]  body { background: #08172e !important; }
+  body {
+    color: var(--oi-ink-1);
+    transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    margin: 0;
+    font-family: var(--font-text);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .wrap {
+    --col: 720px;
+    --col-w: 940px;
+    --col-bleed: 1120px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 32px;
+    max-width: var(--col-bleed);
+  }
+  .col      { max-width: var(--col); margin-inline: auto; }
+  .col-wide { max-width: var(--col-w); margin-inline: auto; }
+
+  /* ---------------- Masthead ---------------- */
+  .masthead {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--oi-page-bg);
+    border-bottom: 1px solid var(--oi-rule);
+    backdrop-filter: blur(8px);
+  }
+  .masthead-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 32px; max-width: var(--col-bleed); margin: 0 auto; gap: 24px;
+  }
+  .wordmark {
+    font-family: var(--font-display); font-size: 18px; font-weight: 500;
+    letter-spacing: -0.04em; color: var(--oi-brand); text-decoration: none;
+  }
+  .mh-meta {
+    display: flex; gap: 32px; align-items: center;
+    font-family: var(--font-display); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  @media (max-width: 720px) { .mh-meta .hide-sm { display: none; } }
+
+  .theme-toggle {
+    display: inline-flex; border: 1px solid var(--oi-rule);
+    border-radius: 999px; padding: 2px; background: var(--oi-surface);
+  }
+  .theme-toggle button {
+    background: transparent; border: 0; cursor: pointer;
+    font-family: var(--font-display); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+    padding: 6px 12px; border-radius: 999px;
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  }
+  .theme-toggle button.active { background: var(--oi-rule-strong); color: var(--oi-page-bg); }
+  .theme-toggle button:hover:not(.active) { color: var(--oi-ink-1); }
+
+  /* ---------------- Cover ---------------- */
+  .cover { padding: 80px 0 48px; }
+  .eyebrow {
+    font-family: var(--font-display); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .eyebrow::before {
+    content: ""; width: 24px; height: 1px; background: var(--oi-rule-strong); display: inline-block;
+  }
+  .eyebrow.brand { color: var(--oi-brand-2); }
+  .eyebrow.brand::before { background: var(--oi-brand-2); }
+
+  .cover h1 {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 4.8vw, 48px);
+    font-weight: 500; letter-spacing: -0.03em; line-height: 1.02;
+    margin: 14px 0 0; color: var(--oi-ink-1); text-wrap: balance;
+  }
+  .cover .standfirst {
+    font-family: var(--font-display); font-size: 19px; line-height: 1.45;
+    font-weight: 400; color: var(--oi-ink-2); letter-spacing: -0.005em;
+    margin: 20px 0 0; max-width: 660px; text-wrap: balance;
+  }
+  .cover .byline {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 24px;
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--oi-rule);
+    font-family: var(--font-display);
+  }
+  .cover .byline .k {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  .cover .byline .v {
+    margin-top: 6px; font-size: 14px; color: var(--oi-ink-1); font-feature-settings: "tnum";
+  }
+  @media (max-width: 720px) {
+    .cover .byline { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+  }
+
+  /* ---------------- Section anatomy ---------------- */
+  section.essay { padding: 32px 0; }
+  section.essay + section.essay { padding-top: 0; }
+
+  .section-rule {
+    display: grid; grid-template-columns: 1fr 1fr; align-items: baseline; gap: 24px;
+    padding: 16px 0; border-top: 1px solid var(--oi-rule-strong); margin: 64px 0 32px;
+  }
+  .section-rule .n { font-family: var(--font-mono); font-size: 12px; color: var(--oi-ink-3); }
+  .section-rule .t {
+    font-family: var(--font-display); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--oi-ink-1); text-align: right;
+  }
+
+  h2.section-title {
+    font-family: var(--font-display); font-size: 26px; line-height: 1.2;
+    letter-spacing: -0.015em; font-weight: 500; margin: 0 0 24px;
+    color: var(--oi-ink-1); text-wrap: balance;
+  }
+  h3.sub-title {
+    font-family: var(--font-display); font-size: 18px; line-height: 1.35;
+    letter-spacing: -0.005em; font-weight: 600; margin: 36px 0 14px; color: var(--oi-ink-1);
+  }
+
+  /* ---------------- Prose ---------------- */
+  .prose p { margin: 0 0 18px; color: var(--oi-ink-2); text-wrap: pretty; }
+  .prose p strong { color: var(--oi-ink-1); font-weight: 600; }
+  .prose a {
+    color: var(--oi-ink-1); text-decoration: underline;
+    text-decoration-color: var(--oi-rule); text-decoration-thickness: 1px; text-underline-offset: 3px;
+  }
+  .prose a:hover { text-decoration-color: currentColor; color: var(--oi-brand-2); }
+  .prose.lead p:first-of-type::first-letter {
+    font-family: var(--font-display); font-weight: 500; float: left;
+    font-size: 3em; line-height: 0.95; margin: 0.06em 0.1em 0 -0.02em;
+    color: var(--oi-ink-1); letter-spacing: -0.02em;
+  }
+  .num, .stat, .table-num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  /* ---------------- Big number callouts ---------------- */
+  .stat-row {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+    grid-template-rows: auto auto 1fr; gap: 0; margin: 40px auto;
+    border-top: 1px solid var(--oi-rule-strong); border-bottom: 1px solid var(--oi-rule);
+  }
+  .stat-row .stat {
+    display: grid; grid-template-rows: subgrid; grid-row: span 3;
+    padding: 24px 20px 28px; border-right: 1px solid var(--oi-rule);
+  }
+  .stat-row .stat:last-child { border-right: 0; }
+  .stat .stat-k {
+    font-family: var(--font-display); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  .stat .stat-v {
+    font-family: var(--font-display); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.015em; line-height: 1.05; margin: 6px 0 6px;
+    color: var(--oi-ink-1); font-variant-numeric: tabular-nums;
+  }
+  .stat .stat-v.accent { color: var(--oi-brand-2); }
+  .stat .stat-c { font-size: 12px; line-height: 1.45; color: var(--oi-ink-3); }
+  @media (max-width: 720px) {
+    .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .stat-row .stat:nth-child(2) { border-right: 0; }
+    .stat-row .stat:nth-child(-n+2) { border-bottom: 1px solid var(--oi-rule); }
+  }
+
+  /* ---------------- Figure (charts) ---------------- */
+  figure.fig { margin: 40px auto; max-width: var(--col-w); }
+  figure.fig .fig-head {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: baseline;
+    padding: 0 0 12px; border-bottom: 1px solid var(--oi-rule); margin-bottom: 0;
+  }
+  figure.fig .fig-num { font-family: var(--font-mono); font-size: 11px; color: var(--oi-ink-3); }
+  figure.fig .fig-title {
+    font-family: var(--font-display); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--oi-ink-1);
+  }
+  figure.fig .fig-source {
+    font-family: var(--font-display); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--oi-ink-3);
+  }
+  figure.fig .fig-body {
+    background: var(--oi-surface); border: 1px solid var(--oi-rule); border-top: 0;
+    padding: 24px; box-shadow: var(--oi-shadow-figure);
+  }
+  figure.fig figcaption {
+    margin-top: 12px; font-size: 13px; color: var(--oi-ink-3); line-height: 1.5; max-width: 640px;
+  }
+
+  /* Legend chips, shared across figures */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 18px; margin: 0 0 18px;
+    font-family: var(--font-display); font-size: 11.5px; font-weight: 500;
+    letter-spacing: 0.03em; color: var(--oi-ink-3);
+  }
+  .legend .li { display: inline-flex; align-items: center; gap: 7px; }
+  .legend .sw { width: 14px; height: 9px; display: inline-block; }
+  .legend .sw.line { height: 2px; }
+
+  /* ---------------- Fig 01: bucket grouped bars ---------------- */
+  .bk-chart { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+  .bk-plot { position: relative; height: 300px; padding: 26px 8px 40px 44px; }
+  .bk-grid { position: absolute; inset: 26px 8px 40px 44px; pointer-events: none; }
+  .bk-gline { position: absolute; left: 0; right: 0; height: 1px; background: var(--oi-rule); }
+  .bk-glabel {
+    position: absolute; left: -44px; transform: translateY(50%);
+    width: 36px; text-align: right; font-size: 10.5px; color: var(--oi-ink-3); line-height: 1;
+  }
+  .bk-groups {
+    position: relative; height: 100%;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 26px; align-items: end;
+  }
+  .bk-group { position: relative; height: 100%; display: flex; align-items: flex-end; gap: 5px; }
+  .bk-bar { position: relative; flex: 1; height: var(--h); }
+  .bk-bar.count { background: var(--oi-ink-4); }
+  .bk-bar.aum   { background: var(--oi-brand); }
+  .bk-bar.rev   { background: var(--oi-brand-2); }
+  .bk-bar .v {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    margin-bottom: 5px; font-size: 10.5px; font-weight: 600;
+    color: var(--oi-ink-2); white-space: nowrap;
+  }
+  .bk-group .x {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    margin-top: 10px; font-size: 11px; color: var(--oi-ink-3); white-space: nowrap;
+  }
+  @media (max-width: 600px) {
+    .bk-plot { height: 240px; padding-left: 36px; }
+    .bk-grid { inset-inline-start: 36px; }
+    .bk-glabel { left: -36px; }
+    .bk-groups { gap: 10px; }
+    .bk-bar .v { font-size: 8.5px; }
+    .bk-group .x { font-size: 9px; }
+  }
+
+  /* ---------------- SVG line charts (Figs 02, 04) ---------------- */
+  .lc-svg { display: block; width: 100%; height: auto; }
+  .lc-svg .grid   { stroke: var(--oi-rule); stroke-width: 1; }
+  .lc-svg .axis   { fill: var(--oi-ink-3); font-family: var(--font-display); font-size: 11px; }
+  .lc-svg .lbl    { font-family: var(--font-display); font-size: 12px; font-weight: 600; }
+  .lc-svg .lbl-sub { font-family: var(--font-display); font-size: 10.5px; font-weight: 400; }
+  .lc-svg .l-med  { stroke: var(--oi-brand);  fill: none; stroke-width: 2.25; stroke-linejoin: round; }
+  .lc-svg .l-ew   { stroke: var(--oi-brand);  fill: none; stroke-width: 1.25; stroke-dasharray: 3 4; opacity: .55; }
+  .lc-svg .l-aw   { stroke: var(--oi-brand-2); fill: none; stroke-width: 2.25; stroke-linejoin: round; }
+  .lc-svg .l-act  { stroke: var(--oi-accent); fill: none; stroke-width: 1.75; stroke-linejoin: round; }
+  .lc-svg .l-pas  { stroke: var(--oi-brand-2); fill: none; stroke-width: 1.75; stroke-linejoin: round; }
+  .lc-svg .t-med  { fill: var(--oi-brand); }
+  .lc-svg .t-aw   { fill: var(--oi-brand-2); }
+  .lc-svg .t-act  { fill: var(--oi-accent); }
+  .lc-svg .t-pas  { fill: var(--oi-brand-2); }
+  .lc-svg .dot-med { fill: var(--oi-brand); }
+  .lc-svg .dot-aw  { fill: var(--oi-brand-2); }
+  .lc-svg .gap-brace { stroke: var(--oi-ink-3); stroke-width: 1; fill: none; }
+  .lc-svg .gap-note  { fill: var(--oi-ink-3); font-family: var(--font-display); font-size: 11px; }
+
+  /* ---------------- Fig 03: launch stacked bars ---------------- */
+  .lm-chart { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+  .lm-plot { position: relative; height: 300px; padding: 30px 8px 56px 44px; }
+  .lm-grid { position: absolute; inset: 30px 8px 56px 44px; pointer-events: none; }
+  .lm-gline { position: absolute; left: 0; right: 0; height: 1px; background: var(--oi-rule); }
+  .lm-glabel {
+    position: absolute; left: -44px; transform: translateY(50%);
+    width: 36px; text-align: right; font-size: 10.5px; color: var(--oi-ink-3); line-height: 1;
+  }
+  .lm-bars {
+    position: relative; height: 100%;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 22px; align-items: end;
+  }
+  .lm-bar { position: relative; height: var(--h); display: flex; flex-direction: column; }
+  .lm-bar .seg-act { background: var(--oi-accent); height: var(--act); }
+  .lm-bar .seg-pas { background: var(--oi-brand); flex: 1; }
+  .lm-bar .v {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    margin-bottom: 6px; font-size: 11px; font-weight: 600; color: var(--oi-ink-1); white-space: nowrap;
+  }
+  .lm-bar .x {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    margin-top: 8px; font-size: 11px; color: var(--oi-ink-3); line-height: 1.4;
+    text-align: center; white-space: nowrap;
+  }
+  .lm-bar .x .share { display: block; font-weight: 600; color: var(--oi-accent); }
+  @media (max-width: 600px) {
+    .lm-plot { height: 250px; padding-left: 36px; }
+    .lm-grid { inset-inline-start: 36px; }
+    .lm-glabel { left: -36px; }
+    .lm-bars { gap: 8px; }
+    .lm-bar .v { font-size: 9.5px; }
+    .lm-bar .x { font-size: 9px; }
+  }
+
+  /* ---------------- Fig 06: sponsor arrows (book -> launch) ---------------- */
+  .db { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+  .db-row {
+    display: grid; grid-template-columns: 150px 1fr 54px; gap: 18px; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--oi-rule);
+  }
+  .db-name { font-size: 13px; font-weight: 600; color: var(--oi-ink-1); letter-spacing: -0.005em; }
+  .db-name small { display: block; font-size: 10.5px; font-weight: 400; color: var(--oi-ink-3); letter-spacing: 0.02em; }
+  .db-track { position: relative; height: 32px; --dir: var(--oi-brand-2); }
+  .db-track.down { --dir: var(--oi-ink-3); }
+  .db-track::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%;
+    height: 1px; background: var(--oi-rule);
+  }
+  .db-link {
+    position: absolute; top: 50%; height: 2.5px; transform: translateY(-50%);
+    background: var(--dir);
+  }
+  .db-track:not(.down) .db-link { left: var(--a); width: calc(var(--b) - var(--a) - 0.6%); }
+  .db-track.down       .db-link { left: calc(var(--b) + 0.6%); width: calc(var(--a) - var(--b) - 0.6%); }
+  .db-arrow {
+    position: absolute; top: 50%; left: var(--b);
+    width: 0; height: 0; border: 5.5px solid transparent;
+  }
+  .db-track:not(.down) .db-arrow { border-left: 8px solid var(--dir); transform: translate(-2px, -50%); }
+  .db-track.down       .db-arrow { border-right: 8px solid var(--dir); transform: translate(-7px, -50%); }
+  .db-dot {
+    position: absolute; top: 50%; left: var(--a); width: 10px; height: 10px;
+    border-radius: 50%; transform: translate(-50%, -50%); background: var(--oi-brand);
+  }
+  .db-val {
+    position: absolute; top: 50%; transform: translate(-50%, -200%);
+    font-size: 10.5px; font-weight: 600; white-space: nowrap;
+  }
+  .db-val.book   { left: var(--a); color: var(--oi-brand); }
+  .db-val.launch { left: var(--b); color: var(--dir); }
+  .db-val.below  { transform: translate(-50%, 100%); }
+  .db-mult {
+    font-family: var(--font-mono); font-size: 12px; text-align: right;
+    color: var(--oi-brand-2); font-weight: 500;
+  }
+  .db-mult.down { color: var(--oi-ink-3); }
+  .db-row.mkt {
+    border-bottom: 0; border-top: 1px solid var(--oi-rule-strong);
+    background: var(--oi-highlight); margin-top: 6px; padding: 14px 8px;
+  }
+  .db-row.mkt .db-name, .db-row.mkt .db-mult { font-weight: 700; }
+  .db-row.mkt .db-track::before { background: color-mix(in oklab, var(--oi-ink-4) 40%, transparent); }
+  .db-note {
+    position: absolute; top: 50%; transform: translateY(-200%);
+    font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--oi-ink-3); white-space: nowrap;
+  }
+  .db-axis {
+    display: grid; grid-template-columns: 150px 1fr 54px; gap: 18px; margin-top: 8px;
+  }
+  .db-axis .scale {
+    position: relative; height: 16px;
+    font-size: 10px; color: var(--oi-ink-3);
+  }
+  .db-axis .scale span { position: absolute; transform: translateX(-50%); }
+  @media (max-width: 600px) {
+    .db-row, .db-axis { grid-template-columns: 86px 1fr 36px; gap: 10px; }
+    .db-name { font-size: 11px; }
+    .db-name small { display: none; }
+    .db-val { font-size: 9px; }
+    .db-mult { font-size: 10px; }
+    .db-note { display: none; }
+  }
+
+  /* ---------------- Fig 06: sponsor table ---------------- */
+  table.spon {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--font-display); font-size: 13.5px; font-variant-numeric: tabular-nums;
+  }
+  table.spon th {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--oi-ink-3); text-align: right; padding: 0 12px 10px;
+    border-bottom: 1px solid var(--oi-rule-strong); white-space: nowrap;
+  }
+  table.spon th:first-child { text-align: left; padding-left: 0; }
+  table.spon td {
+    padding: 9px 12px; text-align: right; color: var(--oi-ink-2);
+    border-bottom: 1px solid var(--oi-rule); white-space: nowrap;
+  }
+  table.spon td:first-child { text-align: left; padding-left: 0; font-weight: 600; color: var(--oi-ink-1); }
+  table.spon td.hi { color: var(--oi-brand-2); font-weight: 600; }
+  table.spon tr.mkt td {
+    border-top: 1px solid var(--oi-rule-strong); border-bottom: 0;
+    background: var(--oi-highlight); font-weight: 600; color: var(--oi-ink-1);
+  }
+  table.spon tr.mkt td:first-child { padding-left: 8px; }
+  table.spon tr.mkt td:last-child { padding-right: 8px; }
+  .tbl-scroll { overflow-x: auto; }
+  @media (max-width: 600px) {
+    table.spon { font-size: 11.5px; }
+    table.spon td, table.spon th { padding: 7px 8px; }
+  }
+
+  /* ---------------- Takeaways ---------------- */
+  .takeaways { margin: 8px 0 40px; }
+  .takeaways .tk {
+    padding: 24px 0; border-top: 1px solid var(--oi-rule);
+    display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: baseline;
+  }
+  .takeaways .tk:first-of-type { border-top: 0; padding-top: 8px; }
+  .takeaways .tk .n { font-family: var(--font-mono); font-size: 13px; color: var(--oi-brand-2); }
+  .takeaways .tk h3 {
+    font-family: var(--font-display); font-size: 17px; font-weight: 600;
+    letter-spacing: -0.005em; margin: 0 0 8px; color: var(--oi-ink-1);
+  }
+  .takeaways .tk p { margin: 0; font-size: 15.5px; color: var(--oi-ink-2); }
+
+  /* ---------------- Methods ---------------- */
+  .methods {
+    margin: 64px auto 0; padding: 28px 0 8px;
+    border-top: 1px solid var(--oi-rule-strong);
+  }
+  .methods h4 {
+    font-family: var(--font-display); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-1); margin: 0 0 14px;
+  }
+  .methods p, .methods li { font-size: 13px; line-height: 1.6; color: var(--oi-ink-3); }
+  .methods p { margin: 0 0 10px; }
+  .methods ul { margin: 0; padding-left: 18px; }
+  .methods li { margin-bottom: 6px; }
+
+  /* ---------------- About & contact ---------------- */
+  .end-matter {
+    margin-top: 72px; padding: 28px 0 32px;
+    border-top: 1px solid var(--oi-rule-strong);
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 80px;
+  }
+  .end-matter h4 {
+    font-family: var(--font-display); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--oi-ink-3);
+    margin: 0 0 12px;
+  }
+  .end-matter p {
+    margin: 0 0 6px; font-size: 13px; line-height: 1.55; color: var(--oi-ink-2);
+  }
+  .end-matter a {
+    color: inherit; text-decoration: underline; text-decoration-color: var(--oi-rule);
+    text-decoration-thickness: 1px; text-underline-offset: 3px;
+  }
+  .end-matter a:hover { text-decoration-color: currentColor; color: var(--oi-brand-2); }
+  @media (max-width: 600px) {
+    .end-matter { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* ---------------- Footer ---------------- */
+  footer.essay-foot {
+    margin-top: 64px; padding: 24px 0 48px;
+    border-top: 1px solid var(--oi-rule);
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    font-family: var(--font-display); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--oi-ink-3);
+  }
+
+  ::selection { background: var(--oi-brand-2); color: var(--oi-page-bg); }
+  @media print { .masthead, .theme-toggle, footer.essay-foot { display: none; } }
+
+/* ---- codex figures, scoped under .gx (light-only; dark = TODO) ---- */
+.gx *{box-sizing: border-box;}
+.gx body, .gx body{margin: 0;
+  background: var(--oi-surface);
+  color: var(--oi-ink-1);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;}
+.gx body{padding: 36px 24px 72px;}
+.gx .page{max-width: 980px;
+  margin: 0 auto;}
+.gx .page-head{border-bottom: 1px solid var(--oi-rule-strong);
+  margin-bottom: 28px;
+  padding-bottom: 16px;}
+.gx .eyebrow, .gx .source, .gx .tag, .gx .axis, .gx .fig-num{letter-spacing: 0.11em;
+  text-transform: uppercase;}
+.gx .eyebrow{color: var(--oi-brand-2);
+  font-size: 11px;
+  font-weight: 700;}
+.gx h1{margin: 6px 0 0;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.12;
+  font-weight: 650;}
+.gx .link-list{display: grid;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 0;
+  list-style: none;}
+.gx .link-list a{display: block;
+  border: 1px solid var(--oi-rule);
+  background: var(--oi-surface-2);
+  color: var(--oi-ink-1);
+  padding: 14px 16px;
+  text-decoration: none;}
+.gx .fig{margin: 0;}
+.gx .fig-head{display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+  border-bottom: 1px solid var(--oi-rule);
+  padding-bottom: 12px;}
+.gx .fig-num{color: var(--oi-ink-3);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;}
+.gx .fig-title{color: var(--oi-ink-1);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;}
+.gx .source{color: var(--oi-ink-3);
+  font-size: 10px;
+  font-weight: 700;
+  text-align: right;}
+.gx .fig-body{border: 1px solid var(--oi-rule);
+  border-top: 0;
+  background: var(--oi-surface);
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(6, 26, 53, 0.05), 0 10px 30px -16px rgba(6, 26, 53, 0.1);}
+.gx figcaption{max-width: 760px;
+  margin-top: 12px;
+  color: var(--oi-ink-3);
+  font-size: 13px;
+  line-height: 1.48;}
+.gx .legend{display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  margin: 0 0 16px;
+  color: var(--oi-ink-3);
+  font-size: 11.5px;
+  font-weight: 600;}
+.gx .legend span{display: inline-flex;
+  align-items: center;
+  gap: 7px;}
+.gx .swatch{width: 18px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 1px;
+  background: currentColor;}
+.gx .line-swatch{width: 22px;
+  height: 0;
+  border-top: 3px solid currentColor;}
+.gx .dash-swatch{width: 22px;
+  height: 0;
+  border-top: 3px dashed currentColor;}
+.gx .chart{display: block;
+  width: 100%;
+  height: auto;}
+.gx .chart .grid{stroke: var(--oi-rule);
+  stroke-width: 1;}
+.gx .chart .axis-line{stroke: var(--oi-rule-strong);
+  stroke-width: 1.1;}
+.gx .chart .axis{fill: var(--oi-ink-3);
+  font-size: 11px;}
+.gx .chart .label{fill: var(--oi-ink-1);
+  font-size: 13px;
+  font-weight: 650;}
+.gx .chart .sub{fill: var(--oi-ink-3);
+  font-size: 10.5px;}
+.gx .chart .value{fill: var(--oi-ink-1);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;}
+.gx .chart .small-value{fill: var(--oi-ink-2);
+  font-size: 12px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;}
+.gx .chart .note{fill: var(--oi-ink-3);
+  font-size: 11px;}
+.gx .chart .tag{font-size: 9px;
+  font-weight: 750;}
+.gx .chart .white{fill: #fff;}
+.gx .chart .navy{fill: var(--oi-brand);}
+.gx .chart .forest{fill: var(--oi-brand-2);}
+.gx .chart .ochre{fill: var(--oi-accent);}
+.gx .chart .hatch{fill: url(#hatch);}
+.gx .chart .turn-line{fill: none;
+  stroke: var(--oi-brand-soft);
+  stroke-width: 2.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .gdp-line{fill: none;
+  stroke: var(--oi-brand-2-line);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .abt-line{fill: none;
+  stroke: var(--oi-accent);
+  stroke-width: 3.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .abe-line{fill: none;
+  stroke: var(--oi-accent);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .dom-line{fill: none;
+  stroke: var(--oi-brand-soft);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .exp-line{fill: none;
+  stroke: var(--oi-brand-2-soft);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .gdp-index-line{fill: none;
+  stroke: var(--oi-brand-line);
+  stroke-width: 1.8;
+  stroke-dasharray: 6 5;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+.gx .chart .jobs-line{fill: none;
+  stroke: var(--oi-ink-4);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;}
+@media (max-width: 680px){.gx body{padding: 24px 12px 48px;}
+.gx .fig-head{grid-template-columns: 1fr;
+    gap: 4px;}
+.gx .source{text-align: left;}
+.gx .fig-body{padding: 14px;}}
+.gx{margin:0}
+.gx .fig-body{overflow-x:auto}
+.gx{--oi-brand-soft:#13345f;--oi-brand-line:#2f5790;--oi-brand-2-soft:#245a44;--oi-brand-2-line:#3e7a5f}
+[data-theme="dark"] .gx{--oi-brand-soft:#86a3cf;--oi-brand-line:#a6bce0;--oi-brand-2-soft:#7fb79e;--oi-brand-2-line:#94c3ac}
+[data-theme="dark"] .gx .white{fill:var(--oi-page-bg)}
+[data-theme="dark"] .gx .fig-body{box-shadow:var(--oi-shadow-figure)}
+</style>
+</head>
+<body>
+<header class="masthead"><div class="masthead-inner">
+  <a class="wordmark" href="https://plvch.com">plvch</a>
+  <div class="mh-meta">
+    <span class="hide-sm">Note · Germany</span><span>2026</span>
+    <span class="theme-toggle">
+      <button data-theme-btn="light" class="active" aria-pressed="true">Light</button>
+      <button data-theme-btn="dark" aria-pressed="false">Dark</button>
+    </span>
+  </div>
+</div></header>
+<main class="wrap">
+<section class="cover col">
+  <div class="eyebrow brand">Note · Germany</div>
+  <h1>The curious structure of German exports</h1>
+  <div class="byline">
+    <div><div class="k">Author</div><div class="v">plvch</div></div>
+    <div><div class="k">Published</div><div class="v">June 2026</div></div>
+    <div><div class="k">Reading</div><div class="v">6 min</div></div>
+    <div><div class="k">Data</div><div class="v">Destatis · Eurostat · Bundesbank</div></div>
+  </div>
+</section>
+<section class="essay"><div class="col"><div class="section-rule"><div class="n">§ 01</div><div class="t">The turnover number</div></div><div class="prose"><p>The number that sent me into this started as an oddity in the tax tables: the total taxable sales German businesses report to the VAT authorities. It now runs close to nine trillion euros. For scale, German GDP is about four trillion, and goods exports in 2023 were 1.56 trillion.</p><p>It is an odd place to start, because turnover is not a number people argue about. It does not show up in debates about the German model. But once you look at it, the usual export story gets more interesting.</p><p>First, a caveat: turnover is not GDP under another name. It is a gross transaction figure. A steel producer sells to a parts maker, the parts maker to a car company, the car company to a dealer, and each sale is counted in full, three times over in that chain. GDP is stricter. It counts only the value added at each step.</p><p>So turnover running to about twice GDP does not mean Germany is twice as rich as the national accounts say. It means the economy is full of intermediate transactions. Turnover measures how much value moves through firms, not how much new value they create. The ratio still tells you something: it is a picture of the gross structure underneath.</p></div></div><div class="gx col-wide"><figure class="fig">
+      <div class="fig-head">
+        <div class="fig-num">Fig 1</div>
+        <div class="fig-title">Gross output vs value added - why turnover is about 2x GDP</div>
+        <div class="source">Schematic - anchored 2023</div>
+      </div>
+      <div class="fig-body">
+        <div class="legend">
+          <span style="color: var(--oi-accent)"><i class="swatch"></i>margin, counted in GDP</span>
+          <span style="color: var(--oi-ink-4)"><i class="swatch" style="background: var(--oi-surface-sunk); border: 1px solid var(--oi-rule)"></i>bought-in inputs</span>
+          <span style="color: var(--oi-brand)"><i class="line-swatch"></i>full sale, counted in turnover</span>
+        </div>
+        <svg class="chart" viewBox="0 0 900 380" role="img" aria-label="A four-stage supply chain shows turnover counting every full sale and GDP counting only each stage's margin. Sales sum to EUR 80k and margins sum to EUR 40k, a two times gap.">
+          <text class="note" x="230" y="30">Each row is one sale. Ochre is the new value added at that stage; grey was already bought from upstream.</text>
+
+          <text class="label" x="212" y="72" text-anchor="end">Steel &amp; raw materials</text>
+          <rect x="230" y="54" width="0" height="24" fill="var(--oi-surface-sunk)" stroke="var(--oi-rule)"/>
+          <rect x="230.0" y="54" width="38.2" height="24" fill="var(--oi-accent)"/>
+          <rect x="230" y="54" width="38.2" height="24" fill="none" stroke="var(--oi-brand-soft)" stroke-width="1.4"/>
+          <text class="value" x="279" y="71">&euro;4k</text>
+
+          <text class="label" x="212" y="118" text-anchor="end">Parts &amp; components</text>
+          <rect x="230" y="100" width="38.2" height="24" fill="var(--oi-surface-sunk)" stroke="var(--oi-rule)"/>
+          <rect x="268.2" y="100" width="57.3" height="24" fill="var(--oi-accent)"/>
+          <rect x="230" y="100" width="95.6" height="24" fill="none" stroke="var(--oi-brand-soft)" stroke-width="1.4"/>
+          <text class="value" x="336" y="117">&euro;10k</text>
+
+          <text class="label" x="212" y="164" text-anchor="end">Carmaker - assembly</text>
+          <rect x="230" y="146" width="95.6" height="24" fill="var(--oi-surface-sunk)" stroke="var(--oi-rule)"/>
+          <rect x="325.6" y="146" width="152.9" height="24" fill="var(--oi-accent)"/>
+          <rect x="230" y="146" width="248.4" height="24" fill="none" stroke="var(--oi-brand-soft)" stroke-width="1.4"/>
+          <text class="value" x="489" y="163">&euro;26k</text>
+
+          <text class="label" x="212" y="210" text-anchor="end">Dealer - retail</text>
+          <rect x="230" y="192" width="248.4" height="24" fill="var(--oi-surface-sunk)" stroke="var(--oi-rule)"/>
+          <rect x="478.4" y="192" width="133.8" height="24" fill="var(--oi-accent)"/>
+          <rect x="230" y="192" width="382.2" height="24" fill="none" stroke="var(--oi-brand-soft)" stroke-width="1.4"/>
+          <text class="value" x="623" y="209">&euro;40k</text>
+
+          <line class="grid" x1="230" y1="232" x2="660" y2="232"/>
+          <text class="axis" x="230" y="248" text-anchor="middle">0</text>
+          <text class="axis" x="325.6" y="248" text-anchor="middle">10</text>
+          <text class="axis" x="421.1" y="248" text-anchor="middle">20</text>
+          <text class="axis" x="516.7" y="248" text-anchor="middle">30</text>
+          <text class="axis" x="612.2" y="248" text-anchor="middle">40</text>
+          <text class="axis" x="682" y="248" text-anchor="start">&euro;k per car</text>
+
+          <line class="axis-line" x1="230" y1="270" x2="660" y2="270"/>
+          <text class="tag axis" x="212" y="274" text-anchor="end">Totals</text>
+
+          <text class="label" x="212" y="306" text-anchor="end">TURNOVER</text>
+          <rect x="230" y="288" width="382.2" height="26" fill="var(--oi-brand)"/>
+          <text class="small-value white" x="242" y="306">&euro;80k - every sale, summed</text>
+
+          <text class="label" x="212" y="344" text-anchor="end">GDP</text>
+          <rect x="230" y="326" width="191.1" height="26" fill="var(--oi-brand-2)"/>
+          <text class="small-value white" x="242" y="344">&euro;40k - margins only</text>
+          <text x="650" y="329" fill="var(--oi-accent)" font-size="28" font-weight="750">= 2x</text>
+          <text class="note" x="650" y="348">same car, different accounting</text>
+        </svg>
+      </div>
+      <figcaption>Turnover records the full price at each handoff. GDP keeps only the margin each step adds. The four illustrative sales sum to EUR 80k; the four margins sum to EUR 40k. The 2023 whole-economy anchor is similar: domestic turnover EUR 8.49tn vs GDP EUR 4.22tn, or 2.01x. Stage values are schematic.</figcaption>
+    </figure></div></section><section class="essay"><div class="col"><div class="section-rule"><div class="n">§ 02</div><div class="t">Why it moves differently</div></div><div class="prose"><p>That distinction makes turnover useful in a different way. The turnover-to-GDP ratio is surprisingly stable, usually close to two. What is interesting is how it behaves in a crisis. Because turnover carries the full price of every transaction, it reacts strongly when input prices move through supply chains, so price shocks show up sharply.</p><p>In 2009, when oil and world trade fell hard, turnover dropped 9.5 percent while GDP fell 3.6. In 2022, when energy prices tore through the economy, turnover rose about 15 percent against GDP's 8. In 2020 the pandemic was a shock to real activity, not to prices, and the two lines moved much closer together.</p><p>So turnover is not better than GDP. It answers a different question: how much transaction volume German firms push through the domestic economy, and how exposed that volume is to prices.</p></div></div><div class="gx col-wide"><figure class="fig">
+      <div class="fig-head">
+        <div class="fig-num">Fig 2</div>
+        <div class="fig-title">Turnover swings about twice as hard as GDP</div>
+        <div class="source">YoY % - 2005 to 2024</div>
+      </div>
+      <div class="fig-body">
+        <div class="legend">
+          <span style="color: var(--oi-brand-soft)"><i class="line-swatch"></i>Business turnover</span>
+          <span style="color: var(--oi-brand-2-line)"><i class="line-swatch"></i>GDP</span>
+          <span>std dev: 5.2 pp vs 2.7 pp</span>
+        </div>
+        <svg class="chart" viewBox="0 0 920 440" role="img" aria-label="Two-line chart of German business turnover and GDP year-on-year changes from 2005 to 2024. Turnover is more volatile, falling 9.5 percent in 2009 and rising 15.4 percent in 2022, while GDP moves less.">
+          <line class="grid" x1="72" y1="368.0" x2="806" y2="368.0"/>
+          <line class="grid" x1="72" y1="312.6" x2="806" y2="312.6"/>
+          <line class="axis-line" x1="72" y1="257.3" x2="806" y2="257.3"/>
+          <line class="grid" x1="72" y1="201.9" x2="806" y2="201.9"/>
+          <line class="grid" x1="72" y1="146.6" x2="806" y2="146.6"/>
+          <line class="grid" x1="72" y1="91.2" x2="806" y2="91.2"/>
+
+          <text class="axis" x="60" y="372" text-anchor="end">-10</text>
+          <text class="axis" x="60" y="316.6" text-anchor="end">-5</text>
+          <text class="axis" x="60" y="261.3" text-anchor="end">0</text>
+          <text class="axis" x="60" y="205.9" text-anchor="end">+5</text>
+          <text class="axis" x="60" y="150.6" text-anchor="end">+10</text>
+          <text class="axis" x="60" y="95.2" text-anchor="end">+15</text>
+          <text class="axis" x="50" y="62">YoY %</text>
+
+          <polyline class="gdp-line" points="72.0,239.6 110.6,207.5 149.3,203.0 187.9,239.6 226.5,297.1 265.2,205.2 303.8,200.8 342.4,234.0 381.1,229.6 419.7,211.9 458.3,221.9 496.9,219.6 535.6,206.4 574.2,224.1 612.8,224.1 651.5,288.3 690.1,183.1 728.7,164.3 767.4,190.9 806.0,228.5"/>
+          <polyline class="turn-line" points="72.0,200.8 110.6,169.8 149.3,208.6 187.9,200.8 226.5,362.5 265.2,179.8 303.8,163.2 342.4,245.1 381.1,255.1 419.7,237.4 458.3,235.1 496.9,239.6 535.6,207.5 574.2,211.9 612.8,232.9 651.5,300.5 690.1,149.9 728.7,86.8 767.4,235.1 806.0,290.5"/>
+
+          <g fill="var(--oi-brand-soft)">
+            <circle cx="72.0" cy="200.8" r="2.6"/><circle cx="110.6" cy="169.8" r="2.6"/><circle cx="149.3" cy="208.6" r="2.6"/><circle cx="187.9" cy="200.8" r="2.6"/><circle cx="226.5" cy="362.5" r="3.6"/><circle cx="265.2" cy="179.8" r="2.6"/><circle cx="303.8" cy="163.2" r="2.6"/><circle cx="342.4" cy="245.1" r="2.6"/><circle cx="381.1" cy="255.1" r="2.6"/><circle cx="419.7" cy="237.4" r="2.6"/><circle cx="458.3" cy="235.1" r="2.6"/><circle cx="496.9" cy="239.6" r="2.6"/><circle cx="535.6" cy="207.5" r="2.6"/><circle cx="574.2" cy="211.9" r="2.6"/><circle cx="612.8" cy="232.9" r="2.6"/><circle cx="651.5" cy="300.5" r="3.2"/><circle cx="690.1" cy="149.9" r="2.6"/><circle cx="728.7" cy="86.8" r="3.6"/><circle cx="767.4" cy="235.1" r="2.6"/><circle cx="806.0" cy="290.5" r="3.2"/>
+          </g>
+          <g fill="var(--oi-brand-2-line)">
+            <circle cx="72.0" cy="239.6" r="2.2"/><circle cx="110.6" cy="207.5" r="2.2"/><circle cx="149.3" cy="203.0" r="2.2"/><circle cx="187.9" cy="239.6" r="2.2"/><circle cx="226.5" cy="297.1" r="2.8"/><circle cx="265.2" cy="205.2" r="2.2"/><circle cx="303.8" cy="200.8" r="2.2"/><circle cx="342.4" cy="234.0" r="2.2"/><circle cx="381.1" cy="229.6" r="2.2"/><circle cx="419.7" cy="211.9" r="2.2"/><circle cx="458.3" cy="221.9" r="2.2"/><circle cx="496.9" cy="219.6" r="2.2"/><circle cx="535.6" cy="206.4" r="2.2"/><circle cx="574.2" cy="224.1" r="2.2"/><circle cx="612.8" cy="224.1" r="2.2"/><circle cx="651.5" cy="288.3" r="2.8"/><circle cx="690.1" cy="183.1" r="2.2"/><circle cx="728.7" cy="164.3" r="2.8"/><circle cx="767.4" cy="190.9" r="2.2"/><circle cx="806.0" cy="228.5" r="2.2"/>
+          </g>
+
+          <text class="value" x="166" y="348" text-anchor="middle">2009: -9.5</text>
+          <text class="note" x="166" y="364" text-anchor="middle">oil and trade</text>
+
+          <text class="value" x="728.7" y="72" text-anchor="middle">2022: +15.4</text>
+          <text class="note" x="728.7" y="54" text-anchor="middle">energy shock</text>
+
+          <text class="note" x="651.5" y="325" text-anchor="middle">2020 COVID</text>
+          <text class="note" x="651.5" y="340" text-anchor="middle">lines converge</text>
+
+          <text class="axis" x="72.0" y="392" text-anchor="middle">2005</text>
+          <text class="axis" x="226.5" y="392" text-anchor="middle">2009</text>
+          <text class="axis" x="381.1" y="392" text-anchor="middle">2013</text>
+          <text class="axis" x="535.6" y="392" text-anchor="middle">2017</text>
+          <text class="axis" x="651.5" y="392" text-anchor="middle">2020</text>
+          <text class="axis" x="728.7" y="392" text-anchor="middle">2022</text>
+          <text class="axis" x="806.0" y="392" text-anchor="middle">2024</text>
+        </svg>
+      </div>
+      <figcaption>Turnover is plotted as raw year-on-year change except 2021, where the break-adjusted +9.7% removes the financial-sector reclassification. The large divergences cluster in price shocks: 2009 oil/trade and 2022 energy. In 2020, a real activity shock with quieter prices, turnover and GDP move much closer together. Source: Destatis 73311-0001 and FRED NGDPSAXDCDEQ.</figcaption>
+    </figure></div></section><section class="essay"><div class="col"><div class="section-rule"><div class="n">§ 03</div><div class="t">The part outside Germany</div></div><div class="prose"><p>This is where exports enter the story.</p><p>Germany is usually described through its exports, and fairly so. The country shipped 1.56 trillion euros of goods in 2023 and runs large trade surpluses. "Export economy" is not wrong.</p><p>But exports are a narrow window. Domestic taxable turnover is roughly five times goods exports. Much of that is double-counting, some of it is domestic business-to-business churn. Still, the comparison is a useful reminder: the export figure is not the whole operating footprint of German firms, even inside Germany.</p><p>Now the tricky part. German firms do a large amount of business that sits in no German turnover figure, no GDP figure, and none of the metrics you see in daily headlines or in the gloomier books about German decline.</p><p>It has a name: outward Foreign Affiliate Statistics, or FATS. These track the companies abroad that German parents control, their sales, their staff, their locations. If BMW builds and sells a car in the United States through a US subsidiary, that activity belongs to US GDP. Not German GDP. Not German turnover. Not a German export, unless something actually crosses the border from Germany.</p><p>In 2023, German-controlled affiliates abroad turned over 3.39 trillion euros and employed 6.7 million people. That is about 40 percent of German domestic turnover and around 80 percent of German GDP, though the GDP comparison mixes a gross sales figure with a value-added one.</p></div></div><div class="gx col-wide"><figure class="fig">
+      <div class="fig-head">
+        <div class="fig-num">Fig 3</div>
+        <div class="fig-title">The two economies - and the one nobody counts</div>
+        <div class="source">EUR trillion - 2023</div>
+      </div>
+      <div class="fig-body">
+        <svg class="chart" viewBox="0 0 900 390" role="img" aria-label="Bubble size comparison of 2023 German economic figures. Bubble area is proportional to euro trillions: domestic turnover 8.49, GDP 4.22, turnover abroad 3.39, and goods exports 1.56.">
+          <defs>
+            <pattern id="hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+              <rect width="8" height="8" fill="var(--oi-highlight)"/>
+              <line x1="0" y1="0" x2="0" y2="8" stroke="var(--oi-accent)" stroke-width="2" opacity="0.55"/>
+            </pattern>
+          </defs>
+
+          <text class="axis" x="450" y="30" text-anchor="middle">Bubble area = EUR trillion, 2023</text>
+
+          <circle cx="212" cy="192" r="120" fill="var(--oi-brand)"/>
+          <text class="tag white" x="212" y="154" text-anchor="middle">VISIBLE</text>
+          <text class="label white" x="212" y="182" text-anchor="middle">Domestic turnover</text>
+          <text class="small-value white" x="212" y="206" text-anchor="middle">EUR 8.49tn</text>
+          <text class="sub white" x="212" y="225" text-anchor="middle" opacity="0.76">all sales on German soil</text>
+
+          <circle cx="520" cy="137" r="85" fill="var(--oi-brand-2)"/>
+          <text class="tag white" x="520" y="110" text-anchor="middle">VISIBLE</text>
+          <text class="label white" x="520" y="137" text-anchor="middle">GDP</text>
+          <text class="small-value white" x="520" y="160" text-anchor="middle">EUR 4.22tn</text>
+          <text class="sub white" x="520" y="178" text-anchor="middle" opacity="0.76">value added</text>
+
+          <circle cx="695" cy="230" r="76" fill="url(#hatch)" stroke="var(--oi-accent)" stroke-width="2" stroke-dasharray="5 4"/>
+          <text class="tag" x="695" y="204" text-anchor="middle" fill="var(--oi-accent)">GHOST</text>
+          <text class="label" x="695" y="230" text-anchor="middle">Turnover abroad</text>
+          <text class="small-value" x="695" y="253" text-anchor="middle">EUR 3.39tn</text>
+          <text class="sub" x="695" y="271" text-anchor="middle">German-owned affiliates</text>
+
+          <circle cx="510" cy="283" r="51" fill="var(--oi-brand-2-soft)"/>
+          <text class="label white" x="510" y="281" text-anchor="middle">Exports</text>
+          <text class="small-value white" x="510" y="302" text-anchor="middle">EUR 1.56tn</text>
+
+          <line class="grid" x1="250" y1="354" x2="650" y2="354"/>
+          <text class="note" x="450" y="374" text-anchor="middle">Abroad turnover is 40% of domestic turnover, 2.2x goods exports, and about 80% of GDP.</text>
+        </svg>
+      </div>
+      <figcaption>Bubble areas are proportional to the 2023 EUR trillion values. All bubbles are gross turnover except GDP, which is value added. Do not add the visible and ghost bubbles: they overlap through intra-group sales. Sources: Destatis Umsatzsteuer, FRED GDP, Eurostat/Bundesbank Outward FATS, and Destatis foreign trade.</figcaption>
+    </figure></div><div class="col"><div class="prose"><p>A car company is the easiest way to see it.</p><p>In the old picture, a German manufacturer builds a car in Germany and exports it. The finished car crosses the border and shows up in German turnover and the trade statistics.</p><p>In the current picture, the same firm keeps design, engineering, headquarters, platform work, software, finance, and some of the hard components in Germany. Assembly and volume production move to a plant abroad that the firm still controls. The German side exports components or invoices services to that plant. But the finished car is built and sold in South Carolina, Mexico, China, or somewhere else.</p><p>The point is that statistics are territorial, and the structure above barely touches headline GDP. The split happens at the border. The home side shows up in German GDP, turnover, exports, and jobs. The foreign side shows up only in the host country's GDP and in outward affiliate statistics.</p><p>What interests me is the size of this still-German economy that is basically invisible to the usual macro figures. It suggests the corporate side of the country is more decoupled from the domestic economy than GDP or CPI would have you think. Individually, these firms hold a large share of their resources, employment, and capital base outside the home jurisdiction and the rules that come with it.</p></div></div><div class="gx col-wide"><figure class="fig">
+      <div class="fig-head">
+        <div class="fig-num">Fig 5</div>
+        <div class="fig-title">One firm, cut in half at the border</div>
+        <div class="source">Schematic - carmaker value chain</div>
+      </div>
+      <div class="fig-body">
+        <svg class="chart" viewBox="0 0 900 380" role="img" aria-label="A carmaker value chain split by the national border. Home activities are visible to German GDP, turnover and exports. Abroad activities are invisible to German GDP and counted only in foreign affiliate statistics and host GDP.">
+          <defs>
+            <marker id="arrow-dark" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="var(--oi-ink-2)"/>
+            </marker>
+            <marker id="arrow-accent" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="var(--oi-accent)"/>
+            </marker>
+          </defs>
+
+          <text class="tag" x="190" y="32" text-anchor="middle" fill="var(--oi-brand)">HOME</text>
+          <text class="sub" x="190" y="50" text-anchor="middle">visible to German GDP - turnover - exports</text>
+          <text class="tag" x="710" y="32" text-anchor="middle" fill="var(--oi-accent)">ABROAD</text>
+          <text class="sub" x="710" y="50" text-anchor="middle">only in Foreign Affiliate Statistics and host GDP</text>
+
+          <line x1="450" y1="64" x2="450" y2="350" stroke="var(--oi-rule-strong)" stroke-width="1.2" stroke-dasharray="4 5"/>
+          <text class="tag" x="450" y="58" text-anchor="middle" fill="var(--oi-ink-3)">NATIONAL BORDER</text>
+
+          <rect x="40" y="86" width="300" height="44" rx="3" fill="var(--oi-brand)"/>
+          <text class="label white" x="56" y="114">Design &amp; engineering</text>
+          <text class="tag" x="324" y="104" text-anchor="end" fill="rgba(255,255,255,0.78)">VISIBLE</text>
+
+          <rect x="40" y="142" width="300" height="44" rx="3" fill="var(--oi-brand)"/>
+          <text class="label white" x="56" y="170">IP &amp; patents</text>
+          <text class="tag" x="324" y="160" text-anchor="end" fill="rgba(255,255,255,0.78)">VISIBLE</text>
+
+          <rect x="40" y="198" width="300" height="44" rx="3" fill="var(--oi-brand-2)"/>
+          <text class="label white" x="56" y="226">Hard components &amp; materials</text>
+          <text class="tag" x="324" y="216" text-anchor="end" fill="rgba(255,255,255,0.78)">VISIBLE</text>
+
+          <rect x="40" y="270" width="300" height="44" rx="3" fill="var(--oi-brand-2)"/>
+          <text class="label white" x="56" y="298">HQ &amp; offices</text>
+          <text class="tag" x="324" y="288" text-anchor="end" fill="rgba(255,255,255,0.78)">VISIBLE</text>
+
+          <rect x="560" y="92" width="300" height="62" rx="3" fill="var(--oi-highlight)" stroke="var(--oi-accent)" stroke-width="1.6"/>
+          <text class="tag" x="858" y="84" text-anchor="end" fill="var(--oi-accent)">INVISIBLE</text>
+          <text class="label" x="576" y="119">Assembly / volume manufacturing</text>
+          <text class="sub" x="576" y="139">the hands, in a firm-owned plant</text>
+
+          <rect x="560" y="232" width="300" height="62" rx="3" fill="var(--oi-highlight)" stroke="var(--oi-accent)" stroke-width="1.6"/>
+          <text class="tag" x="858" y="224" text-anchor="end" fill="var(--oi-accent)">INVISIBLE</text>
+          <text class="label" x="576" y="259">Finished car - built &amp; sold abroad</text>
+          <text class="sub" x="576" y="279">in no German trade data at all</text>
+
+          <path d="M344,108 L414,146" fill="none" stroke="var(--oi-ink-2)" stroke-width="1.9" stroke-linecap="round" opacity="0.78"/>
+          <path d="M344,164 L414,146" fill="none" stroke="var(--oi-ink-2)" stroke-width="2.3" stroke-linecap="round" opacity="0.88"/>
+          <path d="M344,220 L414,146" fill="none" stroke="var(--oi-ink-2)" stroke-width="2.7" stroke-linecap="round"/>
+          <circle cx="414" cy="146" r="3.3" fill="var(--oi-ink-2)"/>
+          <path d="M414,146 L556,124" fill="none" stroke="var(--oi-ink-2)" stroke-width="3.2" stroke-linecap="round" marker-end="url(#arrow-dark)"/>
+          <rect x="360" y="72" width="180" height="36" rx="2" fill="var(--oi-surface)"/>
+          <text class="small-value" x="450" y="86" text-anchor="middle">design - IP - components</text>
+          <text class="note" x="450" y="101" text-anchor="middle">counted at home</text>
+
+          <path d="M710,154 L710,228" fill="none" stroke="var(--oi-accent)" stroke-width="2" marker-end="url(#arrow-accent)"/>
+          <text class="note" x="724" y="195">built locally</text>
+
+          <path d="M556,306 C486,336 416,320 344,292" fill="none" stroke="var(--oi-accent)" stroke-width="1.7" stroke-dasharray="5 4" marker-end="url(#arrow-accent)"/>
+          <rect x="302" y="332" width="306" height="28" rx="2" fill="var(--oi-surface)"/>
+          <text class="small-value" x="455" y="350" text-anchor="middle" fill="var(--oi-accent)">income returns to HQ - net ~EUR 70bn (2023)</text>
+        </svg>
+      </div>
+      <figcaption>Conceptual schematic. The home side is visible to German GDP, turnover and exports. The abroad side belongs to host-country GDP and outward FATS. The connective tissue is intra-firm trade; the direct-investment income that returns to Germany is much smaller than the foreign operating footprint.</figcaption>
+    </figure></div><div class="col"><div class="prose"><p>This also changes how I read the export story.</p><p>From 2010 to 2023, turnover at German-controlled affiliates abroad grew about 5.7 percent a year and their employment about 2.8 percent. Over the same period domestic turnover grew about 3.8 percent, goods exports about 3.9, GDP roughly 3, and domestic employment under 1.</p><p>This is not a claim that everything is fine, or that the German model has no problems. It is a different point: German firms have grown a large part of their activity outside the statistics that dominate the debate, and the more dynamic growth is partly still here, just not on the factory floor. It is in the head office. That may be well known in the trade, but the scale of it is mostly missing from the popular story.</p></div></div><div class="gx col-wide"><figure class="fig">
+      <div class="fig-head">
+        <div class="fig-num">Fig 4</div>
+        <div class="fig-title">The growth race - abroad turnover pulls away</div>
+        <div class="source">Index 2010 = 100</div>
+      </div>
+      <div class="fig-body">
+        <div class="legend">
+          <span style="color: var(--oi-accent)"><i class="line-swatch"></i>Abroad turnover</span>
+          <span style="color: var(--oi-accent)"><i class="dash-swatch"></i>Abroad jobs</span>
+          <span style="color: var(--oi-brand-soft)"><i class="line-swatch"></i>Domestic turnover</span>
+          <span style="color: var(--oi-brand-2-soft)"><i class="line-swatch"></i>Goods exports</span>
+          <span style="color: var(--oi-brand-line)"><i class="dash-swatch"></i>Nominal GDP</span>
+          <span style="color: var(--oi-ink-4)"><i class="line-swatch"></i>Domestic jobs</span>
+        </div>
+        <svg class="chart" viewBox="0 0 920 432" role="img" aria-label="Indexed line chart from 2010 to 2023. Abroad turnover grows from 100 to 205, outpacing domestic turnover, goods exports, nominal GDP, abroad jobs, and domestic jobs.">
+          <line class="grid" x1="70" y1="360.0" x2="738" y2="360.0"/><text class="axis" x="58" y="364" text-anchor="end">100</text>
+          <line class="grid" x1="70" y1="304.7" x2="738" y2="304.7"/><text class="axis" x="58" y="308.7" text-anchor="end">120</text>
+          <line class="grid" x1="70" y1="249.5" x2="738" y2="249.5"/><text class="axis" x="58" y="253.5" text-anchor="end">140</text>
+          <line class="grid" x1="70" y1="194.2" x2="738" y2="194.2"/><text class="axis" x="58" y="198.2" text-anchor="end">160</text>
+          <line class="grid" x1="70" y1="138.9" x2="738" y2="138.9"/><text class="axis" x="58" y="142.9" text-anchor="end">180</text>
+          <line class="grid" x1="70" y1="83.6" x2="738" y2="83.6"/><text class="axis" x="58" y="87.6" text-anchor="end">200</text>
+          <text class="axis" x="70" y="48" text-anchor="start">2010=100</text>
+
+          <polyline class="jobs-line" points="70.0,360.0 121.4,357.6 172.8,355.1 224.2,352.7 275.5,350.2 326.9,347.7 378.3,345.2 429.7,342.6 481.1,340.0 532.5,337.4 583.8,334.8 635.2,332.2 686.6,329.5 738.0,326.8"/>
+          <polyline class="gdp-index-line" points="70.0,360.0 121.4,345.9 172.8,339.8 224.2,332.4 275.5,319.9 326.9,309.7 378.3,298.6 429.7,282.9 481.1,272.1 532.5,261.1 583.8,271.6 635.2,247.5 686.6,214.6 738.0,189.5"/>
+          <polyline class="abe-line" points="70.0,360.0 121.4,347.0 172.8,336.2 224.2,332.6 275.5,322.7 326.9,306.7 378.3,299.5 429.7,284.8 481.1,276.0 532.5,271.0 583.8,278.2 635.2,271.0 686.6,253.6 738.0,241.4"/>
+          <polyline class="exp-line" points="70.0,360.0 121.4,349.3 172.8,338.1 224.2,326.5 275.5,314.5 326.9,302.0 378.3,289.0 429.7,275.5 481.1,261.5 532.5,247.0 583.8,231.8 635.2,216.1 686.6,199.8 738.0,182.9"/>
+          <polyline class="dom-line" points="70.0,360.0 121.4,336.5 172.8,332.9 224.2,332.4 275.5,326.8 326.9,320.5 378.3,315.2 429.7,300.9 481.1,287.0 532.5,279.3 583.8,293.4 635.2,260.0 686.6,197.8 738.0,188.7"/>
+          <polyline class="abt-line" points="70.0,360.0 121.4,329.3 172.8,317.4 224.2,325.7 275.5,298.1 326.9,274.6 378.3,249.2 429.7,242.5 481.1,220.2 532.5,198.3 583.8,232.0 635.2,187.8 686.6,91.9 738.0,68.7"/>
+
+          <text class="value" x="752" y="72" fill="var(--oi-accent)">Abroad turnover 205</text>
+          <line x1="738" y1="68.7" x2="748" y2="68.7" stroke="var(--oi-accent)" stroke-width="1.5"/>
+
+          <text class="small-value" x="752" y="172" fill="var(--oi-brand-2-soft)">Goods exports 164</text>
+          <line x1="738" y1="182.9" x2="748" y2="170" stroke="var(--oi-brand-2-soft)" stroke-width="1"/>
+
+          <text class="small-value" x="752" y="195" fill="var(--oi-brand-soft)">Dom. turnover 162</text>
+          <line x1="738" y1="188.7" x2="748" y2="193" stroke="var(--oi-brand-soft)" stroke-width="1"/>
+
+          <text class="small-value" x="752" y="218" fill="var(--oi-brand-line)">Nominal GDP 162</text>
+          <line x1="738" y1="189.5" x2="748" y2="216" stroke="var(--oi-brand-line)" stroke-width="1"/>
+
+          <text class="small-value" x="752" y="244" fill="var(--oi-accent)">Abroad jobs 143</text>
+          <line x1="738" y1="241.4" x2="748" y2="241.4" stroke="var(--oi-accent)" stroke-width="1"/>
+
+          <text class="small-value" x="752" y="330" fill="var(--oi-ink-3)">Dom. jobs 112</text>
+          <line x1="738" y1="326.8" x2="748" y2="326.8" stroke="var(--oi-ink-4)" stroke-width="1"/>
+
+          <text class="axis" x="70.0" y="388" text-anchor="middle">2010</text>
+          <text class="axis" x="224.2" y="388" text-anchor="middle">2013</text>
+          <text class="axis" x="378.3" y="388" text-anchor="middle">2016</text>
+          <text class="axis" x="532.5" y="388" text-anchor="middle">2019</text>
+          <text class="axis" x="738.0" y="388" text-anchor="middle">2023</text>
+        </svg>
+      </div>
+      <figcaption>Four series are plotted year by year from the repo data. Goods exports and domestic employment use straight CAGR lines between sourced endpoints. GDP here is nominal, matching the chart data and the turnover comparison. The key visual point is that foreign affiliate turnover grows fastest and ends at 205, with every domestic headline clustered far below it.</figcaption>
+    </figure></div></section><section class="essay"><div class="col"><div class="section-rule"><div class="n">§ 04</div><div class="t">The US example</div></div><div class="prose"><p>The United States is the cleanest example.</p><p>Germany exported 157.9 billion euros of goods to the US in 2023, its biggest single goods market. A large number. But German-controlled companies operating inside the US turned over about 760 billion in the same year, almost five times as much.</p><p>So a debate framed only around German exports to America misses most of the German corporate presence there. A lot of it is not Germany shipping goods into the US. It is German-owned firms producing, selling, employing, and paying tax locally, inside the US economy.</p><p>That matters for how we talk about trade exposure. A tariff threat hits exports. It can hit supply chains and margins in less obvious ways too. But the affiliate figure shows that "Germany sells to America" is far too small a description of what German firms actually do there.</p></div></div></section><section class="essay"><div class="col"><div class="section-rule"><div class="n">§ 05</div><div class="t">What comes home</div></div><div class="prose"><p>One last point is easy to get wrong. If German affiliates abroad turn over 3.4 trillion euros, how much of that comes home? Not much, if we mean a measurable direct effect.</p><p>In 2023, German residents earned about 158 billion euros on outward direct investment. Around 99 billion was paid out, about 35 billion was reinvested abroad. Net of what foreign owners earned on their investments inside Germany, the direct-investment income balance was about 70 billion.</p><p>Seventy billion is not nothing. But against 3.4 trillion of foreign affiliate turnover, it may as well be invisible. It is also about 1.7 percent of GDP, the comparison most people would reach for, and one that hides more than it shows. Even gross national income, the measure built to catch what a country earns abroad, registers only that thin slice of profit, not the activity behind it.</p><p>The effect is structural and quiet. Foreign scale helps sustain head offices, engineering teams, design work, patents, platforms, finance, and component production at home. Some of that shows up in exports, some in service and royalty flows, some only inside the firm's own accounts.</p><p>Firms are organised around products, platforms, suppliers, customers, tax structures, and ownership. They do not line up neatly with the border the national accounts draw. In the public conversation that mostly gets lost, and what gets lost with it is that the exposure has shifted: less of the jobs kind, more of the capital kind.</p><p>So the discovery left me with two things. The larger-than-GDP turnover figure is what let me see the ghost turnover behind it, and with it the more dynamic pockets of growth that never return to the GDP line. And it showed how much more nuanced the offshoring story is than the headline version, with most of the real mechanics sitting underneath it.</p><p>---</p></div></div></section>
+<section class="essay"><div class="col"><div class="methods"><h4>Method &amp; sources</h4><ul><li>Turnover is gross sales, not value added. Do not add domestic turnover and foreign affiliate turnover and call it GDP.</li><li>The 2021 domestic turnover jump contains a large financial-sector reclassification, about 692 billion euros. The dynamics above use the break-adjusted series where it matters.</li><li>Outward FATS counts the full turnover of foreign affiliates controlled by German parents. It can overlap with German domestic turnover through intra-group sales.</li><li>The GDP comparison for foreign affiliate turnover is rough: affiliate turnover is a gross sales number, while GDP is value added.</li><li>US comparison: German goods exports to the US in 2023 were 157.9 billion euros; German-controlled US affiliate turnover was about 760 billion.</li></ul><h4 style="margin-top:28px">Disclaimer</h4><p>This is independent research commentary, written for general information. It is not investment, legal, tax or policy advice. All figures are the author's calculations from public statistics, may contain errors, and describe a moment in time. Statistical-office and dataset names are used for identification only and imply no affiliation or endorsement. The underlying tables are public; if you find an error I would rather hear about it than not.</p></div></div></section>
+<aside class="end-matter col-wide" aria-label="About and contact">
+  <div><h4>About this note</h4><p>Just a blog note. More on <a href="https://plvch.com">plvch.com</a>.</p></div>
+  <div><h4>Contact</h4><p>m(at)plvch.com</p><p>Berlin</p></div>
+</aside>
+<footer class="essay-foot col-wide">
+  <div>© 2026 plvch · <a href="/legal/#impressum">Impressum</a> · <a href="/legal/#datenschutz">Datenschutz</a></div>
+  <div>Research note · The curious structure of German exports</div>
+  <div>01 / 01</div>
+</footer>
+</main>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem('oi-theme'); } catch (e) {}
+    if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+
+    function syncButtons() {
+      var t = root.getAttribute('data-theme') || 'light';
+      document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+        var active = b.getAttribute('data-theme-btn') === t;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+    syncButtons();
+    document.querySelectorAll('[data-theme-btn]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.getAttribute('data-theme-btn');
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem('oi-theme', t); } catch (e) {}
+        syncButtons();
+      });
+    });
+  })();
+</script>
+</body>
+</html>

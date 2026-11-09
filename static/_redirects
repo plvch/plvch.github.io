@@ -1,0 +1,7 @@
+# Redirects for the Cloudflare Worker (wrangler.jsonc). Copied into dist/ by build.py.
+
+# The essay's slug was briefly announced with an underscore.
+/indexes_cost/* /indexes-cost/:splat 301
+
+# The standalone calculator moved to geldchen.com (GitHub Pages copy switched off 2026-11-09).
+/geldchen-buy-vs-rent/* https://geldchen.com/en/tools/buy-vs-rent/ 301

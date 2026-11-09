@@ -1,0 +1,55 @@
+{
+  "open-indexing": {
+    "repo": "plvch/open-indexing",
+    "ref": "main",
+    "files": [
+      "index.html",
+      "assets/passive-share-ecb.png",
+      "assets/plvch-tokens.css",
+      "prototype/Basket Broker - Buying Baskets.html",
+      "prototype/app.jsx",
+      "prototype/basket-detail.jsx",
+      "prototype/data.jsx",
+      "prototype/flows.jsx",
+      "prototype/ios-frame.jsx",
+      "prototype/portfolio.jsx",
+      "prototype/store.jsx",
+      "prototype/styles.css",
+      "prototype/ui.jsx"
+    ],
+    "vendor": {
+      "https://unpkg.com/react@18.3.1/umd/react.development.js": "prototype/vendor/react.development.js",
+      "https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js": "prototype/vendor/react-dom.development.js",
+      "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js": "prototype/vendor/babel.min.js"
+    },
+    "commit": "c5bf4a6c4c19ae1c689f98678920e9d39090b85f"
+  },
+  "indexes-cost": {
+    "repo": "plvch/indexes-cost",
+    "ref": "gh-pages",
+    "files": [
+      "index.html",
+      "assets/plvch-tokens.css"
+    ],
+    "commit": "fa01759c98cc36becb61b46c60a60b5fbdec83fb"
+  },
+  "small-business-concentration": {
+    "repo": "plvch/small-business-concentration",
+    "ref": "main",
+    "files": [
+      "index.html",
+      "assets/plvch-tokens.css"
+    ],
+    "commit": "e8b62081d742916ef5b92dcc3fd32c4cc6f93153"
+  },
+  "turnover-vs-gdp": {
+    "repo": "plvch/turnover-vs-gdp",
+    "ref": "main",
+    "files": [
+      "index.html",
+      "assets/plvch-tokens.css",
+      "assets/thumb.png"
+    ],
+    "commit": "ec80b3f5ad3c64b18d08476c8ec54c3f986fee7b"
+  }
+}
