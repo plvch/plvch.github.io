@@ -35,8 +35,7 @@ jobs:
           # Wrangler 4 needs Node 22.
           node-version: '22'
 
-      # The plvch-site Worker (wrangler.jsonc). Until the cut-over it has no route on
-      # plvch.com and answers only on its workers.dev URL.
+      # Production deploy of the plvch-site Worker that serves plvch.com (wrangler.jsonc).
       - name: Deploy to Cloudflare Workers
         if: github.ref == 'refs/heads/main' && env.HAS_TOKEN == 'true'
         env:

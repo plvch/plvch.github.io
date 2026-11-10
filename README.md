@@ -43,6 +43,13 @@ Preview locally: `npx wrangler@4.151.3 dev` (serves dist/ on http://localhost:87
 
 ## Deploy
 
+plvch.com is served by the Cloudflare Worker `plvch-site` (custom domain, `wrangler.jsonc`);
+`www.plvch.com` redirects to it by a zone redirect rule. DNS and mail for plvch.com are on
+the same Cloudflare zone.
+
 `.github/workflows/site.yml` builds and checks every push and PR. On `main` it deploys
 the Worker; on a PR it uploads a preview (`pr-<n>-plvch-site.<account>.workers.dev`).
-Both need the `CLOUDFLARE_API_TOKEN` repo secret.
+Both need the `CLOUDFLARE_API_TOKEN` repo secret (account token: Workers Scripts edit on
+the account, Workers Routes edit on plvch.com).
+
+The repository name is left over from GitHub Pages, which served the site until the move.

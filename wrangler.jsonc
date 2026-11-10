@@ -18,6 +18,9 @@
   // The workers.dev URL and per-PR preview URLs are for checking a build before it goes live.
   // static/_headers marks them noindex.
   "workers_dev": true,
-  "preview_urls": true
-  // Production (cut-over, not yet): "routes": [{ "pattern": "plvch.com", "custom_domain": true }]
+  "preview_urls": true,
+  // Production: plvch.com as a custom domain. Cloudflare manages its DNS record; the GitHub
+  // Pages A/AAAA records must be gone before the first deploy with this route.
+  // www.plvch.com is redirected to the bare domain by a zone redirect rule, not by this Worker.
+  "routes": [{ "pattern": "plvch.com", "custom_domain": true }]
 }
